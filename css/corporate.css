@@ -1,0 +1,323 @@
+/* ============================================================
+   corporate.css — TAmJ Corporate Site
+   Requires: base.css
+   Used by: index, about-*, contact, planning, medical,
+            development, service-*, project-*, pamphlet
+   ============================================================ */
+
+
+/* ════════════════════════════════════════
+   HEADER
+   ════════════════════════════════════════ */
+header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(251,250,248,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.5s ease;
+}
+header.scrolled {
+    padding: 0.8rem 4rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+.header-logo img { height: 22px; }
+.header-nav { display: flex; gap: 2.5rem; align-items: center; }
+.header-nav a {
+    font-size: 0.7rem; font-weight: 400; color: var(--gray-500);
+    letter-spacing: 0.15em; transition: color 0.4s; text-transform: uppercase;
+}
+.header-nav a:hover { color: var(--black); }
+.header-nav .nav-cta { color: var(--primary); font-weight: 500; }
+
+
+/* ════════════════════════════════════════
+   PAGE TOP
+   ════════════════════════════════════════ */
+.page-top {
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+}
+.page-label {
+    font-family: var(--font-display);
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.35em;
+    color: var(--gray-400); text-transform: uppercase;
+    display: block; margin-bottom: 1.5rem;
+}
+.page-top h1 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    line-height: 1.7; letter-spacing: 0.06em; color: var(--black);
+}
+.page-sub {
+    font-size: 0.85rem; font-weight: 300; color: var(--gray-500);
+    margin-top: 1.2rem; line-height: 2;
+}
+
+
+/* ════════════════════════════════════════
+   SECTIONS & TYPOGRAPHY
+   ════════════════════════════════════════ */
+.sec { padding: var(--sp-lg) var(--sp-md); }
+.bg-alt { background: var(--cream); }
+.narrow { max-width: 680px; margin: 0 auto; }
+.narrow-form { max-width: 520px; margin: 0 auto; }
+
+.section-head { margin-bottom: 2.5rem; }
+.section-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem; font-weight: 400; letter-spacing: 0.35em;
+    color: var(--gray-400); text-transform: uppercase;
+    display: block; margin-bottom: 0.5rem;
+}
+h2 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem); line-height: 1.6;
+    letter-spacing: 0.06em; color: var(--black);
+}
+h3 { font-family: var(--font-serif); font-weight: 400; font-size: 1rem; color: var(--black); letter-spacing: 0.03em; }
+h4 { font-family: var(--font-serif); font-weight: 400; font-size: 0.95rem; color: var(--black); letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+p  { font-size: 0.88rem; font-weight: 300; color: var(--gray-500); line-height: 2; }
+.body-text { font-size: 0.9rem; color: var(--gray-500); line-height: 2.2; font-weight: 300; }
+.accent { color: var(--primary); }
+
+
+/* ════════════════════════════════════════
+   LIST ROW (numbered list)
+   ════════════════════════════════════════ */
+.list-row {
+    display: flex; gap: 1.5rem; padding: 1.8rem 0;
+    border-bottom: 1px solid var(--gray-100); align-items: flex-start;
+}
+.list-row:first-of-type { border-top: 1px solid var(--gray-100); }
+.list-row .num {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 300; color: var(--gray-300);
+    min-width: 28px; padding-top: 0.1rem;
+}
+.list-row h4 { margin-bottom: 0.3rem; }
+.list-row p { font-size: 0.82rem; }
+.tag {
+    display: inline-block; font-size: 0.6rem; color: var(--gray-400);
+    letter-spacing: 0.05em; padding: 0.15rem 0.5rem;
+    border: 1px solid var(--gray-200); margin-top: 0.5rem;
+}
+
+
+/* ════════════════════════════════════════
+   LINK ROW (clickable list)
+   ════════════════════════════════════════ */
+.link-list { margin-top: 0.5rem; }
+.link-row {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 1.5rem 0; border-bottom: 1px solid var(--gray-100);
+    transition: padding-left 0.3s;
+}
+.link-row:first-child { border-top: 1px solid var(--gray-100); }
+.link-row:hover { padding-left: 0.5rem; }
+.link-row .num {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 300; color: var(--gray-300); min-width: 28px;
+}
+.link-row .link-name { font-size: 0.88rem; font-weight: 300; color: var(--charcoal); flex: 1; }
+.link-row .arrow { font-size: 0.75rem; color: var(--gray-300); transition: color 0.3s; }
+.link-row:hover .arrow { color: var(--primary); }
+.status-tag {
+    font-size: 0.6rem; color: var(--gray-400); letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem; border: 1px solid var(--gray-200);
+}
+
+
+/* ════════════════════════════════════════
+   ABOUT NAV
+   ════════════════════════════════════════ */
+.about-nav {
+    display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100);
+}
+.about-nav a {
+    font-family: var(--font-display);
+    font-size: 0.78rem; letter-spacing: 0.15em; color: var(--gray-500);
+    padding: 1.2rem 2rem; transition: all 0.3s;
+    border-right: 1px solid var(--gray-100);
+}
+.about-nav a:last-child { border-right: none; }
+.about-nav a:hover { color: var(--primary); }
+.about-nav a.active { color: var(--primary); background: var(--cream); }
+
+
+/* ════════════════════════════════════════
+   MESSAGE
+   ════════════════════════════════════════ */
+.message-layout {
+    display: grid; grid-template-columns: 240px 1fr; gap: 3.5rem; align-items: start;
+}
+.message-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.message-photo .caption { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: var(--gray-400); }
+.message-photo .caption .label { font-family: var(--font-display); letter-spacing: 0.15em; font-size: 0.7rem; }
+.message-heading {
+    font-family: var(--font-serif); font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    color: var(--charcoal); line-height: 1.8; font-weight: 400;
+    margin-bottom: 2rem; letter-spacing: 0.04em;
+}
+.emphasis {
+    font-size: 0.95rem; color: var(--charcoal); font-weight: 400;
+    margin-top: 1.5rem; padding-left: 1rem; border-left: 2px solid var(--primary); line-height: 2;
+}
+.signature { margin-top: 2.5rem; text-align: right; }
+.signature span { font-size: 0.78rem; color: var(--gray-400); }
+.signature .name { font-family: var(--font-display); font-size: 1rem; color: var(--black); letter-spacing: 0.08em; }
+
+
+/* ════════════════════════════════════════
+   PHILOSOPHY
+   ════════════════════════════════════════ */
+.phil-block { padding: var(--sp-lg) var(--sp-md); text-align: center; border-bottom: 1px solid var(--gray-100); }
+.phil-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem; letter-spacing: 0.35em; color: var(--gray-400);
+    text-transform: uppercase; display: block; margin-bottom: 1.5rem;
+}
+.phil-text {
+    font-family: var(--font-serif); font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 400; color: var(--black); line-height: 1.9; letter-spacing: 0.06em;
+}
+.phil-sub { font-size: 0.88rem; color: var(--gray-500); font-weight: 300; margin-top: 0.8rem; line-height: 2; }
+.phil-block .value-list { max-width: 500px; margin: 2rem auto 0; text-align: left; }
+
+
+/* ════════════════════════════════════════
+   QUOTE
+   ════════════════════════════════════════ */
+.quote { padding: 5rem 2rem; text-align: center; background: var(--cream); }
+.quote blockquote {
+    font-family: var(--font-serif); font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 300; color: var(--charcoal); line-height: 1.9; max-width: 600px; margin: 0 auto;
+}
+
+
+/* ════════════════════════════════════════
+   BANDS (member CTA, contact CTA)
+   ════════════════════════════════════════ */
+.member-band, .contact-band {
+    padding: 3.5rem 2rem; text-align: center; border-bottom: 1px solid var(--gray-100);
+}
+.member-band p, .contact-band p { font-size: 0.85rem; color: var(--gray-500); font-weight: 300; margin-bottom: 1rem; }
+.text-link {
+    font-family: var(--font-display);
+    font-size: 0.82rem; letter-spacing: 0.1em; color: var(--primary); transition: letter-spacing 0.3s;
+}
+.text-link:hover { letter-spacing: 0.18em; }
+
+
+/* ════════════════════════════════════════
+   TABLE
+   ════════════════════════════════════════ */
+.info-table { width: 100%; border-collapse: collapse; }
+.info-table th {
+    font-family: var(--font-display);
+    font-size: 0.78rem; font-weight: 400; letter-spacing: 0.1em;
+    color: var(--gray-400); text-align: left; padding: 1rem 1rem 1rem 0;
+    border-bottom: 1px solid var(--gray-100); width: 120px; vertical-align: top;
+}
+.info-table td {
+    font-size: 0.88rem; font-weight: 300; color: var(--charcoal);
+    padding: 1rem 0; border-bottom: 1px solid var(--gray-100);
+}
+
+
+/* ════════════════════════════════════════
+   FORMS
+   ════════════════════════════════════════ */
+.fg { margin-bottom: 1.8rem; }
+.fg label {
+    display: block; font-size: 0.78rem; font-weight: 400;
+    color: var(--charcoal); margin-bottom: 0.5rem; letter-spacing: 0.03em;
+}
+.req { color: var(--primary); margin-left: 0.2rem; }
+.fg input, .fg select, .fg textarea {
+    width: 100%; padding: 0.8rem 0;
+    border: none; border-bottom: 1px solid var(--gray-200);
+    font-size: 0.88rem; font-family: inherit; color: var(--charcoal);
+    background: transparent; transition: border-color 0.3s; border-radius: 0;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { outline: none; border-bottom-color: var(--charcoal); }
+.fg textarea { min-height: 120px; resize: vertical; border: 1px solid var(--gray-200); padding: 0.8rem; margin-top: 0.3rem; }
+.fg select { cursor: pointer; }
+.submit-btn {
+    width: 100%; padding: 1rem; background: var(--charcoal); color: #fff;
+    border: none; font-size: 0.82rem; font-weight: 400;
+    letter-spacing: 0.12em; cursor: pointer; transition: background 0.3s; margin-top: 1rem;
+}
+.submit-btn:hover { background: var(--black); }
+.other-contact { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--gray-100); text-align: center; }
+.other-contact p { font-size: 0.78rem; color: var(--gray-400); margin-bottom: 0.5rem; }
+
+.primary-btn {
+    display: inline-block; padding: 0.8rem 2.5rem;
+    background: var(--charcoal); color: #fff;
+    font-size: 0.82rem; letter-spacing: 0.08em;
+    border: none; cursor: pointer; transition: background 0.3s;
+}
+.primary-btn:hover { background: var(--black); }
+
+
+/* ════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════ */
+footer {
+    padding: var(--sp-lg) 4rem var(--sp-md);
+    border-top: 1px solid var(--gray-100);
+}
+.footer-inner {
+    max-width: 900px; margin: 0 auto; display: flex;
+    justify-content: space-between; align-items: flex-start; gap: 3rem; flex-wrap: wrap;
+}
+.footer-brand img { height: 18px; margin-bottom: 0.8rem; }
+.footer-brand p {
+    font-family: var(--font-display); font-size: 0.7rem;
+    color: var(--gray-400); letter-spacing: 0.1em; font-style: italic;
+}
+.footer-links { display: flex; gap: 3.5rem; }
+.footer-col h4 {
+    font-family: var(--font-display); font-size: 0.65rem;
+    letter-spacing: 0.2em; color: var(--gray-400); margin-bottom: 0.8rem;
+    text-transform: uppercase; font-weight: 400;
+}
+.footer-col a {
+    display: block; font-size: 0.75rem; font-weight: 300;
+    color: var(--gray-500); padding: 0.25rem 0; transition: color 0.3s;
+}
+.footer-col a:hover { color: var(--primary); }
+.footer-bottom {
+    max-width: 900px; margin: 3rem auto 0; padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-100); text-align: center;
+}
+.footer-copy { font-size: 0.6rem; color: var(--gray-400); letter-spacing: 0.1em; }
+
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 768px) {
+    header { padding: 1rem 1.5rem !important; }
+    header.scrolled { padding: 0.8rem 1.5rem !important; }
+    .header-nav { gap: 1.5rem; }
+    .header-nav a { font-size: 0.6rem; }
+    .page-top { padding: 8rem 2rem 3.5rem; }
+    .message-layout { grid-template-columns: 1fr; }
+    .message-photo img { max-width: 220px; margin: 0 auto; display: block; }
+    .about-nav { flex-wrap: wrap; }
+    .about-nav a { flex: 1; text-align: center; padding: 1rem; }
+    .footer-inner { flex-direction: column; }
+    .footer-links { flex-direction: column; gap: 1.5rem; }
+    footer { padding: 3rem 2rem 2rem; }
+    .list-row { gap: 1rem; }
+    .link-row { gap: 1rem; }
+}

@@ -1,0 +1,5 @@
+テスト用アカウント：
+
+メール　　　　　　パスワード
+demo@tamj.jp　　tamj1234
+test@tamj.jp　　　test1234
