@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-02-18",
-  "fetchTime": "2026-02-18T22:28:31.886Z",
+  "fetchDate": "2026-02-19",
+  "fetchTime": "2026-02-19T22:27:20.447Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,21 +10,13 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 57143.84,
-    "usdjpy": 154.73,
-    "brent": 70.19,
-    "copper": 5.778,
+    "nikkei": 57467.83,
+    "usdjpy": 154.906,
+    "brent": 71.92,
+    "copper": 5.762,
     "jgb10y": 2.18
   },
   "history30d": [
-    {
-      "date": "2026-01-08",
-      "nikkei": 51117.262,
-      "usdjpy": 156.731,
-      "brent": 61.99,
-      "copper": 5.747,
-      "jgb10y": 2.18
-    },
     {
       "date": "2026-01-09",
       "nikkei": 51939.891,
@@ -35,7 +27,7 @@
     },
     {
       "date": "2026-01-12",
-      "nikkei": 57143.84,
+      "nikkei": 57467.83,
       "usdjpy": 158.149,
       "brent": 63.87,
       "copper": 5.985,
@@ -77,8 +69,8 @@
       "date": "2026-01-19",
       "nikkei": 53583.57,
       "usdjpy": 157.535,
-      "brent": 70.19,
-      "copper": 5.778,
+      "brent": 71.92,
+      "copper": 5.762,
       "jgb10y": 2.18
     },
     {
@@ -211,7 +203,7 @@
     },
     {
       "date": "2026-02-11",
-      "nikkei": 57143.84,
+      "nikkei": 57467.83,
       "usdjpy": 154.482,
       "brent": 69.4,
       "copper": 5.949,
@@ -237,8 +229,8 @@
       "date": "2026-02-16",
       "nikkei": 56806.41,
       "usdjpy": 152.779,
-      "brent": 70.19,
-      "copper": 5.778,
+      "brent": 71.92,
+      "copper": 5.762,
       "jgb10y": 2.18
     },
     {
@@ -252,13 +244,21 @@
     {
       "date": "2026-02-18",
       "nikkei": 57143.84,
-      "usdjpy": 154.73,
-      "brent": 70.19,
-      "copper": 5.778,
+      "usdjpy": 153.149,
+      "brent": 70.35,
+      "copper": 5.793,
+      "jgb10y": 2.18
+    },
+    {
+      "date": "2026-02-19",
+      "nikkei": 57467.828,
+      "usdjpy": 154.906,
+      "brent": 71.92,
+      "copper": 5.762,
       "jgb10y": 2.18
     }
   ],
-  "mci": 2.2619,
+  "mci": 2.2659,
   "weights": {
     "usdjpy": 0.35,
     "copper": 0.25,
