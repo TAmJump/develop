@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン | TAmJ 不動産開発</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/corporate.css">
+    <link rel="stylesheet" href="css/tools.css">
+    <style>
+        .auth-page{min-height:100vh;display:flex;flex-direction:column}
+        .auth-main{flex:1;display:flex;align-items:center;justify-content:center;padding:8rem 2rem 4rem;background:var(--cream)}
+        .auth-card{background:#fff;border:1px solid var(--gray-200);width:100%;max-width:420px;padding:48px 40px}
+        .auth-card .label{font-family:var(--font-display);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:8px}
+        .auth-card h1{font-family:var(--font-serif);font-size:1.5rem;font-weight:400;letter-spacing:.04em;margin:0 0 32px;color:var(--black)}
+        .auth-field{margin-bottom:20px}
+        .auth-field label{display:block;font-size:12px;font-weight:500;color:var(--gray-500);letter-spacing:.03em;margin-bottom:6px}
+        .auth-field input{width:100%;padding:12px 14px;border:1px solid var(--gray-200);background:var(--warm-white);font-size:14px;color:var(--charcoal);font-family:inherit;transition:border-color .3s}
+        .auth-field input:focus{outline:none;border-color:var(--charcoal);box-shadow:0 0 0 1px var(--charcoal)}
+        .auth-btn{width:100%;padding:14px;font-size:13px;font-weight:700;letter-spacing:1px;border:none;background:var(--charcoal);color:#fff;cursor:pointer;transition:background .3s;margin-top:8px}
+        .auth-btn:hover{background:var(--primary)}
+        .auth-btn:disabled{opacity:.5;cursor:not-allowed}
+        .auth-error{font-size:12px;color:var(--primary);margin-top:12px;display:none;line-height:1.6}
+        .auth-error.show{display:block}
+        .auth-link{font-size:13px;color:var(--gray-500);margin-top:20px;text-align:center}
+        .auth-link a{color:var(--charcoal);font-weight:600;border-bottom:1px solid var(--charcoal);transition:color .3s}
+        .auth-link a:hover{color:var(--primary);border-bottom-color:var(--primary)}
+        .auth-forgot{display:block;font-size:12px;color:var(--gray-400);text-align:right;margin-top:8px;cursor:pointer;transition:color .3s}
+        .auth-forgot:hover{color:var(--primary)}
+        .auth-success{font-size:12px;color:#16a34a;margin-top:12px;display:none;line-height:1.6}
+        .auth-success.show{display:block}
+    </style>
+</head>
+<body class="auth-page">
+
+    <header id="siteHeader">
+        <a href="index.html" class="header-logo"><img src="logo.png" alt="TAmJ"></a>
+        <nav class="header-nav">
+            <a href="index.html">Top</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="register.html">Register</a>
+            <a href="https://tamjump.github.io/TAmj/contact.html" class="nav-cta">Contact</a>
+        </nav>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <span class="label">Login</span>
+            <h1>ログイン</h1>
+            <div class="auth-field">
+                <label>メールアドレス</label>
+                <input type="email" id="loginEmail" placeholder="info@example.com" autocomplete="email">
+            </div>
+            <div class="auth-field">
+                <label>パスワード</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <span class="auth-forgot" id="btnForgot">パスワードをお忘れの方</span>
+            <button class="auth-btn" id="btnLogin">ログイン</button>
+            <div class="auth-error" id="loginError"></div>
+            <div class="auth-success" id="loginSuccess"></div>
+            <div class="auth-link">
+                アカウントをお持ちでない方 <a href="register.html">会員登録（無料）</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Account</h4><a href="register.html">会員登録</a><a href="login.html">ログイン</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="https://tamjump.github.io/TAmj/contact.html">お問合せ</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const h=document.getElementById('siteHeader');
+        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+
+        // 既にログイン済みならリダイレクト
+        onAuthReady(user=>{
+            if(user){
+                const params=new URLSearchParams(location.search);
+                location.href=decodeURIComponent(params.get('return')||'members/index.html');
+            }
+        });
+
+        document.getElementById('btnLogin').addEventListener('click', async()=>{
+            const btn=document.getElementById('btnLogin');
+            const err=document.getElementById('loginError');
+            const email=document.getElementById('loginEmail').value.trim();
+            const pw=document.getElementById('loginPassword').value;
+
+            err.classList.remove('show');
+            if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
+
+            btn.disabled=true;btn.textContent='ログイン中…';
+            const result=await loginUser(email,pw);
+            if(result.ok){
+                const params=new URLSearchParams(location.search);
+                location.href=decodeURIComponent(params.get('return')||'members/index.html');
+            } else {
+                err.textContent=result.error;err.classList.add('show');
+                btn.disabled=false;btn.textContent='ログイン';
+            }
+        });
+
+        document.getElementById('loginPassword').addEventListener('keydown',e=>{
+            if(e.key==='Enter') document.getElementById('btnLogin').click();
+        });
+
+        document.getElementById('btnForgot').addEventListener('click', async()=>{
+            const email=document.getElementById('loginEmail').value.trim();
+            const err=document.getElementById('loginError');
+            const suc=document.getElementById('loginSuccess');
+            err.classList.remove('show');suc.classList.remove('show');
+            if(!email){err.textContent='メールアドレスを入力してからクリックしてください。';err.classList.add('show');return;}
+            const result=await resetPassword(email);
+            if(result.ok){
+                suc.textContent='パスワードリセットメールを送信しました。';suc.classList.add('show');
+            } else {
+                err.textContent=result.error;err.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
