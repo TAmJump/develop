@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment | TAmJ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/corporate.css">
+    <link rel="stylesheet" href="../css/tools.css">
+<style>.pay-gate{display:none;position:fixed;inset:0;z-index:2000;background:rgba(12,12,12,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center}.pay-gate.show{display:flex}.pay-gate-card{background:#fff;padding:48px 40px;max-width:400px;width:90%;text-align:center}.pay-gate-card h2{font-family:var(--font-serif);font-size:1.3rem;font-weight:400;margin:0 0 12px;color:var(--black)}.pay-gate-card p{font-size:13px;color:var(--gray-500);font-weight:300;line-height:1.8;margin:0 0 24px}.pay-gate-card .price{font-family:var(--font-display);font-size:42px;font-weight:600;color:var(--primary);margin:16px 0 4px}.pay-gate-card .unit{font-size:12px;color:var(--gray-400);margin-bottom:24px}.pay-gate-card .btn-pay{display:block;width:100%;padding:14px;font-size:13px;font-weight:700;letter-spacing:1px;border:none;background:var(--charcoal);color:#fff;cursor:pointer;transition:background .3s}.pay-gate-card .btn-pay:hover{background:var(--primary)}.pay-gate-card .btn-back{display:inline-block;margin-top:12px;font-size:12px;color:var(--gray-400);text-decoration:none;border-bottom:1px solid var(--gray-300)}.pay-gate-card .btn-back:hover{color:var(--primary)}</style>
+</head>
+<body>
+    <header id="siteHeader">
+        <a href="../index.html" class="header-logo"><img src="../logo.png" alt="TAmJ"></a>
+        <nav class="header-nav">
+            <a href="../index.html">Top</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="index.html">MyPage</a>
+            <a href="../contact.html" class="nav-cta">Contact</a>
+        </nav>
+    </header>
+<section class="hero">
+        <h1>什器備品選定</h1>
+        <p>統合マスタ（200品目）に基づく什器備品シミュレーション<br>施設の規模に合わせて数量・グレードを自動算出</p>
+    </section>
+    <main class="main-content">
+        <!-- 入居者数入力 -->
+        <div class="bed-input-section">
+            <h3> 施設規模（入居者数）</h3>
+            <div class="bed-input-wrapper">
+                <input type="number" id="bedCount" class="bed-input" value="50" min="1" max="500" onchange="updateBedCount()">
+                <span class="bed-unit">人</span>
+            </div>
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="setBedCount(30)">30人</button>
+                <button class="preset-btn" onclick="setBedCount(50)">50人</button>
+                <button class="preset-btn" onclick="setBedCount(100)">100人</button>
+                <button class="preset-btn" onclick="setBedCount(150)">150人</button>
+            </div>
+        </div>
+        <!-- モデル選択タブ -->
+        <div class="model-tabs">
+            <button class="model-tab entry active" onclick="selectModel('entry')">
+                 エントリー
+            </button>
+            <button class="model-tab middle" onclick="selectModel('middle')">
+                 ミドル
+            </button>
+            <button class="model-tab highend" onclick="selectModel('highend')">
+                 ハイエンド
+            </button>
+        </div>
+        <!-- 凡例 -->
+        <div class="legend">
+            <h4>グレード別価格について</h4>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-badge entry">エントリー</span>
+                    <span>コストを抑えた基本構成</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-badge middle">ミドル</span>
+                    <span>バランスの取れた標準構成</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-badge highend">ハイエンド</span>
+                    <span>最高品質の充実構成</span>
+                </div>
+            </div>
+            <p style="font-size:.65rem;color:var(--gray-400);margin-top:.5rem">統合マスタ準拠（198品目）─ 表示価格はすべて税抜</p>
+        </div>
+        <div class="total-display">
+            <h2>お見積り合計金額（<span id="displayBedCount">50</span>人）</h2>
+            <div class="total-amount">
+                ¥<span id="totalAmount">0</span>
+                <span class="tax">（税抜）</span>
+            </div>
+            <div class="total-breakdown">
+                <div class="breakdown-item">
+                    <div class="label">税抜金額</div>
+                    <div class="value">¥<span id="subtotal">0</span></div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="label">消費税(10%)</div>
+                    <div class="value">¥<span id="taxAmount">0</span></div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="label">選択項目数</div>
+                    <div class="value"><span id="selectedCount">0</span> 件</div>
+                </div>
+            </div>
+        </div>
+        <!-- カテゴリセクション -->
+        <div id="categories-container">
+            <!-- JavaScriptで動的に生成 -->
+        </div>
+        <!-- アクションボタン -->
+        <div class="action-buttons">
+            <button class="action-btn secondary" onclick="resetAll()"> リセット</button>
+            <button class="action-btn secondary" onclick="selectAll()"> 全て選択</button>
+            <button class="action-btn primary" onclick="printEstimate()"> 御見積書を作成</button>
+            <a href="service-development.html" class="action-btn secondary">← シミュレーションに戻る</a>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="../logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Tools</h4><a href="service-development.html">開発シミュレーター</a><a href="service-equipment.html">什器備品選定</a><a href="estimate-development.html">詳細見積</a><a href="scheme-structure.html">スキーム構造設計</a></div>
+                <div class="footer-col"><h4>Account</h4><a href="index.html">マイページ</a><a href="../pricing.html">プラン・料金</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="../contact.html">お問合せ</a><a href="../index.html">トップページ</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
+    </footer>
+    <script>
+        const _h = document.getElementById('siteHeader');
+        if(_h) window.addEventListener('scroll', () => _h.classList.toggle('scrolled', window.scrollY > 50));
+    </script>
+    <script>
+        // 入居者数
+        let bedCount = 50;
+        // 見積データ定義
+        const estimateData = {
+            categories: [
+                {
+                    id: 'living',
+                    name: '居室・生活',
+                    
+                    subcategories: [
+                        {
+                            name: 'その他',
+                            items: [
+                                { name: 'アスベスト調査費用', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'レクリエーション用品一式', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '中軽量ラック各種', qtyType: 'fixed', baseQty: 5, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '設定・配線工事', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '静音台車（150kg耐荷）', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '施設名看板/サイン', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'AED訓練用トレーナー', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '各階避難用具（担架/おんぶ紐等）', qtyType: 'perFloor', baseQty: 1, entry: 231000, middle: 462000, highend: 693000 },
+                                { name: '非常用食料・水（3日分）', qtyType: 'perBed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '非常用発電機/蓄電池（ポータブル）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                            ]
+                        },
+                        {
+                            name: 'カーテン・リネン',
+                            items: [
+                                { name: '居室カーテン（遮光）', qtyType: 'perBed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '居室レースカーテン', qtyType: 'perBed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '共用部カーテン', qtyType: 'fixed', baseQty: 1, entry: 8000, middle: 16000, highend: 32000 },
+                                { name: 'ベッドシーツ/枕カバー', qtyType: 'perBed', baseQty: 1, entry: 120000, middle: 200000, highend: 350000 },
+                                { name: '防水シーツ', qtyType: 'perBed', baseQty: 1, entry: 8000, middle: 16000, highend: 32000 },
+                                { name: 'タオルケット/毛布', qtyType: 'perBed', baseQty: 1, entry: 8000, middle: 16000, highend: 32000 },
+                                { name: 'バスタオル/フェイスタオル', qtyType: 'perBed', baseQty: 1, entry: 8000, middle: 16000, highend: 32000 },
+                            ]
+                        },
+                        {
+                            name: 'スタッフルーム',
+                            items: [
+                                { name: 'ミーティングチェア', qtyType: 'fixed', baseQty: 8, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: 'ミーティングテーブル', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'スマートフレームハンガー', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '6人用ロッカー（シリンダー錠）', qtyType: 'fixed', baseQty: 6, entry: 40860, middle: 81720, highend: 163440 },
+                                { name: '折畳ベッド', qtyType: 'fixed', baseQty: 1, entry: 120000, middle: 200000, highend: 350000 },
+                            ]
+                        },
+                        {
+                            name: '事務室・受付',
+                            items: [
+                                { name: 'オフィスチェア', qtyType: 'fixed', baseQty: 3, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: 'ワーキングデスク（2口コンセント付）', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '2枚引違い書庫（下置き）', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '両開き書庫（上置き）', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'ガラス引違い書庫（上置き）', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '書庫ベース', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '木天板', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '壁面固定金具', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '薬品保管庫（施錠付）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '月予定表ホワイトボード（壁掛）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'カルテワゴン/ファイルワゴン', qtyType: 'fixed', baseQty: 1, entry: 16785, middle: 33570, highend: 67140 },
+                                { name: 'デジタルカラー複合機（4段）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '耐火金庫（テンキー式）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '鍵管理ボックス', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                            ]
+                        },
+                        {
+                            name: '家電',
+                            items: [
+                                { name: 'テレビ 75型', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'シュレッダー', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ラミネーター（A3）', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ラベルプリンター', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'スマートミーティングカメラ', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '冷蔵庫（330L）', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '冷蔵庫（152L）', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '冷蔵庫（458L）', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '業務用掃除機', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '充電式クリーナー', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ドライヤー', qtyType: 'fixed', baseQty: 2, entry: 1000, middle: 2000, highend: 4000 },
+                                { name: '電子レンジ（フラットテーブル）', qtyType: 'fixed', baseQty: 3, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: '電動ポット 5L', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '電気ケトル 1L', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ミキサー', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'エアーポット 3L', qtyType: 'fixed', baseQty: 2, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ワイヤレスドアホン', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: '6個口延長コード 3m', qtyType: 'fixed', baseQty: 5, entry: 15000, middle: 30000, highend: 60000 },
+                            ]
+                        },
+                        {
+                            name: '居室',
+                            items: [
+                                { name: 'ペダルオープン 20L', qtyType: 'fixed', baseQty: 8, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'チェア', qtyType: 'fixed', baseQty: 1, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: '介護用電動ベッド（3モーター）', qtyType: 'perBed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ベッドサイドテーブル', qtyType: 'perBed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'ベッドサイド柵', qtyType: 'perBed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'チェスト（衣類収納）', qtyType: 'fixed', baseQty: 1, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'ハンガーラック', qtyType: 'perBed', baseQty: 1, entry: 13840, middle: 27680, highend: 55360 },
+                                { name: '収納ボックス', qtyType: 'fixed', baseQty: 50, entry: 15000, middle: 30000, highend: 60000 },
+                                { name: 'デスク', qtyType: 'fixed', baseQty: 1, entry: 39375, middle: 78750, highend: 236250 },
+                            ]
+                        },
+                        {
+                            name: '洗濯室',
+                            items: [
+                                { name: '衣類乾燥機 5kg', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '衣類乾燥機用直付けスタンド', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'アイロン・アイロン台', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '中軽量ラック（リネン収納）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'ランドリーカート/リネンワゴン', qtyType: 'fixed', baseQty: 2, entry: 16785, middle: 33570, highend: 67140 },
+                                { name: '洗濯機 7kg', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                            ]
+                        },
+                        {
+                            name: '清掃・消耗品',
+                            items: [
+                                { name: '大型ダストボックス', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'ペーパータオルホルダー', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '消毒液ディスペンサー（自動）', qtyType: 'fixed', baseQty: 3, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'おむつ用ゴミ箱（消臭機能付）', qtyType: 'perFloor', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                            ]
+                        },
+                        {
+                            name: '玄関・エントランス',
+                            items: [
+                                { name: '業務用玄関マット', qtyType: 'fixed', baseQty: 2, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '傘立て', qtyType: 'fixed', baseQty: 1, entry: 21100, middle: 44850, highend: 89700 },
+                                { name: '傘立てオプションカバー', qtyType: 'fixed', baseQty: 1, entry: 21100, middle: 44850, highend: 89700 },
+                                { name: '電話機台/消毒液置き台', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '来客用ソファ/チェア', qtyType: 'fixed', baseQty: 1, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: '掲示板/インフォメーションボード', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'フェイクグリーン（大型）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '花台/プランターカバー', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                            ]
+                        },
+                        {
+                            name: '食堂・共用部',
+                            items: [
+                                { name: 'TVスタンド（50～86インチ対応）', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'スツール', qtyType: 'fixed', baseQty: 10, entry: 24300, middle: 48600, highend: 97200 },
+                                { name: 'ダイニングチェア', qtyType: 'fixed', baseQty: 30, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: 'オールラウンドテーブル（長方形）', qtyType: 'fixed', baseQty: 7, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'オールラウンドテーブル（正方形）', qtyType: 'fixed', baseQty: 2, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: '継ぎ足し脚', qtyType: 'fixed', baseQty: 9, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'マガジンラック/新聞架', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: '壁掛け時計', qtyType: 'fixed', baseQty: 5, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'カレンダー/行事予定ボード', qtyType: 'fixed', baseQty: 1, entry: 10000, middle: 20000, highend: 40000 },
+                                { name: 'OAミーティングテーブル', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'ミーティングチェア', qtyType: 'fixed', baseQty: 6, entry: 12960, middle: 25920, highend: 51840 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    id: 'care',
+                    name: '介護・医療',
+                    
+                    subcategories: [
+                        {
+                            name: '介護・医療備品',
+                            items: [
+                                { name: '保冷枕', qtyType: 'fixed', baseQty: 10, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '清掃用ツールカート', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '角ペール 45型（本体＋蓋）', qtyType: 'fixed', baseQty: 4, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '吸引器', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'ポータブルトイレ', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'AED', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '救急箱/応急処置セット', qtyType: 'perFloor', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'カラーモップ＋替糸', qtyType: 'perFloor', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'モップ絞り器', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '点滴カート', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'I.Vスタンド', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'スライディングボード/シート', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'リフト（据置型 or 床走行型）', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '車椅子（標準型）', qtyType: 'fixed', baseQty: 3, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '車椅子（リクライニング）', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'ストレッチャー/搬送用ベッド', qtyType: 'fixed', baseQty: 1, entry: 1020000, middle: 2040000, highend: 3060000 },
+                                { name: '歩行器', qtyType: 'fixed', baseQty: 3, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '杖（各種）', qtyType: 'fixed', baseQty: 5, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '聴診器', qtyType: 'fixed', baseQty: 3, entry: 822, middle: 1644, highend: 3288 },
+                                { name: '電子体温計', qtyType: 'fixed', baseQty: 3, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '非接触型電子体温計', qtyType: 'fixed', baseQty: 2, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'パルスオキシメーター', qtyType: 'fixed', baseQty: 3, entry: 9770, middle: 19540, highend: 39080 },
+                                { name: '上腕血圧計', qtyType: 'fixed', baseQty: 3, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '手首血圧計', qtyType: 'fixed', baseQty: 3, entry: 2092, middle: 4184, highend: 8368 },
+                            ]
+                        },
+                        {
+                            name: '浴室・脱衣室',
+                            items: [
+                                { name: '特殊浴槽（機械浴）本体', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '電動ストレッチャー', qtyType: 'fixed', baseQty: 1, entry: 1020000, middle: 2040000, highend: 3060000 },
+                                { name: 'リフト付シャワーキャリー', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'シャワーチェアー（折りたたみ）', qtyType: 'fixed', baseQty: 2, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: 'シャワーキャリー', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '滑り止めマット', qtyType: 'fixed', baseQty: 2, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '浴室用車椅子', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'フリーラック4段（スリム）', qtyType: 'fixed', baseQty: 2, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'ダイニングチェア（脱衣室用）', qtyType: 'fixed', baseQty: 2, entry: 12960, middle: 25920, highend: 51840 },
+                                { name: 'ウォールミラー', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'シンプルテーブル', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: '脱衣かご/バスケット', qtyType: 'fixed', baseQty: 10, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '体重計（バリアフリー型）', qtyType: 'fixed', baseQty: 1, entry: 1150, middle: 2300, highend: 4600 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    id: 'kitchen',
+                    name: '厨房・食事',
+                    
+                    subcategories: [
+                        {
+                            name: '厨房備品・食器',
+                            items: [
+                                { name: 'デザートスプーン/フォーク', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'ティースプーン/ヒメフォーク', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'すくいやすい食器/自助具', qtyType: 'fixed', baseQty: 5, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'とろみ調整用具/ミキサー', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '厨房デッキブラシ/ドライヤー', qtyType: 'fixed', baseQty: 1, entry: 1000, middle: 2000, highend: 4000 },
+                                { name: '長靴', qtyType: 'fixed', baseQty: 2, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '業務用クロッグ（厨房靴）', qtyType: 'fixed', baseQty: 2, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'HACCPステンレス角バット', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'フードプロセッサー', qtyType: 'fixed', baseQty: 2, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '寸胴鍋・半寸胴鍋', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'フライパン・煮込み鍋', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '抗菌ボウル各種', qtyType: 'fixed', baseQty: 2, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'パワーザル各種', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '抗菌まな板（大）', qtyType: 'fixed', baseQty: 2, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '牛刀（ホワイト/グリーン）', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'レードル/スキンマー/菜箸等', qtyType: 'fixed', baseQty: 1, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '飯碗（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '吸物椀（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'ウェーブ皿（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '丸小鉢（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '小鉢（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: 'カップ（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '丸深皿（身＋蓋）', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '正角トレイ', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '20cm深皿', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '15cm丼', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                                { name: '箸', qtyType: 'fixed', baseQty: 60, entry: 5000, middle: 10000, highend: 20000 },
+                            ]
+                        },
+                        {
+                            name: '厨房機器',
+                            items: [
+                                { name: '二槽シンク', qtyType: 'fixed', baseQty: 1, entry: 49500, middle: 99000, highend: 148500 },
+                                { name: '引出付調理台', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '調理台', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '作業台（小）', qtyType: 'fixed', baseQty: 2, entry: 30500, middle: 61000, highend: 122000 },
+                                { name: '電気式食器消毒保管庫', qtyType: 'fixed', baseQty: 1, entry: 470000, middle: 940000, highend: 1410000 },
+                                { name: '包丁まな板殺菌庫', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '戸棚', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '冷凍冷蔵庫（業務用）', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '冷蔵コールドテーブル', qtyType: 'fixed', baseQty: 2, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: '大型シェルフ', qtyType: 'fixed', baseQty: 1, entry: 48500, middle: 97000, highend: 194000 },
+                                { name: '二段棚', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: 'ステンカゴ', qtyType: 'fixed', baseQty: 5, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '全自動軟水器', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '食器洗浄機（ドアタイプ）', qtyType: 'fixed', baseQty: 1, entry: 710000, middle: 1420000, highend: 2130000 },
+                                { name: 'ソイルドテーブル', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'クリーンテーブル', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: 'スチームコンベクションオーブン', qtyType: 'fixed', baseQty: 1, entry: 1340000, middle: 2680000, highend: 4020000 },
+                                { name: 'ガステーブル（業務用）', qtyType: 'fixed', baseQty: 1, entry: 20205, middle: 40410, highend: 80820 },
+                                { name: '炊飯器', qtyType: 'fixed', baseQty: 2, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '炊飯台', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: 'スープジャー 12L', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: '配膳車', qtyType: 'fixed', baseQty: 2, entry: 1983500, middle: 3967000, highend: 5950500 },
+                                { name: 'トレー（角）', qtyType: 'fixed', baseQty: 60, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: 'プレートトレーラック', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                                { name: 'フラットウェアーラック', qtyType: 'fixed', baseQty: 1, entry: 80000, middle: 160000, highend: 320000 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    id: 'it',
+                    name: 'IT・安全',
+                    
+                    subcategories: [
+                        {
+                            name: 'IT・通信',
+                            items: [
+                                { name: 'ノートPC', qtyType: 'fixed', baseQty: 10, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'ルーター機器', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '無線アクセスポイント', qtyType: 'fixed', baseQty: 30, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'WiFi工事費', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'タブレット端末', qtyType: 'fixed', baseQty: 3, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '介護記録ソフト/請求ソフト', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'ビジネスフォン主装置', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'デジタル多機能電話機', qtyType: 'fixed', baseQty: 2, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: 'IP電話ライセンス', qtyType: 'fixed', baseQty: 12, entry: 50000, middle: 100000, highend: 200000 },
+                                { name: '電話NW工事費', qtyType: 'fixed', baseQty: 1, entry: 50000, middle: 100000, highend: 200000 },
+                            ]
+                        },
+                        {
+                            name: 'ナースコール',
+                            items: [
+                                { name: 'ナースコールシステムソフトウェア', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'ナースコールメインユニット', qtyType: 'fixed', baseQty: 23, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '緊急呼出ボタン（通常）', qtyType: 'perBed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '緊急呼出ボタンホルダー', qtyType: 'fixed', baseQty: 29, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '緊急呼出ボタン（防水）', qtyType: 'fixed', baseQty: 3, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: '設定設置費・諸経費', qtyType: 'fixed', baseQty: 1, entry: 30000, middle: 60000, highend: 120000 },
+                                { name: 'スタッフ用モバイル端末', qtyType: 'fixed', baseQty: 12, entry: 30000, middle: 60000, highend: 120000 },
+                            ]
+                        },
+                    ]
+                },
+            ]
+        };
+        // 現在のモデル
+        let currentModel = 'entry';
+        // カテゴリの開閉状態
+        const categoryStates = {};
+        const qtyOverrides = {};
+        estimateData.categories.forEach(cat => {
+            categoryStates[cat.id] = true;
+        });
+        // アイテムのチェック状態
+        const itemChecked = {};
+        // 初期化
+        let _equipUseCounted = false;
+        function init() {
+            // Free制限: 初回アクセス時にカウント
+            if (!_equipUseCounted && typeof checkUsageGate === 'function') {
+                if (!checkUsageGate()) {
+                    // 上限到達 — 基本表示のみ、操作不可
+                    document.querySelectorAll('input,select,button').forEach(el => el.disabled = true);
+                    return;
+                }
+                _equipUseCounted = true;
+            }
+            // URLパラメータから入居者数を取得
+            const params = new URLSearchParams(window.location.search);
+            if(params.has('residents')) {
+                bedCount = parseInt(params.get('residents')) || 50;
+                document.getElementById('bedCount').value = bedCount;
+            }
+            
+            estimateData.categories.forEach(category => {
+                category.subcategories.forEach((sub, subIdx) => {
+                    sub.items.forEach((item, itemIdx) => {
+                        itemChecked[getItemKey(category.id, subIdx, itemIdx)] = true;
+                    });
+                });
+            });
+            renderCategories();
+            updateTotals();
+        }
+        // アイテムキーを生成
+        function getItemKey(categoryId, subIdx, itemIdx) {
+            return `${categoryId}-${subIdx}-${itemIdx}`;
+        }
+        // 数量を計算（手動上書きがあればそちらを優先）
+        function calculateQty(item, key) {
+            if(key && qtyOverrides[key] !== undefined) return qtyOverrides[key];
+            const floors = Math.ceil(bedCount / 30);
+            switch(item.qtyType) {
+                case 'fixed': return item.baseQty;
+                case 'perBed': return Math.ceil(bedCount * item.baseQty);
+                case 'perFloor': return item.baseQty * floors;
+                case 'ratio': return Math.ceil(bedCount * item.baseQty);
+                default: return item.baseQty;
+            }
+        }
+        // 数量を手動更新
+        function updateItemQty(key, subIdx, itemIdx, value) {
+            const newQty = Math.max(0, parseInt(value) || 0);
+            qtyOverrides[key] = newQty;
+            renderCategories();
+            updateTotals();
+        }
+        // 入居者数を更新
+        function updateBedCount() {
+            bedCount = parseInt(document.getElementById('bedCount').value) || 50;
+            document.getElementById('displayBedCount').textContent = bedCount;
+            renderCategories();
+            updateTotals();
+        }
+        // プリセットボタン
+        function setBedCount(count) {
+            bedCount = count;
+            document.getElementById('bedCount').value = count;
+            document.getElementById('displayBedCount').textContent = count;
+            renderCategories();
+            updateTotals();
+        }
+        // カテゴリ全てチェックされているか
+        function isCategoryFullyChecked(category) {
+            for (let subIdx = 0; subIdx < category.subcategories.length; subIdx++) {
+                for (let itemIdx = 0; itemIdx < category.subcategories[subIdx].items.length; itemIdx++) {
+                    if (!itemChecked[getItemKey(category.id, subIdx, itemIdx)]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        // カテゴリをレンダリング
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            estimateData.categories.forEach(category => {
+                const isCollapsed = !categoryStates[category.id];
+                const isFullyChecked = isCategoryFullyChecked(category);
+                const categoryTotal = calculateCategoryTotal(category);
+                let categoryHTML = `
+                    <div class="category-section ${isCollapsed ? 'collapsed' : ''}" id="category-${category.id}">
+                        <div class="category-header" onclick="toggleCategoryCollapse('${category.id}')">
+                            <div class="category-header-left" onclick="event.stopPropagation()">
+                                <input type="checkbox" class="category-checkbox" 
+                                    ${isFullyChecked ? 'checked' : ''} 
+                                    onclick="toggleCategoryCheck('${category.id}')">
+                                <h3 onclick="toggleCategoryCollapse('${category.id}')">
+                                    ${category.name}
+                                </h3>
+                            </div>
+                            <span class="category-total">¥${formatNumber(categoryTotal)}<small style="font-size:.55rem;color:var(--gray-400);margin-left:3px">税抜</small></span>
+                            <span class="category-toggle" onclick="toggleCategoryCollapse('${category.id}')">▼</span>
+                        </div>
+                        <div class="category-content">
+                `;
+                category.subcategories.forEach((subcategory, subIdx) => {
+                    const subTotal = calculateSubcategoryTotal(category, subIdx);
+                    categoryHTML += `
+                        <div class="subcategory">
+                            <div class="subcategory-header">
+                                <span>${subcategory.name}</span>
+                                <span class="subcategory-total">¥${formatNumber(subTotal)}</span>
+                            </div>
+                    `;
+                    subcategory.items.forEach((item, itemIdx) => {
+                        const key = getItemKey(category.id, subIdx, itemIdx);
+                        const isChecked = itemChecked[key];
+                        const qty = calculateQty(item, key);
+                        const price = item[currentModel] * qty;
+                        categoryHTML += `
+                            <div class="item-row ${isChecked ? '' : 'disabled'}">
+                                <input type="checkbox" class="item-checkbox" 
+                                    ${isChecked ? 'checked' : ''} 
+                                    onchange="toggleItem('${key}')">
+                                <div class="item-name">${item.name}</div>
+                                <input type="number" class="item-qty" value="${qty}" min="0" 
+                                    onchange="updateItemQty('${key}',${subIdx},${itemIdx},this.value)"
+                                    onclick="this.select()">
+                                <div class="item-price">¥${formatNumber(price)}</div>
+                            </div>
+                        `;
+                    });
+                    categoryHTML += `</div>`;
+                });
+                categoryHTML += `</div></div>`;
+                container.innerHTML += categoryHTML;
+            });
+        }
+        // カテゴリのチェックを切り替え
+        function toggleCategoryCheck(categoryId) {
+            const category = estimateData.categories.find(c => c.id === categoryId);
+            const isFullyChecked = isCategoryFullyChecked(category);
+            const newState = !isFullyChecked;
+            category.subcategories.forEach((sub, subIdx) => {
+                sub.items.forEach((item, itemIdx) => {
+                    itemChecked[getItemKey(categoryId, subIdx, itemIdx)] = newState;
+                });
+            });
+            renderCategories();
+            updateTotals();
+        }
+        // 個別アイテムのチェックを切り替え
+        function toggleItem(key) {
+            itemChecked[key] = !itemChecked[key];
+            renderCategories();
+            updateTotals();
+        }
+        // カテゴリの開閉を切り替え
+        function toggleCategoryCollapse(categoryId) {
+            categoryStates[categoryId] = !categoryStates[categoryId];
+            const element = document.getElementById(`category-${categoryId}`);
+            element.classList.toggle('collapsed');
+        }
+        // モデルを選択
+        function selectModel(model) {
+            currentModel = model;
+            document.querySelectorAll('.model-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.model-tab.${model}`).classList.add('active');
+            renderCategories();
+            updateTotals();
+        }
+        // カテゴリの合計を計算
+        function calculateCategoryTotal(category) {
+            let total = 0;
+            category.subcategories.forEach((sub, subIdx) => {
+                sub.items.forEach((item, itemIdx) => {
+                    const key = getItemKey(category.id, subIdx, itemIdx);
+                    if (itemChecked[key]) {
+                        const qty = calculateQty(item, key);
+                        total += item[currentModel] * qty;
+                    }
+                });
+            });
+            return total;
+        }
+        // サブカテゴリの合計を計算
+        function calculateSubcategoryTotal(category, subIdx) {
+            let total = 0;
+            category.subcategories[subIdx].items.forEach((item, itemIdx) => {
+                const key = getItemKey(category.id, subIdx, itemIdx);
+                if (itemChecked[key]) {
+                    const qty = calculateQty(item, key);
+                    total += item[currentModel] * qty;
+                }
+            });
+            return total;
+        }
+        // 合計を更新
+        function updateTotals() {
+            let subtotal = 0;
+            let selectedCount = 0;
+            estimateData.categories.forEach(cat => {
+                cat.subcategories.forEach((sub, subIdx) => {
+                    sub.items.forEach((item, itemIdx) => {
+                        const key = getItemKey(cat.id, subIdx, itemIdx);
+                        if (itemChecked[key]) {
+                            const qty = calculateQty(item, key);
+                            subtotal += item[currentModel] * qty;
+                            selectedCount++;
+                        }
+                    });
+                });
+            });
+            const tax = Math.floor(subtotal * 0.1);
+            const total = subtotal + tax;
+            document.getElementById('totalAmount').textContent = formatNumber(total);
+            document.getElementById('subtotal').textContent = formatNumber(subtotal);
+            document.getElementById('taxAmount').textContent = formatNumber(tax);
+            document.getElementById('selectedCount').textContent = selectedCount;
+        }
+        // 数字をカンマ区切りでフォーマット
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('ja-JP');
+        }
+        // 全てリセット
+        function resetAll() {
+            Object.keys(itemChecked).forEach(key => {
+                itemChecked[key] = false;
+            });
+            Object.keys(qtyOverrides).forEach(key => delete qtyOverrides[key]);
+            renderCategories();
+            updateTotals();
+        }
+        // 全て選択
+        function selectAll() {
+            Object.keys(itemChecked).forEach(key => {
+                itemChecked[key] = true;
+            });
+            renderCategories();
+            updateTotals();
+        }
+        // 見積書を生成・印刷
+        function printEstimate() {
+            // --- データ収集 ---
+            let subtotal = 0;
+            let selectedCount = 0;
+            const sections = [];
+            const modelLabel = {entry:'エントリー', middle:'ミドル', highend:'ハイエンド'}[currentModel] || currentModel;
+
+            estimateData.categories.forEach(cat => {
+                const catItems = [];
+                cat.subcategories.forEach((sub, subIdx) => {
+                    const subItems = [];
+                    sub.items.forEach((item, itemIdx) => {
+                        const key = getItemKey(cat.id, subIdx, itemIdx);
+                        if (!itemChecked[key]) return;
+                        const qty = calculateQty(item, key);
+                        const unitPrice = item[currentModel];
+                        const lineTotal = unitPrice * qty;
+                        subtotal += lineTotal;
+                        selectedCount++;
+                        subItems.push({ name: item.name, qty, unitPrice, lineTotal });
+                    });
+                    if (subItems.length > 0) {
+                        const subTotal = subItems.reduce((s, i) => s + i.lineTotal, 0);
+                        catItems.push({ name: sub.name, items: subItems, subTotal });
+                    }
+                });
+                if (catItems.length > 0) {
+                    const catTotal = catItems.reduce((s, g) => s + g.subTotal, 0);
+                    sections.push({ name: cat.name, groups: catItems, catTotal });
+                }
+            });
+
+            const tax = Math.floor(subtotal * 0.1);
+            const total = subtotal + tax;
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日`;
+            const estNo = `EQ-${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*900)+100)}`;
+
+            // --- 明細行HTML ---
+            let detailRows = '';
+            let rowNum = 0;
+            sections.forEach(sec => {
+                // カテゴリヘッダー
+                detailRows += `<tr class="cat-row"><td colspan="2">${sec.name}</td><td></td><td></td><td class="r">¥${sec.catTotal.toLocaleString()}</td></tr>`;
+                sec.groups.forEach(grp => {
+                    // サブカテゴリヘッダー
+                    detailRows += `<tr class="sub-row"><td colspan="2">　${grp.name}</td><td></td><td></td><td class="r sub-tot">¥${grp.subTotal.toLocaleString()}</td></tr>`;
+                    grp.items.forEach(item => {
+                        rowNum++;
+                        detailRows += `<tr><td class="rn">${rowNum}</td><td>${item.name}</td><td class="r">${item.qty}</td><td class="r">¥${item.unitPrice.toLocaleString()}</td><td class="r">¥${item.lineTotal.toLocaleString()}</td></tr>`;
+                    });
+                });
+            });
+
+            // --- ロゴ（SVGインライン埋め込み） ---
+            const logoSrc = 'data:image/png;base64,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';
+            const logoHtml = `<img src="${logoSrc}" style="height:30px;margin-right:8px;vertical-align:middle;border-radius:3px">`;
+
+            // --- 見積書HTML ---
+            const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
+<title>御見積書 - タムジ株式会社</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;font-size:10px;color:#1a1a1a;line-height:1.6;padding:20mm 15mm;max-width:210mm;margin:0 auto}
+.num{font-family:'Inter','Noto Sans JP',sans-serif;font-variant-numeric:tabular-nums}
+
+/* ヘッダー */
+.est-header{text-align:center;margin-bottom:18px;border-bottom:3px double #333;padding-bottom:14px}
+.est-header h1{font-size:22px;font-weight:700;letter-spacing:.3em;margin-bottom:4px}
+.est-no{font-size:9px;color:#666}
+
+/* 上段：宛先＋発行者 */
+.top-row{display:flex;justify-content:space-between;margin-bottom:16px;gap:20px}
+.client-box{flex:1;max-width:48%}
+.issuer-box{flex:1;max-width:48%;text-align:right;font-size:9px;line-height:1.7}
+.client-name{font-size:14px;font-weight:500;border-bottom:1px solid #333;padding-bottom:4px;margin-bottom:4px;min-width:200px}
+.client-name span{font-size:11px;font-weight:400;margin-left:4px}
+.issuer-company{font-size:12px;font-weight:700;margin-bottom:2px}
+.issuer-logo{display:inline-block;vertical-align:middle}
+
+/* 合計ボックス */
+.total-box{background:#f5f5f3;border:2px solid #333;padding:12px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.total-box .label{font-size:11px;font-weight:500}
+.total-box .amount{font-size:20px;font-weight:700;letter-spacing:.02em}
+.total-box .breakdown{font-size:9px;color:#555;text-align:right;line-height:1.8}
+
+/* 条件 */
+.conditions{display:flex;gap:24px;margin-bottom:14px;font-size:9px;color:#444}
+.conditions dt{font-weight:500;display:inline}
+.conditions dd{display:inline;margin-right:16px}
+
+/* 明細テーブル */
+table{width:100%;border-collapse:collapse;font-size:9px;margin-bottom:14px}
+th{background:#333;color:#fff;font-weight:500;padding:5px 8px;text-align:left;font-size:8.5px}
+th.r{text-align:right}
+td{padding:4px 8px;border-bottom:1px solid #e0e0e0}
+td.r{text-align:right}
+td.rn{text-align:center;width:28px;color:#999;font-size:8px}
+tr.cat-row{background:#f0eeea}
+tr.cat-row td{font-weight:700;font-size:9.5px;padding:6px 8px;border-bottom:2px solid #ccc}
+tr.sub-row td{font-weight:500;color:#555;font-size:8.5px;background:#faf9f7}
+td.sub-tot{font-size:8.5px;color:#555}
+
+/* 合計欄 */
+.summary-table{width:260px;margin-left:auto;margin-bottom:18px}
+.summary-table td{padding:4px 10px;font-size:10px;border-bottom:1px solid #ddd}
+.summary-table .total-row td{border-top:2px solid #333;border-bottom:2px solid #333;font-weight:700;font-size:12px;padding:8px 10px}
+.summary-table .label{text-align:left}
+.summary-table .val{text-align:right}
+
+/* 備考 */
+.notes{border-top:1px solid #ccc;padding-top:10px;font-size:8.5px;color:#555;line-height:1.8}
+.notes h4{font-size:9px;font-weight:500;color:#333;margin-bottom:4px}
+
+/* 印鑑エリア */
+.stamp-area{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;margin-bottom:10px}
+.stamp-box{width:60px;height:60px;border:1px solid #ccc;text-align:center;line-height:60px;font-size:8px;color:#ccc}
+
+/* 印刷時 */
+@media print{
+  body{padding:15mm 12mm}
+  .no-print{display:none!important}
+  @page{size:A4;margin:10mm}
+}
+</style></head><body>
+
+<!-- 印刷ボタン -->
+<div class="no-print" style="text-align:center;margin-bottom:16px">
+  <button onclick="window.print()" style="padding:10px 32px;font-size:13px;font-weight:600;background:#333;color:#fff;border:none;cursor:pointer;letter-spacing:.05em">印刷 / PDF保存</button>
+  <button onclick="window.close()" style="padding:10px 24px;font-size:13px;background:#fff;border:1px solid #999;cursor:pointer;margin-left:8px">閉じる</button>
+</div>
+
+<!-- ヘッダー -->
+<div class="est-header">
+  <h1>御 見 積 書</h1>
+  <div class="est-no num">No. ${estNo}　｜　${dateStr}</div>
+</div>
+
+<!-- 宛先 + 発行者 -->
+<div class="top-row">
+  <div class="client-box">
+    <div class="client-name" contenteditable="true" style="outline:none">
+      〇〇〇〇 株式会社<span>御中</span>
+    </div>
+    <div style="font-size:9px;color:#888;margin-top:2px" contenteditable="true">ご担当：〇〇 〇〇 様</div>
+    <div style="font-size:8px;color:#aaa;margin-top:6px">※社名・担当者名をクリックして編集できます</div>
+  </div>
+  <div class="issuer-box">
+    <div class="issuer-company">${logoHtml}タムジ株式会社</div>
+    <div>〒103-0004</div>
+    <div>東京都中央区東日本橋3-3-17 Re-Know4B</div>
+    <div>mail：info@tamjump.com</div>
+    <div class="stamp-area" style="margin-top:8px">
+      <div class="stamp-box">承認</div>
+      <div class="stamp-box">担当</div>
+    </div>
+  </div>
+</div>
+
+<!-- 合計ボックス -->
+<div class="total-box">
+  <div>
+    <div class="label">お見積り金額（税込）</div>
+    <div class="amount num">¥${total.toLocaleString()}-</div>
+  </div>
+  <div class="breakdown num">
+    税抜金額：¥${subtotal.toLocaleString()}<br>
+    消費税(10%)：¥${tax.toLocaleString()}<br>
+    選択品目数：${selectedCount} 件
+  </div>
+</div>
+
+<!-- 条件 -->
+<div class="conditions">
+  <div><dt>施設規模：</dt><dd>${bedCount}人</dd></div>
+  <div><dt>グレード：</dt><dd>${modelLabel}</dd></div>
+  <div><dt>有効期限：</dt><dd>発行日より30日間</dd></div>
+  <div><dt>納　期：</dt><dd>ご発注後 約4〜8週間</dd></div>
+</div>
+
+<!-- 明細テーブル -->
+<table>
+  <thead>
+    <tr><th style="width:28px">No</th><th>品名・仕様</th><th class="r" style="width:48px">数量</th><th class="r" style="width:80px">単価（税抜）</th><th class="r" style="width:90px">金額（税抜）</th></tr>
+  </thead>
+  <tbody>
+    ${detailRows}
+  </tbody>
+</table>
+
+<!-- 合計欄 -->
+<table class="summary-table num">
+  <tr><td class="label">小計（税抜）</td><td class="val">¥${subtotal.toLocaleString()}</td></tr>
+  <tr><td class="label">消費税（10%）</td><td class="val">¥${tax.toLocaleString()}</td></tr>
+  <tr class="total-row"><td class="label">合計（税込）</td><td class="val">¥${total.toLocaleString()}</td></tr>
+</table>
+
+<!-- 備考 -->
+<div class="notes">
+  <h4>備考</h4>
+  <div contenteditable="true" style="outline:none;min-height:40px">
+    ・上記金額はすべて税抜表示です（消費税率10%を別途申し受けます）。<br>
+    ・数量は施設規模（${bedCount}人）に基づく概算です。実際の仕様・数量は現地調査後に確定いたします。<br>
+    ・グレード「${modelLabel}」をベースに算出しております。グレード変更は別途お見積りいたします。<br>
+    ・搬入・設置費用は含まれておりません。別途お見積りいたします。<br>
+    ・本見積書の有効期限は発行日より30日間です。
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:24px;font-size:8px;color:#aaa">
+  本書はタムジ株式会社の什器備品シミュレーターにより自動生成されました。正式な発注書ではありません。
+</div>
+
+</body></html>`;
+
+            const w = window.open('', '_blank', 'width=900,height=1200');
+            w.document.write(html);
+            w.document.close();
+        }
+        // ページ読み込み時に初期化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="../js/auth.js"></script>
+    <script src="../js/plan-gate.js"></script>
+<script>requireAuth();handlePaymentSuccess();</script>
+<script>document.addEventListener('DOMContentLoaded',function(){var tid='service-equipment';if(!hasValidTicket(tid)){document.getElementById('payGate').classList.add('show')}document.getElementById('btnPay').addEventListener('click',function(){startPayment(tid)})});</script>
+</body>
+</html>
