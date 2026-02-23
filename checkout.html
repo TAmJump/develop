@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お支払い | TAmJ 不動産開発</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/corporate.css">
+    <link rel="stylesheet" href="css/tools.css">
+    <style>
+        .checkout-page{min-height:100vh;display:flex;flex-direction:column}
+        .checkout-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:8rem 2rem 4rem;background:var(--cream)}
+        .checkout-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:820px;width:100%;background:#fff;border:1px solid var(--gray-200);box-shadow:0 8px 40px rgba(0,0,0,.06)}
+
+        /* Left: Order Summary */
+        .checkout-summary{padding:40px 36px;border-right:1px solid var(--gray-100);background:var(--warm-white)}
+        .checkout-summary .label{font-family:var(--font-display);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:6px}
+        .checkout-summary h2{font-family:var(--font-serif);font-size:1.2rem;font-weight:500;letter-spacing:.04em;margin:0 0 28px;color:var(--black)}
+
+        /* Plan toggle */
+        .plan-tabs{display:flex;gap:0;margin-bottom:24px;border:1px solid var(--gray-200);border-radius:0}
+        .plan-tab{flex:1;padding:12px 16px;text-align:center;font-size:13px;font-weight:500;color:var(--gray-500);cursor:pointer;transition:all .2s;background:#fff;border:none;font-family:inherit;position:relative}
+        .plan-tab:first-child{border-right:1px solid var(--gray-200)}
+        .plan-tab.active{background:var(--charcoal);color:#fff;font-weight:700}
+        .plan-tab .tab-save{display:block;font-size:10px;font-weight:600;color:var(--primary);margin-top:2px}
+        .plan-tab.active .tab-save{color:#fca5a5}
+
+        /* Order lines */
+        .order-line{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--gray-100);font-size:13px}
+        .order-line:last-of-type{border-bottom:none}
+        .order-label{color:var(--gray-700);font-weight:400}
+        .order-label small{display:block;font-size:11px;color:var(--gray-400);margin-top:2px}
+        .order-value{font-family:var(--font-display);font-weight:600;color:var(--black);text-align:right}
+        .order-total{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-top:8px;border-top:2px solid var(--charcoal);font-size:15px;font-weight:700;color:var(--black)}
+        .order-total .total-price{font-family:var(--font-display);font-size:24px;color:var(--primary)}
+
+        .order-features{margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100)}
+        .order-features h4{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray-400);margin:0 0 10px}
+        .order-features li{font-size:12px;color:var(--gray-700);font-weight:400;padding:4px 0;display:flex;align-items:center;gap:6px;list-style:none}
+        .order-features li::before{content:'✓';font-size:10px;color:var(--primary);font-weight:700}
+        .order-features ul{padding:0;margin:0}
+
+        /* Right: Payment Form */
+        .checkout-form{padding:40px 36px}
+        .checkout-form .label{font-family:var(--font-display);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:6px}
+        .checkout-form h2{font-family:var(--font-serif);font-size:1.2rem;font-weight:500;letter-spacing:.04em;margin:0 0 28px;color:var(--black)}
+
+        .form-field{margin-bottom:20px}
+        .form-field label{display:block;font-size:12px;font-weight:500;color:var(--gray-700);letter-spacing:.03em;margin-bottom:6px}
+        .form-field input{width:100%;padding:12px 14px;border:1px solid var(--gray-200);background:#fff;font-size:14px;color:var(--charcoal);font-family:inherit;transition:border-color .3s;box-sizing:border-box}
+        .form-field input:focus{outline:none;border-color:var(--charcoal);box-shadow:0 0 0 1px var(--charcoal)}
+        .form-field input::placeholder{color:var(--gray-300)}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+        .card-icons{display:flex;gap:6px;align-items:center;margin-bottom:16px}
+        .card-icon{width:36px;height:24px;border:1px solid var(--gray-200);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--gray-500);letter-spacing:.5px;background:#fff}
+        .card-icon.active{border-color:var(--charcoal);color:var(--charcoal)}
+
+        .pay-btn{width:100%;padding:16px;font-size:14px;font-weight:700;letter-spacing:1px;border:none;background:var(--primary);color:#fff;cursor:pointer;transition:all .3s;margin-top:8px}
+        .pay-btn:hover{background:var(--primary-dark)}
+        .pay-btn:disabled{opacity:.6;cursor:not-allowed}
+
+        .secure-note{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:11px;color:var(--gray-400)}
+        .secure-note svg{flex-shrink:0}
+
+        .checkout-error{font-size:12px;color:var(--primary);margin-top:12px;display:none;line-height:1.6}
+        .checkout-error.show{display:block}
+
+        /* Demo banner */
+        .demo-banner{background:var(--primary-pale);border:1px solid rgba(200,22,29,.15);padding:10px 16px;font-size:11px;color:var(--primary);font-weight:500;text-align:center;margin-bottom:20px;line-height:1.6}
+
+        /* Success overlay */
+        .success-overlay{display:none;position:fixed;inset:0;background:rgba(246,244,241,.96);z-index:2000;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem}
+        .success-overlay.show{display:flex}
+        .success-check{width:64px;height:64px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+        .success-check svg{width:32px;height:32px;color:#fff}
+        .success-overlay h2{font-family:var(--font-serif);font-size:1.4rem;font-weight:500;color:var(--black);margin:0 0 12px}
+        .success-overlay p{font-size:14px;color:var(--gray-700);font-weight:400;margin:0 0 8px;line-height:1.8}
+        .success-overlay .success-detail{font-size:13px;color:var(--gray-500);margin:0 0 32px}
+        .success-overlay .success-btn{padding:14px 40px;font-size:14px;font-weight:700;letter-spacing:1px;border:none;background:var(--charcoal);color:#fff;cursor:pointer;transition:background .3s;text-decoration:none;display:inline-block}
+        .success-overlay .success-btn:hover{background:var(--primary)}
+
+        @media(max-width:700px){
+            .checkout-wrap{grid-template-columns:1fr}
+            .checkout-summary{border-right:none;border-bottom:1px solid var(--gray-100)}
+        }
+    </style>
+</head>
+<body class="checkout-page">
+<a class="corp-back" href="https://tamjump.github.io/TAmj/index.html"><span class="arr">&larr;</span> TAmJ.Corp</a>
+
+    <header id="siteHeader">
+        <a href="index.html" class="header-logo"><img src="logo.png" alt="TAmJ"></a>
+        <nav class="header-nav">
+            <a href="index.html">Top</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="login.html" data-auth="logged-out">Login</a>
+            <a href="members/index.html" data-auth="logged-in" style="display:none">MyPage</a>
+            <a href="contact.html" class="nav-cta">Contact</a>
+        </nav>
+    </header>
+
+    <main class="checkout-main">
+        <div class="checkout-wrap">
+            <!-- Left: Order Summary -->
+            <div class="checkout-summary">
+                <span class="label">Order Summary</span>
+                <h2>プランの確認</h2>
+
+                <div class="plan-tabs">
+                    <button class="plan-tab active" data-plan="monthly" id="tabMonthly">
+                        月額プラン
+                    </button>
+                    <button class="plan-tab" data-plan="annual" id="tabAnnual">
+                        年額プラン
+                        <span class="tab-save">2ヶ月分お得</span>
+                    </button>
+                </div>
+
+                <div id="orderLines">
+                    <div class="order-line">
+                        <span class="order-label">Pro プラン<small id="planCycle">月額サブスクリプション</small></span>
+                        <span class="order-value" id="planPrice">¥1,980</span>
+                    </div>
+                    <div class="order-line">
+                        <span class="order-label">消費税（10%）</span>
+                        <span class="order-value" id="planTax">¥198</span>
+                    </div>
+                </div>
+
+                <div class="order-total">
+                    <span>合計</span>
+                    <span class="total-price" id="totalPrice">¥2,178</span>
+                </div>
+
+                <div class="order-features">
+                    <h4>Proプランに含まれる機能</h4>
+                    <ul>
+                        <li>シミュレーション 無制限</li>
+                        <li>MCI指数の閲覧</li>
+                        <li>設備明細の編集・CSV出力</li>
+                        <li>データ保存 無制限</li>
+                        <li>見積PDF/CSV出力</li>
+                        <li>財務設計資料（IFRS16対応）</li>
+                        <li>スキーム構造設計</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right: Payment Form -->
+            <div class="checkout-form">
+                <span class="label">Payment</span>
+                <h2>お支払い情報</h2>
+
+                <div class="demo-banner">
+                    ⚠ これはデモ画面です。実際の決済は行われません。<br>
+                    本番環境では Stripe Checkout に遷移します。
+                </div>
+
+                <div class="form-field">
+                    <label>メールアドレス</label>
+                    <input type="email" id="payEmail" placeholder="info@example.com">
+                </div>
+
+                <div class="card-icons">
+                    <div class="card-icon active">VISA</div>
+                    <div class="card-icon">MC</div>
+                    <div class="card-icon">AMEX</div>
+                    <div class="card-icon">JCB</div>
+                </div>
+
+                <div class="form-field">
+                    <label>カード番号</label>
+                    <input type="text" id="payCard" placeholder="4242 4242 4242 4242" maxlength="19" inputmode="numeric">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>有効期限</label>
+                        <input type="text" id="payExpiry" placeholder="MM / YY" maxlength="7">
+                    </div>
+                    <div class="form-field">
+                        <label>セキュリティコード</label>
+                        <input type="text" id="payCvc" placeholder="123" maxlength="4" inputmode="numeric">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>カード名義人</label>
+                    <input type="text" id="payName" placeholder="TARO TANAKA" style="text-transform:uppercase">
+                </div>
+
+                <button class="pay-btn" id="btnPay">
+                    <span id="btnPayText">¥2,178 を支払う</span>
+                </button>
+
+                <div class="checkout-error" id="payError"></div>
+
+                <div class="secure-note">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    SSL暗号化通信で保護されています。カード情報はサーバーに保存されません。
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Proプランへのアップグレード完了</h2>
+        <p>ありがとうございます。すべての機能がご利用いただけます。</p>
+        <p class="success-detail" id="successDetail">月額 ¥2,178（税込）・次回更新日：2026年3月23日</p>
+        <a href="members/index.html" class="success-btn">会員ページへ →</a>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Account</h4><a href="register.html">会員登録</a><a href="login.html">ログイン</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="contact.html">お問合せ</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const h=document.getElementById('siteHeader');
+        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+
+        // Fill email from logged-in user
+        onAuthReady(user=>{
+            updateAuthUI(user);
+            if(user && user.email){
+                document.getElementById('payEmail').value=user.email;
+            }
+        });
+
+        // ── Plan data ──
+        const plans={
+            monthly:{price:1980,tax:198,total:2178,cycle:'月額サブスクリプション',label:'月額',renewText:'次回更新日'},
+            annual:{price:19800,tax:1980,total:21780,cycle:'年額サブスクリプション（2ヶ月分お得）',label:'年額',renewText:'次回更新日'}
+        };
+        let currentPlan='monthly';
+
+        // Check URL param
+        const urlPlan=new URLSearchParams(location.search).get('plan');
+        if(urlPlan==='annual') switchPlan('annual');
+
+        function switchPlan(plan){
+            currentPlan=plan;
+            const p=plans[plan];
+            document.getElementById('planCycle').textContent=p.cycle;
+            document.getElementById('planPrice').textContent='¥'+p.price.toLocaleString();
+            document.getElementById('planTax').textContent='¥'+p.tax.toLocaleString();
+            document.getElementById('totalPrice').textContent='¥'+p.total.toLocaleString();
+            document.getElementById('btnPayText').textContent='¥'+p.total.toLocaleString()+' を支払う';
+
+            document.getElementById('tabMonthly').classList.toggle('active',plan==='monthly');
+            document.getElementById('tabAnnual').classList.toggle('active',plan==='annual');
+        }
+
+        document.getElementById('tabMonthly').addEventListener('click',()=>switchPlan('monthly'));
+        document.getElementById('tabAnnual').addEventListener('click',()=>switchPlan('annual'));
+
+        // ── Card number formatting ──
+        document.getElementById('payCard').addEventListener('input',function(e){
+            let v=this.value.replace(/\D/g,'').substring(0,16);
+            this.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');
+            // Detect brand
+            const icons=document.querySelectorAll('.card-icon');
+            icons.forEach(i=>i.classList.remove('active'));
+            if(v.startsWith('4')) icons[0].classList.add('active');
+            else if(v.startsWith('5')||v.startsWith('2')) icons[1].classList.add('active');
+            else if(v.startsWith('3')&&v[1]==='4') icons[2].classList.add('active');
+            else if(v.startsWith('35')) icons[3].classList.add('active');
+            else icons[0].classList.add('active');
+        });
+
+        // Expiry formatting
+        document.getElementById('payExpiry').addEventListener('input',function(){
+            let v=this.value.replace(/\D/g,'').substring(0,4);
+            if(v.length>=3) v=v.substring(0,2)+' / '+v.substring(2);
+            this.value=v;
+        });
+
+        // ── Submit (Demo) ──
+        document.getElementById('btnPay').addEventListener('click',async function(){
+            const btn=this;
+            const err=document.getElementById('payError');
+            err.classList.remove('show');
+
+            const email=document.getElementById('payEmail').value.trim();
+            const card=document.getElementById('payCard').value.replace(/\s/g,'');
+            const expiry=document.getElementById('payExpiry').value.trim();
+            const cvc=document.getElementById('payCvc').value.trim();
+            const name=document.getElementById('payName').value.trim();
+
+            // Basic validation
+            if(!email){showErr('メールアドレスを入力してください。');return;}
+            if(card.length<16){showErr('カード番号を正しく入力してください。');return;}
+            if(expiry.length<7){showErr('有効期限を入力してください。');return;}
+            if(cvc.length<3){showErr('セキュリティコードを入力してください。');return;}
+            if(!name){showErr('カード名義人を入力してください。');return;}
+
+            function showErr(msg){err.textContent=msg;err.classList.add('show');}
+
+            // Simulate processing
+            btn.disabled=true;
+            document.getElementById('btnPayText').textContent='処理中…';
+
+            await new Promise(r=>setTimeout(r,1800));
+
+            // Save plan to localStorage (demo)
+            const now=new Date();
+            const renewDate=new Date(now);
+            if(currentPlan==='monthly') renewDate.setMonth(renewDate.getMonth()+1);
+            else renewDate.setFullYear(renewDate.getFullYear()+1);
+
+            const planData={
+                plan:'pro',
+                billing:currentPlan,
+                total:plans[currentPlan].total,
+                startDate:now.toISOString(),
+                renewDate:renewDate.toISOString(),
+                email:email
+            };
+            localStorage.setItem('tamj_plan',JSON.stringify(planData));
+
+            // Show success
+            const renewStr=renewDate.getFullYear()+'年'+(renewDate.getMonth()+1)+'月'+renewDate.getDate()+'日';
+            const p=plans[currentPlan];
+            document.getElementById('successDetail').textContent=
+                p.label+' ¥'+p.total.toLocaleString()+'（税込）・次回更新日：'+renewStr;
+
+            document.getElementById('successOverlay').classList.add('show');
+        });
+    </script>
+</body>
+</html>
