@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会員ページ | TAmJ 不動産開発</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/corporate.css">
+    <link rel="stylesheet" href="../css/tools.css">
+    <style>
+        body:not(.auth-ready) .members-content{display:none}
+        body:not(.auth-ready) .loading-auth{display:flex}
+        .loading-auth{display:none;align-items:center;justify-content:center;min-height:60vh;color:var(--gray-400);font-size:14px}
+        .m-hero{background:var(--cream);color:var(--black);padding:9rem 2rem 2.5rem;text-align:center;border-bottom:3px solid var(--primary)}
+        .m-hero .label{font-family:var(--font-display);font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:12px}
+        .m-hero h1{font-family:var(--font-serif);font-size:clamp(1.2rem,3vw,1.7rem);font-weight:500;letter-spacing:.06em;margin:0 0 8px;color:var(--black)}
+        .m-hero .welcome{font-size:13px;color:var(--gray-700);font-weight:400}
+        .m-hero .welcome strong{color:var(--black);font-weight:600}
+        .members-content{max-width:720px;margin:0 auto;padding:3rem 2rem 5rem}
+        .m-section{margin-bottom:48px}
+        .m-section .slabel{font-family:var(--font-display);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:6px}
+        .m-section h2{font-family:var(--font-serif);font-size:1.2rem;font-weight:400;letter-spacing:.04em;margin:0 0 24px;color:var(--black)}
+        .m-tool{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:20px 24px;background:#fff;border:1px solid var(--gray-200);margin-bottom:8px;transition:all .3s;text-decoration:none;color:inherit}
+        .m-tool:hover{border-color:var(--charcoal);box-shadow:0 2px 12px rgba(0,0,0,.06);transform:translateX(4px)}
+        .m-tool .tnum{font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--black);line-height:1}
+        .m-tool h4{font-size:15px;font-weight:700;color:var(--black);margin:0 0 4px}
+        .m-tool p{font-size:12px;font-weight:300;color:var(--gray-500);margin:0;line-height:1.6}
+        .m-tool .arr{font-size:18px;color:var(--gray-300);transition:color .3s}
+        .m-tool:hover .arr{color:var(--primary)}
+        .m-tool .price-tag{font-size:11px;font-weight:600;color:var(--primary);border:1px solid var(--primary);padding:2px 8px;display:inline-block;margin-top:4px}
+        .m-account{background:var(--cream);border:1px solid var(--gray-200);padding:24px;font-size:13px}
+        .m-account-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-100)}
+        .m-account-row:last-child{border-bottom:none}
+        .m-account-label{color:var(--gray-500);font-weight:400}
+        .m-account-value{color:var(--charcoal);font-weight:500}
+        .m-logout{display:inline-block;margin-top:16px;font-size:12px;color:var(--gray-400);cursor:pointer;border-bottom:1px solid var(--gray-300);transition:color .3s}
+        .m-logout:hover{color:var(--primary);border-bottom-color:var(--primary)}
+    </style>
+</head>
+<body>
+<a class="corp-back" href="https://tamjump.github.io/TAmj/index.html"><span class="arr">&larr;</span> TAmJ.Corp</a>
+
+    <header id="siteHeader">
+        <a href="../index.html" class="header-logo"><img src="../logo.png" alt="TAmJ"></a>
+        <nav class="header-nav">
+            <a href="../index.html">Top</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="index.html">MyPage</a>
+            <a href="../contact.html" class="nav-cta">Contact</a>
+        </nav>
+    </header>
+
+    <div class="loading-auth">認証確認中…</div>
+
+    <section class="m-hero members-content">
+        <span class="label">Members</span>
+        <h1>会員ページ</h1>
+        <p class="welcome">ようこそ、<strong data-user-name></strong> さん</p>
+    </section>
+
+    <div class="members-content">
+        <div class="m-section">
+            <span class="slabel">Development × Financial Design</span>
+            <h2>開発×財務設計ツール</h2>
+
+            <a href="service-development.html" class="m-tool">
+                <span class="tnum">01</span>
+                <div>
+                    <h4>開発費シミュレーター</h4>
+                    <p>施設種別＋入居者数→面積→建築費→投資額を自動概算</p>
+                </div>
+                <span class="arr">→</span>
+            </a>
+
+            <a href="service-equipment.html" class="m-tool">
+                <span class="tnum">02</span>
+                <div>
+                    <h4>什器備品＋リース設計</h4>
+                    <p>カテゴリ別の備品選定・購入/リース比較シミュレーション</p>
+                </div>
+                <span class="arr">→</span>
+            </a>
+        </div>
+
+        <div class="m-section">
+            <span class="slabel">Account</span>
+            <h2>アカウント情報</h2>
+            <div class="m-account">
+                <div class="m-account-row">
+                    <span class="m-account-label">お名前</span>
+                    <span class="m-account-value" data-user-name></span>
+                </div>
+                <div class="m-account-row">
+                    <span class="m-account-label">メール</span>
+                    <span class="m-account-value" id="accountEmail"></span>
+                </div>
+                <div class="m-account-row">
+                    <span class="m-account-label">プラン</span>
+                    <span class="m-account-value" id="accountPlan">Free</span>
+                </div>
+            </div>
+            <span class="m-logout" id="btnLogout">ログアウト</span>
+        </div>
+
+        <!-- Plan Upgrade Prompt -->
+        <div class="m-section" id="upgradeSection">
+            <span class="slabel">Plan</span>
+            <h2>ご利用状況</h2>
+            <div class="m-account" style="text-align:center;">
+                <p style="font-size:14px;color:var(--charcoal);font-weight:500;margin:0 0 8px;">今月のシミュレーション利用</p>
+                <p style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--primary);margin:0 0 4px;line-height:1;">0 <span style="font-size:14px;font-weight:400;color:var(--gray-500);">/ 3回</span></p>
+                <p style="font-size:12px;color:var(--gray-400);margin:0 0 20px;">Freeプラン — 月3回まで</p>
+                <a href="../checkout.html" style="display:inline-block;padding:12px 32px;font-size:13px;font-weight:700;letter-spacing:1px;background:var(--primary);color:#fff;text-decoration:none;transition:background .3s;">Proにアップグレード →</a>
+                <p style="font-size:11px;color:var(--gray-400);margin:12px 0 0;">月額 ¥1,980（税抜）でシミュレーション無制限 + PDF出力</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="../logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Account</h4><a href="../register.html">会員登録</a><a href="index.html">会員ページ</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="../contact.html">お問合せ</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        const h=document.getElementById('siteHeader');
+        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+
+        requireAuth();
+
+        onAuthReady(user=>{
+            if(user){
+                document.getElementById('accountEmail').textContent=user.email||'';
+            }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click',()=>logoutUser());
+    </script>
+</body>
+</html>
