@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-02-26",
-  "fetchTime": "2026-02-26T22:29:16.015Z",
+  "fetchDate": "2026-02-27",
+  "fetchTime": "2026-02-27T22:19:01.772Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,27 +10,19 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 58753.39,
-    "usdjpy": 156.06,
-    "brent": 71.02,
-    "copper": 6.025,
+    "nikkei": 58850.27,
+    "usdjpy": 156.035,
+    "brent": 73.19,
+    "copper": 6.061,
     "jgb10y": 2.18
   },
   "history30d": [
     {
-      "date": "2026-01-16",
-      "nikkei": 53936.172,
-      "usdjpy": 158.596,
-      "brent": 64.13,
-      "copper": 5.788,
-      "jgb10y": 2.18
-    },
-    {
       "date": "2026-01-19",
       "nikkei": 53583.57,
       "usdjpy": 157.535,
-      "brent": 71.02,
-      "copper": 6.025,
+      "brent": 73.19,
+      "copper": 6.061,
       "jgb10y": 2.18
     },
     {
@@ -163,7 +155,7 @@
     },
     {
       "date": "2026-02-11",
-      "nikkei": 58753.39,
+      "nikkei": 58850.27,
       "usdjpy": 154.482,
       "brent": 69.4,
       "copper": 5.949,
@@ -189,8 +181,8 @@
       "date": "2026-02-16",
       "nikkei": 56806.41,
       "usdjpy": 152.779,
-      "brent": 71.02,
-      "copper": 6.025,
+      "brent": 73.19,
+      "copper": 6.061,
       "jgb10y": 2.18
     },
     {
@@ -227,7 +219,7 @@
     },
     {
       "date": "2026-02-23",
-      "nikkei": 58753.39,
+      "nikkei": 58850.27,
       "usdjpy": 154.339,
       "brent": 71.49,
       "copper": 5.773,
@@ -252,13 +244,21 @@
     {
       "date": "2026-02-26",
       "nikkei": 58753.391,
-      "usdjpy": 156.06,
-      "brent": 71.02,
-      "copper": 6.025,
+      "usdjpy": 156.2,
+      "brent": 70.75,
+      "copper": 5.947,
+      "jgb10y": 2.18
+    },
+    {
+      "date": "2026-02-27",
+      "nikkei": 58850.27,
+      "usdjpy": 156.035,
+      "brent": 73.19,
+      "copper": 6.061,
       "jgb10y": 2.18
     }
   ],
-  "mci": 2.2899,
+  "mci": 2.2958,
   "weights": {
     "usdjpy": 0.35,
     "copper": 0.25,
