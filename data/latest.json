@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-02-28",
-  "fetchTime": "2026-02-28T22:18:34.785Z",
+  "fetchDate": "2026-03-01",
+  "fetchTime": "2026-03-01T22:19:21.155Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -11,7 +11,7 @@
   },
   "currentValues": {
     "nikkei": 58850.27,
-    "usdjpy": 156.035,
+    "usdjpy": 156.277,
     "brent": 72.87,
     "copper": 6.06,
     "jgb10y": 2.18
@@ -245,20 +245,20 @@
       "date": "2026-02-27",
       "nikkei": 58850.27,
       "usdjpy": 155.859,
-      "brent": 72.48,
-      "copper": 6.004,
+      "brent": 72.87,
+      "copper": 6.06,
       "jgb10y": 2.18
     },
     {
-      "date": "2026-02-28",
+      "date": "2026-03-01",
       "nikkei": 58850.27,
-      "usdjpy": 156.035,
+      "usdjpy": 156.277,
       "brent": 72.87,
       "copper": 6.06,
       "jgb10y": 2.18
     }
   ],
-  "mci": 2.2953,
+  "mci": 2.2959,
   "weights": {
     "usdjpy": 0.35,
     "copper": 0.25,
