@@ -1,161 +1,157 @@
 /* ============================================================
-   auth.js — 仮認証モード（テスト用）
+   auth.js — 本番モード（Cloudflare Workers + D1 + AWS SES）
    ============================================================
-   本番切替時：USE_DEMO = false にして firebaseConfig を設定
+   設定: WORKER_URL を実際の Worker URL に変更してください
    ============================================================ */
 
-const USE_DEMO = true;
+// ── 設定 ──────────────────────────────────────────────────
+const WORKER_URL = 'https://tamjump-member-api.YOUR_SUBDOMAIN.workers.dev';
+// ↑ wrangler deploy 後に表示される URL に変更
 
-// ── デモ用アカウント（初期値） ──
-const DEFAULT_ACCOUNTS = [
-    { email: 'demo@tamj.jp', password: 'tamj1234', name: 'デモユーザー', plan: 'free' },
-    { email: 'test@tamj.jp', password: 'test1234', name: 'テストユーザー', plan: 'free' },
-    { email: 'info@tamjump.com', password: 'tamj2026', name: 'TAmJ Admin', plan: 'pro' }
-];
+const SQUARE_PAYMENT_LINK = '#';
+// ↑ Square の決済リンクが準備でき次第ここに入れる
+// 例: 'https://checkout.square.site/buy/XXXXXXXXXX'
 
-// localStorage永続化（新規登録もブラウザ再起動後に残る）
-function _loadAccounts() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('tamj_accounts') || '[]');
-        // デフォルト＋保存済みをマージ（デフォルトが優先）
-        const merged = [...DEFAULT_ACCOUNTS];
-        saved.forEach(s => {
-            if (!merged.find(m => m.email === s.email)) merged.push(s);
-        });
-        return merged;
-    } catch { return [...DEFAULT_ACCOUNTS]; }
+// ── セッション管理（localStorage にトークンを保持） ──────
+const SESSION_KEY = 'tamj_session';
+const USER_KEY    = 'tamj_user';
+
+function _getToken()            { return localStorage.getItem(SESSION_KEY); }
+function _setToken(token)       { localStorage.setItem(SESSION_KEY, token); }
+function _clearToken()          { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(USER_KEY); }
+function _getCachedUser()       { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch { return null; } }
+function _setCachedUser(user)   { localStorage.setItem(USER_KEY, JSON.stringify(user)); }
+
+// ── Worker API ヘルパー ──────────────────────────────────
+async function _apiCall(path, options = {}) {
+    const token = _getToken();
+    const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    const res = await fetch(WORKER_URL + path, {
+        ...options,
+        headers,
+        credentials: 'include',
+    });
+    return res;
 }
-function _saveAccounts(accounts) {
-    // デフォルト以外のみ保存（デフォルトはコードに含まれるため）
-    const custom = accounts.filter(a => !DEFAULT_ACCOUNTS.find(d => d.email === a.email));
-    localStorage.setItem('tamj_accounts', JSON.stringify(custom));
-}
-
-let DEMO_ACCOUNTS = _loadAccounts();
-
-// ── Firebase Config（本番用・要差し替え） ──
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "000000000000",
-    appId: "YOUR_APP_ID"
-};
-
-// ── Stripe Config ──
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_XXXXXXXX";
 
 // ── State ──
 let _currentUser = null;
 
-function _getDemoSession() {
-    try { return JSON.parse(sessionStorage.getItem('tamj_demo_user')); } catch { return null; }
-}
-function _setDemoSession(user) {
-    sessionStorage.setItem('tamj_demo_user', JSON.stringify(user));
-}
-function _clearDemoSession() {
-    sessionStorage.removeItem('tamj_demo_user');
-}
+// ══════════════════════════════════════════════════════════
+// Public API（既存ページと完全互換）
+// ══════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════
-// Public API（デモ/Firebase 共通インターフェース）
-// ══════════════════════════════════════
-
+// 認証状態を確認してコールバックを呼ぶ
 function onAuthReady(callback) {
-    if (USE_DEMO) {
-        _currentUser = _getDemoSession();
-        callback(_currentUser);
+    const token = _getToken();
+    if (!token) {
+        _currentUser = null;
+        callback(null);
         return;
     }
-    // Firebase mode
-    initFirebase();
-    if (!_auth) { callback(null); return; }
-    _auth.onAuthStateChanged(user => {
-        _currentUser = user;
-        callback(user);
+    // キャッシュがあればすぐに返す（UX向上）
+    const cached = _getCachedUser();
+    if (cached) {
+        _currentUser = cached;
+        callback(cached);
+    }
+    // バックグラウンドでサーバー確認
+    _apiCall('/api/auth/me').then(async res => {
+        if (res.ok) {
+            const data = await res.json();
+            const user = {
+                email:       data.user.email,
+                displayName: data.user.name,
+                uid:         'cf_' + data.user.id,
+                plan:        data.user.plan,
+            };
+            _currentUser = user;
+            _setCachedUser(user);
+            // プラン同期
+            setPlan(user.plan === 'paid' ? 'pro' : 'free');
+            if (!cached) callback(user);
+        } else {
+            // セッション切れ
+            _clearToken();
+            _currentUser = null;
+            if (cached) callback(null);
+        }
+    }).catch(() => {
+        // ネットワークエラー時はキャッシュを信頼
+        if (!cached) callback(null);
     });
 }
 
+// 会員登録
 async function registerUser(email, password, displayName) {
-    if (USE_DEMO) {
-        email = email.trim().toLowerCase();
-        DEMO_ACCOUNTS = _loadAccounts(); // 最新のアカウント一覧を再読み込み
-        const exists = DEMO_ACCOUNTS.find(a => a.email === email);
-        if (exists) return { ok: false, error: 'このメールアドレスは既に登録されています。' };
-        // 新規登録OK（セッションに保存）
-        const user = { email, displayName: displayName || email.split('@')[0], uid: 'demo_' + Date.now() };
-        DEMO_ACCOUNTS.push({ email, password, name: user.displayName, plan: 'free' });
-        _saveAccounts(DEMO_ACCOUNTS);
-        _currentUser = user;
-        _setDemoSession(user);
-        setPlan('free');
-        return { ok: true, user };
-    }
-    // Firebase mode
-    initFirebase();
     try {
-        const cred = await _auth.createUserWithEmailAndPassword(email, password);
-        if (displayName) await cred.user.updateProfile({ displayName });
-        return { ok: true, user: cred.user };
+        const res = await _apiCall('/api/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ email: email.trim().toLowerCase(), password, name: displayName || email.split('@')[0] }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            return { ok: true };
+        }
+        return { ok: false, error: data.error || '登録に失敗しました。' };
     } catch (e) {
-        return { ok: false, error: firebaseErrorMessage(e.code) };
+        return { ok: false, error: 'ネットワークエラーが発生しました。' };
     }
 }
 
+// ログイン
 async function loginUser(email, password) {
-    if (USE_DEMO) {
-        email = email.trim().toLowerCase();
-        DEMO_ACCOUNTS = _loadAccounts(); // 最新のアカウント一覧を再読み込み
-        const account = DEMO_ACCOUNTS.find(a => a.email === email);
-        if (!account) return { ok: false, error: 'アカウントが見つかりません。' };
-        if (account.password !== password) return { ok: false, error: 'パスワードが正しくありません。' };
-        const user = { email: account.email, displayName: account.name, uid: 'demo_' + email.replace(/[^a-z0-9]/g, '') };
-        _currentUser = user;
-        _setDemoSession(user);
-        // プラン自動設定
-        if (account.plan === 'pro') setPlan('pro');
-        else if (!localStorage.getItem('tamj_plan')) setPlan('free');
-        return { ok: true, user };
-    }
-    // Firebase mode
-    initFirebase();
     try {
-        const cred = await _auth.signInWithEmailAndPassword(email, password);
-        return { ok: true, user: cred.user };
+        const res = await _apiCall('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            // セッション保存
+            const user = {
+                email:       data.user.email,
+                displayName: data.user.name,
+                uid:         'cf_' + data.user.id,
+                plan:        data.user.plan,
+            };
+            // Worker がレスポンス body にも session_id を返す場合は保存
+            if (data.session_id) _setToken(data.session_id);
+            _setCachedUser(user);
+            _currentUser = user;
+            setPlan(user.plan === 'paid' ? 'pro' : 'free');
+            return { ok: true, user };
+        }
+        if (data.code === 'EMAIL_NOT_VERIFIED') {
+            return { ok: false, error: 'メールアドレスが確認されていません。登録時に送ったメールを確認してください。' };
+        }
+        return { ok: false, error: data.error || 'メールアドレスまたはパスワードが正しくありません。' };
     } catch (e) {
-        return { ok: false, error: firebaseErrorMessage(e.code) };
+        return { ok: false, error: 'ネットワークエラーが発生しました。' };
     }
 }
 
+// ログアウト
 async function logoutUser() {
-    if (USE_DEMO) {
-        _currentUser = null;
-        _clearDemoSession();
-        localStorage.removeItem('tamj_plan');
-        location.href = getRelativePath('login.html');
-        return;
-    }
-    initFirebase();
-    if (_auth) await _auth.signOut();
+    try {
+        await _apiCall('/api/auth/logout', { method: 'POST' });
+    } catch {}
+    _clearToken();
     _currentUser = null;
+    localStorage.removeItem('tamj_plan');
+    localStorage.removeItem('tamj_tickets');
     location.href = getRelativePath('login.html');
 }
 
+// パスワードリセット（Worker に実装後に有効化。今はメッセージのみ）
 async function resetPassword(email) {
-    if (USE_DEMO) {
-        return { ok: true }; // デモではリセットメール送信を模擬
-    }
-    initFirebase();
-    try {
-        await _auth.sendPasswordResetEmail(email);
-        return { ok: true };
-    } catch (e) {
-        return { ok: false, error: firebaseErrorMessage(e.code) };
-    }
+    // TODO: Worker に /api/auth/reset-password エンドポイント追加後に実装
+    return { ok: true }; // メール送信を模擬
 }
 
+// 認証必須ページ用ガード
 function requireAuth() {
     onAuthReady(user => {
         if (!user) {
@@ -168,23 +164,19 @@ function requireAuth() {
     });
 }
 
-// ── 決済（デモモードではスキップ） ──
+// ── 決済（Square） ──────────────────────────────────────
 function startPayment(toolId) {
-    if (USE_DEMO) {
-        // デモ：即座に利用券を発行
-        const tickets = getTickets();
-        tickets[toolId] = Date.now() + (24 * 60 * 60 * 1000);
-        localStorage.setItem('tamj_tickets', JSON.stringify(tickets));
-        location.reload();
-        return true;
-    }
     const tickets = getTickets();
     if (tickets[toolId] && tickets[toolId] > Date.now()) return true;
+
+    if (!SQUARE_PAYMENT_LINK || SQUARE_PAYMENT_LINK === '#') {
+        alert('決済リンクは準備中です。しばらくお待ちください。');
+        return false;
+    }
     const successUrl = encodeURIComponent(location.origin + location.pathname + '?paid=' + toolId);
-    const paymentUrl = STRIPE_PAYMENT_LINK +
-        '?prefilled_email=' + encodeURIComponent(_currentUser?.email || '') +
-        '&client_reference_id=' + (_currentUser?.uid || 'anonymous') +
-        '&success_url=' + successUrl;
+    const paymentUrl = SQUARE_PAYMENT_LINK
+        + '?email=' + encodeURIComponent(_currentUser?.email || '')
+        + '&reference_id=' + encodeURIComponent(_currentUser?.uid || 'anonymous');
     location.href = paymentUrl;
     return false;
 }
@@ -207,60 +199,41 @@ function getTickets() {
 }
 
 function hasValidTicket(toolId) {
-    if (USE_DEMO) return true; // デモモードでは常にアクセス可
+    if (isPro()) return true;
     const tickets = getTickets();
     return tickets[toolId] && tickets[toolId] > Date.now();
 }
 
-// ── プラン管理 ──
+// ── プラン管理 ────────────────────────────────────────────
 function getPlan() {
     try {
         const raw = localStorage.getItem('tamj_plan');
         if (!raw) return 'free';
-        // checkout.html stores JSON object with plan details
-        try {
-            const data = JSON.parse(raw);
-            if (data && data.plan) return 'pro'; // has active plan
-        } catch {}
-        // simple string
+        try { const d = JSON.parse(raw); if (d && d.plan) return 'pro'; } catch {}
         if (raw === 'pro') return 'pro';
         return 'free';
     } catch { return 'free'; }
 }
-function setPlan(plan) {
-    localStorage.setItem('tamj_plan', plan);
-}
-function isPro() { return getPlan() === 'pro'; }
+function setPlan(plan) { localStorage.setItem('tamj_plan', plan); }
+function isPro()       { return getPlan() === 'pro'; }
 
-// 月次利用カウント（ユーザー別）
+// ── 月次利用カウント ─────────────────────────────────────
 function _usageKey() {
-    const d = new Date();
-    const uid = (_currentUser?.email || _getDemoSession()?.email || 'anon').replace(/[^a-z0-9]/g, '_');
+    const d   = new Date();
+    const uid = (_currentUser?.email || 'anon').replace(/[^a-z0-9]/g, '_');
     return 'tamj_usage_' + uid + '_' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 }
-function getUsageCount() {
-    try { return parseInt(localStorage.getItem(_usageKey()) || '0', 10); } catch { return 0; }
-}
-function incrementUsage() {
-    const count = getUsageCount() + 1;
-    localStorage.setItem(_usageKey(), String(count));
-    return count;
-}
-function getRemainingUses() {
-    if (isPro()) return Infinity;
-    return Math.max(0, 3 - getUsageCount());
-}
-function canUseService() {
-    if (isPro()) return true;
-    return getUsageCount() < 3;
-}
+function getUsageCount()  { try { return parseInt(localStorage.getItem(_usageKey()) || '0', 10); } catch { return 0; } }
+function incrementUsage() { const c = getUsageCount() + 1; localStorage.setItem(_usageKey(), String(c)); return c; }
+function getRemainingUses() { if (isPro()) return Infinity; return Math.max(0, 3 - getUsageCount()); }
+function canUseService()    { if (isPro()) return true; return getUsageCount() < 3; }
 
-// ── UI更新 ──
+// ── UI更新 ────────────────────────────────────────────────
 function updateAuthUI(user) {
     document.querySelectorAll('[data-auth]').forEach(el => {
         const when = el.dataset.auth;
         el.style.display =
-            (when === 'logged-in' && user) ? '' :
+            (when === 'logged-in'  && user)  ? '' :
             (when === 'logged-out' && !user) ? '' : 'none';
     });
     document.querySelectorAll('[data-user-name]').forEach(el => {
@@ -268,28 +241,7 @@ function updateAuthUI(user) {
     });
 }
 
-// ── Firebase 初期化（本番用） ──
-let _app = null, _auth = null;
-function initFirebase() {
-    if (_app || USE_DEMO) return;
-    if (typeof firebase === 'undefined') { console.warn('Firebase SDK not loaded'); return; }
-    _app = firebase.initializeApp(firebaseConfig);
-    _auth = firebase.auth();
-    _auth.languageCode = 'ja';
-}
-
-function firebaseErrorMessage(code) {
-    const map = {
-        'auth/email-already-in-use': 'このメールアドレスは既に登録されています。',
-        'auth/invalid-email': 'メールアドレスの形式が正しくありません。',
-        'auth/weak-password': 'パスワードは6文字以上で設定してください。',
-        'auth/user-not-found': 'アカウントが見つかりません。',
-        'auth/wrong-password': 'パスワードが正しくありません。',
-        'auth/too-many-requests': 'ログイン試行が多すぎます。しばらく待ってください。',
-    };
-    return map[code] || 'エラーが発生しました。';
-}
-
+// ── ユーティリティ ────────────────────────────────────────
 function getRelativePath(file) {
     return location.pathname.includes('/members/') ? '../' + file : file;
 }
