@@ -5,7 +5,7 @@
    ============================================================ */
 
 // ── 設定 ──────────────────────────────────────────────────
-const WORKER_URL = 'https://tamjump-member-api.YOUR_SUBDOMAIN.workers.dev';
+const WORKER_URL = 'https://tamjump-member-api.animalb001.workers.dev';
 // ↑ wrangler deploy 後に表示される URL に変更
 
 const SQUARE_PAYMENT_LINK = '#';
