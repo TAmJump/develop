@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/corporate.css">
     <link rel="stylesheet" href="css/tools.css">
-    <!-- Cloudflare Turnstile -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         .auth-page{min-height:100vh;display:flex;flex-direction:column}
@@ -62,9 +61,8 @@
                 <label>パスワード（8文字以上）</label>
                 <input type="password" id="regPassword" placeholder="••••••••" autocomplete="new-password">
             </div>
-            <!-- Turnstile ウィジェット -->
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAACzYM9MQXQVBO1-o" data-callback="onTurnstileSuccess" data-execution="render" data-appearance="always"></div>
-            <button class="auth-btn" id="btnRegister">会員登録（無料）</button>
+            <div id="turnstile-container" class="cf-turnstile" data-sitekey="0x4AAAAAACzYM9MQXQVBO1-o" data-callback="onTurnstileSuccess" data-theme="light"></div>
+            <button class="auth-btn" id="btnRegister" disabled>会員登録（無料）</button>
             <div class="auth-error" id="regError"></div>
             <div class="auth-link">
                 すでにアカウントをお持ちの方 <a href="login.html">ログイン</a>
@@ -90,57 +88,65 @@
 
     <script src="js/auth.js"></script>
     <script>
-        const h=document.getElementById('siteHeader');
-        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+        const h = document.getElementById('siteHeader');
+        if(h) window.addEventListener('scroll', () => h.classList.toggle('scrolled', window.scrollY > 50));
 
         let turnstileToken = '';
 
-        // Turnstile認証成功時（Invisibleモードで自動実行）
         function onTurnstileSuccess(token) {
             turnstileToken = token;
+            document.getElementById('btnRegister').disabled = false;
         }
 
-        // ページ読み込み後にTurnstileを実行
-        window.addEventListener('load', () => {
-            if (typeof turnstile !== 'undefined') {
-                turnstile.render('.cf-turnstile');
-            }
+        onAuthReady(user => {
+            if(user) location.href = 'members/index.html';
         });
 
-        // 既にログイン済みならmembersへ
-        onAuthReady(user=>{
-            if(user) location.href='members/index.html';
-        });
-
-        document.getElementById('btnRegister').addEventListener('click', async()=>{
-            const btn=document.getElementById('btnRegister');
-            const err=document.getElementById('regError');
-            const name=document.getElementById('regName').value.trim();
-            const email=document.getElementById('regEmail').value.trim();
-            const pw=document.getElementById('regPassword').value;
+        document.getElementById('btnRegister').addEventListener('click', async () => {
+            const btn = document.getElementById('btnRegister');
+            const err = document.getElementById('regError');
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pw = document.getElementById('regPassword').value;
 
             err.classList.remove('show');
-            if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
-            if(!turnstileToken){err.textContent='ボット確認を完了してください。';err.classList.add('show');return;}
+            err.style.color = '';
 
-            btn.disabled=true;btn.textContent='登録中…';
-            const result=await registerUser(email,pw,name,turnstileToken);
-            if(result.ok){
-                err.style.color='green';
-                err.textContent='確認メールを送信しました。メールをご確認ください。';
+            if(!email || !pw) {
+                err.textContent = 'メールアドレスとパスワードを入力してください。';
                 err.classList.add('show');
-                btn.textContent='送信完了';
+                return;
+            }
+            if(!turnstileToken) {
+                err.textContent = 'ボット確認を完了してください。';
+                err.classList.add('show');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '登録中…';
+
+            const result = await registerUser(email, pw, name, turnstileToken);
+            if(result.ok) {
+                err.style.color = 'green';
+                err.textContent = '確認メールを送信しました。メールをご確認ください。';
+                err.classList.add('show');
+                btn.textContent = '送信完了';
             } else {
-                err.textContent=result.error;err.classList.add('show');
-                btn.disabled=false;btn.textContent='会員登録（無料）';
-                // Turnstileをリセット
-                turnstile.reset();
-                turnstileToken='';
+                err.textContent = result.error;
+                err.classList.add('show');
+                btn.disabled = false;
+                btn.textContent = '会員登録（無料）';
+                if(typeof turnstile !== 'undefined') {
+                    turnstile.reset('#turnstile-container');
+                    turnstileToken = '';
+                    btn.disabled = true;
+                }
             }
         });
 
-        document.getElementById('regPassword').addEventListener('keydown',e=>{
-            if(e.key==='Enter') document.getElementById('btnRegister').click();
+        document.getElementById('regPassword').addEventListener('keydown', e => {
+            if(e.key === 'Enter') document.getElementById('btnRegister').click();
         });
     </script>
 </body>
