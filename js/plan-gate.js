@@ -96,7 +96,7 @@
                 <div class="pro-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2d2d2d" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="#2d2d2d" stroke="none"/></svg></div>
                 <div class="pro-lock-text">Pro プラン限定機能</div>
                 <div class="pro-lock-sub">アップグレードですべての機能をご利用いただけます</div>
-                <a href="../checkout.html?plan=annual" class="pro-lock-btn">Proで始める →</a>
+                <a href="#" onclick="goToPayment()" class="pro-lock-btn">Proで始める →</a>
             `;
             el.appendChild(overlay);
         });
@@ -158,7 +158,7 @@
                     ? 'Freeプランは月' + FREE_LIMIT + '回までシミュレーションを実行できます。<br>Proプランにアップグレードすると無制限でご利用いただけます。'
                     : 'この機能はProプラン限定です。<br>Proプランにアップグレードすると、PDF出力・財務設計・スキーム構造設計など<br>すべての機能をご利用いただけます。'
                 }</p>
-                <a href="../checkout.html?plan=annual" class="btn-upgrade">Proで始める — ¥1,650/月〜</a>
+                <a href="#" onclick="goToPayment()" class="btn-upgrade">Proで始める — ¥300/月</a>
                 <button class="btn-close">閉じる</button>
             </div>
         `;
