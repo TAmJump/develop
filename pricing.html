@@ -212,5 +212,19 @@
 
 
 
+        // アコーディオンFAQ
+        function toggleFaq(btn) {
+            var answer = btn.nextElementSibling;
+            var isOpen = btn.classList.contains('open');
+            document.querySelectorAll('.faq-q').forEach(function(b) {
+                b.classList.remove('open');
+                b.nextElementSibling.classList.remove('open');
+            });
+            if (!isOpen) {
+                btn.classList.add('open');
+                answer.classList.add('open');
+            }
+        }
+
         // Square決済リンク（準備でき次第ここに設定）
         const SQUA
