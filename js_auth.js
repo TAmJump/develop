@@ -8,7 +8,7 @@
 const WORKER_URL = 'https://tamjump-member-api.animalb001.workers.dev';
 // ↑ wrangler deploy 後に表示される URL に変更
 
-const SQUARE_PAYMENT_LINK = 'https://square.link/u/4Qs8fs2U';
+const SQUARE_PAYMENT_LINK = 'https://square.link/u/w9nRYlU1';
 // ↑ Square の決済リンクが準備でき次第ここに入れる
 // 例: 'https://checkout.square.site/buy/XXXXXXXXXX'
 
