@@ -93,10 +93,11 @@
 
         let turnstileToken = '';
 
-        function onTurnstileSuccess(token) {
+        // Turnstileコールバックをグローバルに登録
+        window.onTurnstileSuccess = function(token) {
             turnstileToken = token;
             document.getElementById('btnRegister').disabled = false;
-        }
+        };
 
         onAuthReady(user => {
             if(user) location.href = 'members/index.html';
