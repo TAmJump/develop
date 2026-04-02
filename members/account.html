@@ -172,7 +172,7 @@
                 return;
             }
             currentUser = user;
-            document.getElementById('nameInput').value = user.name || '';
+            document.getElementById('nameInput').value = user.displayName || '';
             document.getElementById('currentEmail').value = user.email || '';
 
             // プランバッジ
@@ -202,9 +202,8 @@
 
             btn.disabled = true; btn.textContent = '保存中...';
             try {
-                const res  = await fetch(`${API}/api/auth/update-profile`, {
-                    method: 'POST', credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
+                const res  = await _apiCall('/api/auth/update-profile', {
+                    method: 'POST',
                     body: JSON.stringify({ name }),
                 });
                 const data = await res.json();
@@ -226,9 +225,8 @@
 
             btn.disabled = true; btn.textContent = '変更中...';
             try {
-                const res  = await fetch(`${API}/api/auth/update-email`, {
-                    method: 'POST', credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
+                const res  = await _apiCall('/api/auth/update-email', {
+                    method: 'POST',
                     body: JSON.stringify({ newEmail, password }),
                 });
                 const data = await res.json();
@@ -260,9 +258,8 @@
 
             btn.disabled = true; btn.textContent = '変更中...';
             try {
-                const res  = await fetch(`${API}/api/auth/update-password`, {
-                    method: 'POST', credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
+                const res  = await _apiCall('/api/auth/update-password', {
+                    method: 'POST',
                     body: JSON.stringify({ currentPassword, newPassword }),
                 });
                 const data = await res.json();
@@ -281,7 +278,6 @@
         // ログアウト
         async function doLogout() {
             await logoutUser();
-            location.href = '../login.html';
         }
     </script>
 </body>
