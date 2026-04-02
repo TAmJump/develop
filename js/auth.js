@@ -6,11 +6,8 @@
 
 // ── 設定 ──────────────────────────────────────────────────
 const WORKER_URL = 'https://tamjump-member-api.animalb001.workers.dev';
-// ↑ wrangler deploy 後に表示される URL に変更
 
-const SQUARE_PAYMENT_LINK = 'https://square.link/u/4Qs8fs2U';
-// ↑ Square の決済リンクが準備でき次第ここに入れる
-// 例: 'https://checkout.square.site/buy/XXXXXXXXXX'
+const SQUARE_PAYMENT_LINK = 'https://square.link/u/w9nRYlU1';
 
 // ── セッション管理（localStorage にトークンを保持） ──────
 const SESSION_KEY = 'tamj_session';
@@ -85,11 +82,11 @@ function onAuthReady(callback) {
 }
 
 // 会員登録
-async function registerUser(email, password, displayName) {
+async function registerUser(email, password, displayName, turnstileToken) {
     try {
         const res = await _apiCall('/api/auth/register', {
             method: 'POST',
-            body: JSON.stringify({ email: email.trim().toLowerCase(), password, name: displayName || email.split('@')[0] }),
+            body: JSON.stringify({ email: email.trim().toLowerCase(), password, name: displayName || email.split('@')[0], turnstileToken }),
         });
         const data = await res.json();
         if (res.ok) {
@@ -117,7 +114,6 @@ async function loginUser(email, password) {
                 uid:         'cf_' + data.user.id,
                 plan:        data.user.plan,
             };
-            // Worker がレスポンス body にも session_id を返す場合は保存
             if (data.session_id) _setToken(data.session_id);
             _setCachedUser(user);
             _currentUser = user;
@@ -147,8 +143,7 @@ async function logoutUser() {
 
 // パスワードリセット（Worker に実装後に有効化。今はメッセージのみ）
 async function resetPassword(email) {
-    // TODO: Worker に /api/auth/reset-password エンドポイント追加後に実装
-    return { ok: true }; // メール送信を模擬
+    return { ok: true };
 }
 
 // 認証必須ページ用ガード
@@ -173,7 +168,6 @@ function startPayment(toolId) {
         alert('決済リンクは準備中です。しばらくお待ちください。');
         return false;
     }
-    const successUrl = encodeURIComponent(location.origin + location.pathname + '?paid=' + toolId);
     const paymentUrl = SQUARE_PAYMENT_LINK
         + '?email=' + encodeURIComponent(_currentUser?.email || '')
         + '&reference_id=' + encodeURIComponent(_currentUser?.uid || 'anonymous');
