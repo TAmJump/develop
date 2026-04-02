@@ -6,7 +6,7 @@
     <title>料金プラン | TAmJ 不動産開発</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@200;300;400;500;700&family=Noto+Serif+JP:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/corporate.css">
     <link rel="stylesheet" href="css/tools.css">
@@ -17,28 +17,17 @@
         .pr-hero .sub{font-size:14px;font-weight:400;color:var(--gray-700);margin:0}
         .pr-section{padding:5rem 2rem}
         .pr-section .wide{max-width:860px;margin:0 auto}
-        .pr-section .narrow{max-width:640px;margin:0 auto}
-
-        /* Toggle */
-        .billing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:40px}
-        .billing-toggle span{font-size:13px;font-weight:500;color:var(--gray-400);transition:color .3s}
-        .billing-toggle span.active{color:var(--black);font-weight:700}
-        .billing-toggle .toggle-track{width:44px;height:24px;background:var(--gray-200);border-radius:12px;position:relative;cursor:pointer;transition:background .3s}
-        .billing-toggle .toggle-track.on{background:var(--primary)}
-        .billing-toggle .toggle-knob{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .3s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-        .billing-toggle .toggle-track.on .toggle-knob{left:23px}
-        .billing-save{font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-pale);padding:2px 8px;border-radius:2px;margin-left:4px}
 
         /* Cards */
-        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-bottom:64px}
         .pr-card{background:#fff;border:2px solid var(--gray-200);padding:40px 32px;text-align:center;transition:all .3s;position:relative}
         .pr-card.featured{border-color:var(--primary);box-shadow:0 8px 40px rgba(200,22,29,.08)}
         .pr-card .badge-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 14px;text-transform:uppercase}
         .pr-card .plan-name{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--charcoal)}
-        .pr-card .price{font-family:var(--font-display);font-size:48px;font-weight:600;color:var(--black);line-height:1;margin:16px 0 4px;transition:all .3s}
+        .pr-card .price{font-family:var(--font-display);font-size:48px;font-weight:600;color:var(--black);line-height:1;margin:16px 0 4px}
         .pr-card .price small{font-size:16px;font-weight:400}
         .pr-card .price-unit{font-size:13px;color:var(--gray-700);font-weight:400;margin-bottom:4px}
-        .pr-card .price-annual{font-size:12px;color:var(--primary);font-weight:500;margin-bottom:24px;min-height:18px}
+        .pr-card .price-note{font-size:12px;color:var(--primary);font-weight:500;margin-bottom:24px;min-height:18px}
         .pr-card ul{text-align:left;padding:0;list-style:none;margin:0 0 28px}
         .pr-card li{font-size:14px;color:var(--gray-700);font-weight:400;padding:10px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:10px;line-height:1.7}
         .pr-card li::before{content:'✓';font-size:12px;color:var(--primary);font-weight:700;margin-top:2px}
@@ -50,7 +39,7 @@
         .pr-card.featured .btn:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
 
         /* Comparison Table */
-        .compare-section{margin-top:64px}
+        .compare-section{margin-bottom:64px}
         .compare-section h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;margin-bottom:24px;color:var(--black);text-align:center}
         .compare-table{width:100%;border-collapse:collapse;font-size:13px}
         .compare-table th{font-weight:600;color:var(--charcoal);padding:12px 16px;text-align:left;border-bottom:2px solid var(--charcoal);font-size:12px;letter-spacing:1px;text-transform:uppercase}
@@ -61,8 +50,18 @@
         .compare-table .dash{color:var(--gray-300)}
         .compare-table tr:hover{background:var(--warm-white)}
 
+        /* Tech Stack */
+        .tech-section{margin-bottom:64px}
+        .tech-section h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--black);text-align:center}
+        .tech-section .tech-sub{font-size:13px;color:var(--gray-500);text-align:center;margin-bottom:28px}
+        .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+        .tech-item{background:var(--warm-white);border:1px solid var(--gray-200);padding:20px;text-align:center}
+        .tech-item .tech-icon{font-size:24px;margin-bottom:8px}
+        .tech-item .tech-name{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--charcoal);margin-bottom:4px}
+        .tech-item .tech-role{font-size:11px;color:var(--gray-500);line-height:1.6}
+
         /* FAQ */
-        .pr-faq{margin-top:64px}
+        .pr-faq{margin-bottom:32px}
         .pr-faq h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;margin-bottom:32px;color:var(--black);text-align:center}
         .pr-faq-item{border-bottom:1px solid var(--gray-200);padding:16px 0}
         .pr-faq-item dt{font-size:14px;font-weight:600;color:var(--black);margin-bottom:6px}
@@ -91,21 +90,14 @@
 
     <section class="pr-section">
         <div class="wide">
-            <div class="billing-toggle reveal" id="billingToggle">
-                <span class="lbl-monthly active">月額</span>
-                <div class="toggle-track" id="toggleTrack">
-                    <div class="toggle-knob"></div>
-                </div>
-                <span class="lbl-annual">年額</span>
-                <span class="billing-save">2ヶ月分お得</span>
-            </div>
 
+            <!-- プランカード -->
             <div class="pricing-grid reveal">
                 <div class="pr-card">
                     <div class="plan-name">Free</div>
                     <div class="price">¥0</div>
                     <div class="price-unit">ずっと無料</div>
-                    <div class="price-annual">&nbsp;</div>
+                    <div class="price-note">&nbsp;</div>
                     <ul>
                         <li>シミュレーション 月3回まで</li>
                         <li>MCI指数（建築コスト指数）閲覧</li>
@@ -121,9 +113,9 @@
                 <div class="pr-card featured">
                     <span class="badge-pop">おすすめ</span>
                     <div class="plan-name">Pro</div>
-                    <div class="price" id="proPrice">¥1,980<small>/月</small></div>
+                    <div class="price">¥300<small>/月</small></div>
                     <div class="price-unit">税抜</div>
-                    <div class="price-annual" id="proAnnual">年額 ¥19,800（税抜）= 月あたり ¥1,650</div>
+                    <div class="price-note">クレジットカード不要・Square決済</div>
                     <ul>
                         <li>シミュレーション 無制限</li>
                         <li>MCI指数（建築コスト指数）閲覧</li>
@@ -134,10 +126,11 @@
                         <li>財務設計資料（IFRS16対応）</li>
                         <li>スキーム構造設計</li>
                     </ul>
-                    <a href="checkout.html" class="btn" id="proBtn">Proで始める</a>
+                    <a href="#" class="btn" id="proBtn">Proで始める</a>
                 </div>
             </div>
 
+            <!-- プラン比較 -->
             <div class="compare-section reveal">
                 <h3>プラン比較</h3>
                 <table class="compare-table">
@@ -159,6 +152,35 @@
                 </table>
             </div>
 
+            <!-- 技術構成（完全公開） -->
+            <div class="tech-section reveal">
+                <h3>使用しているサービス</h3>
+                <p class="tech-sub">このサービスを支えるインフラを完全公開しています。</p>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <div class="tech-icon">🟧</div>
+                        <div class="tech-name">Cloudflare</div>
+                        <div class="tech-role">CDN・DNS・DDoS防御<br>Workers（API）・D1（DB）</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">🟨</div>
+                        <div class="tech-name">AWS SES</div>
+                        <div class="tech-role">メール送信<br>認証メール・通知メール</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">🟩</div>
+                        <div class="tech-name">Square</div>
+                        <div class="tech-role">決済処理<br>Proプラン月額¥300</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">⬛</div>
+                        <div class="tech-name">GitHub Pages</div>
+                        <div class="tech-role">サイトホスティング<br>無料・高速配信</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
             <div class="pr-faq reveal">
                 <h3>よくあるご質問</h3>
                 <dl>
@@ -167,16 +189,20 @@
                         <dd>ありません。月3回までのシミュレーションはずっと無料でお使いいただけます。クレジットカードの登録も不要です。</dd>
                     </div>
                     <div class="pr-faq-item">
-                        <dt>Proプランはいつでも解約できますか？</dt>
-                        <dd>はい。月額プランはいつでも解約可能で、解約後は次の更新日からFreeプランに戻ります。年額プランは契約期間中のご利用となります。</dd>
-                    </div>
-                    <div class="pr-faq-item">
-                        <dt>FreeからProへのアップグレードは簡単ですか？</dt>
-                        <dd>はい。会員ページからワンクリックでアップグレードできます。Freeプランで保存したデータはそのまま引き継がれます。</dd>
-                    </div>
-                    <div class="pr-faq-item">
                         <dt>決済方法は？</dt>
-                        <dd>クレジットカード（Visa, Mastercard, AMEX, JCB）に対応しています。Stripeによるセキュアな決済処理を行います。</dd>
+                        <dd>Square（スクエア）による決済に対応しています。クレジットカード・デビットカードがご利用いただけます。カード情報はSquareのサーバーで安全に管理され、当サービスには保存されません。</dd>
+                    </div>
+                    <div class="pr-faq-item">
+                        <dt>Proプランはいつでも解約できますか？</dt>
+                        <dd>はい。月額プランはいつでも解約可能です。解約後は翌月からFreeプランに戻ります。</dd>
+                    </div>
+                    <div class="pr-faq-item">
+                        <dt>メールはどこから届きますか？</dt>
+                        <dd>noreply@tamjump.com より AWS SES（Amazon Simple Email Service）を通じて送信されます。DKIM・SPF・DMARC認証済みのため、迷惑メールには振り分けられにくくなっています。</dd>
+                    </div>
+                    <div class="pr-faq-item">
+                        <dt>データはどこに保存されていますか？</dt>
+                        <dd>会員情報はCloudflare D1（Cloudflareのデータベースサービス）に保存されています。日本リージョン（APAC）で管理されています。</dd>
                     </div>
                     <div class="pr-faq-item">
                         <dt>月3回を超えた場合はどうなりますか？</dt>
@@ -188,6 +214,7 @@
                     </div>
                 </dl>
             </div>
+
         </div>
     </section>
 
@@ -203,36 +230,21 @@
         <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        const h=document.getElementById('siteHeader');
-        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
-        const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-        document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-        onAuthReady(user=>updateAuthUI(user));
+        const h = document.getElementById('siteHeader');
+        if (h) window.addEventListener('scroll', () => h.classList.toggle('scrolled', window.scrollY > 50));
+        const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible') }) }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        onAuthReady(user => updateAuthUI(user));
 
-        const track=document.getElementById('toggleTrack');
-        const lblM=document.querySelector('.lbl-monthly');
-        const lblA=document.querySelector('.lbl-annual');
-        const proPrice=document.getElementById('proPrice');
-        const proAnnual=document.getElementById('proAnnual');
-        const proBtn=document.getElementById('proBtn');
-        let isAnnual=false;
-        track.addEventListener('click',()=>{
-            isAnnual=!isAnnual;
-            track.classList.toggle('on',isAnnual);
-            lblM.classList.toggle('active',!isAnnual);
-            lblA.classList.toggle('active',isAnnual);
-            if(isAnnual){
-                proPrice.innerHTML='¥1,650<small>/月</small>';
-                proAnnual.textContent='年額 ¥19,800（税抜）一括払い';
-                proBtn.href='checkout.html?plan=annual';
-            }else{
-                proPrice.innerHTML='¥1,980<small>/月</small>';
-                proAnnual.textContent='年額 ¥19,800（税抜）= 月あたり ¥1,650';
-                proBtn.href='checkout.html';
+        // Square決済リンク（準備でき次第ここに設定）
+        const SQUARE_URL = '#'; // 例: 'https://checkout.square.site/buy/XXXXXXXX'
+        document.getElementById('proBtn').href = SQUARE_URL;
+        document.getElementById('proBtn').addEventListener('click', e => {
+            if (SQUARE_URL === '#') {
+                e.preventDefault();
+                alert('決済リンクは準備中です。しばらくお待ちください。');
             }
         });
     </script>
