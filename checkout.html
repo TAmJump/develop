@@ -122,7 +122,7 @@
                 <div id="orderLines">
                     <div class="order-line">
                         <span class="order-label">Pro プラン<small id="planCycle">月額サブスクリプション</small></span>
-                        <span class="order-value" id="planPrice">¥1,980</span>
+                        <span class="order-value" id="planPrice">¥300</span>
                     </div>
                     <div class="order-line">
                         <span class="order-label">消費税（10%）</span>
@@ -156,7 +156,7 @@
 
                 <div class="demo-banner">
                     ⚠ これはデモ画面です。実際の決済は行われません。<br>
-                    本番環境では Stripe Checkout に遷移します。
+                    Square（スクエア）決済ページに遷移します。
                 </div>
 
                 <div class="form-field">
@@ -246,8 +246,8 @@
 
         // ── Plan data ──
         const plans={
-            monthly:{price:1980,tax:198,total:2178,cycle:'月額サブスクリプション',label:'月額',renewText:'次回更新日'},
-            annual:{price:19800,tax:1980,total:21780,cycle:'年額サブスクリプション（2ヶ月分お得）',label:'年額',renewText:'次回更新日'}
+            monthly:{price:300,tax:30,total:330,cycle:'月額サブスクリプション',label:'月額',renewText:'次回更新日'},
+            annual:{price:3300,tax:330,total:3630,cycle:'年額サブスクリプション（1ヶ月分お得）',label:'年額',renewText:'次回更新日'}
         };
         let currentPlan='monthly';
 

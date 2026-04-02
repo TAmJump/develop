@@ -283,9 +283,9 @@
                 <div class="pr-card featured">
                     <span class="badge-pop">おすすめ</span>
                     <div class="plan-name">Pro</div>
-                    <div class="price">¥1,980<small>/月</small></div>
+                    <div class="price">¥300<small>/月</small></div>
                     <div class="price-unit">税抜</div>
-                    <div class="price-annual">年額 ¥19,800（税抜）で2ヶ月分お得</div>
+                    <div class="price-annual">Square決済・クレジットカード不要</div>
                     <ul>
                         <li>シミュレーション 無制限</li>
                         <li>MCI指数の閲覧</li>
@@ -296,7 +296,7 @@
                         <li>財務設計資料（IFRS16対応）</li>
                         <li>スキーム構造設計</li>
                     </ul>
-                    <a href="checkout.html" class="btn-plan">Proで始める</a>
+                    <a href="#" class="btn-plan" id="idxProBtn">Proで始める</a>
                 </div>
             </div>
         </div>
@@ -316,11 +316,11 @@
                 </div>
                 <div class="faq-item">
                     <dt>Proプランはいつでも解約できますか？</dt>
-                    <dd>はい。月額プランはいつでも解約可能で、解約後は次の更新日からFreeプランに戻ります。年額プランは契約期間中のご利用となります。</dd>
+                    <dd>はい。月額プランはいつでも解約可能で、解約後は次の更新日からFreeプランに戻ります。解約後は翌月からFreeプランに戻ります。</dd>
                 </div>
                 <div class="faq-item">
                     <dt>決済方法は？</dt>
-                    <dd>クレジットカード（Visa, Mastercard, AMEX, JCB）に対応しています。Stripeによるセキュアな決済処理を行います。</dd>
+                    <dd>クレジットカード（Visa, Mastercard, AMEX, JCB）に対応しています。Square（スクエア）によるセキュアな決済処理を行います。</dd>
                 </div>
                 <div class="faq-item">
                     <dt>FreeからProへのアップグレードは簡単にできますか？</dt>
@@ -366,6 +366,15 @@
         document.querySelectorAll('a[href^="#"]').forEach(a=>{
             a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
         });
-    </script>
+            // Square決済リンク（準備でき次第ここに設定）
+        const SQUARE_URL = '#'; // 例: 'https://checkout.square.site/buy/XXXXXXXX'
+        const idxProBtn = document.getElementById('idxProBtn');
+        if(idxProBtn){
+            idxProBtn.href = SQUARE_URL;
+            idxProBtn.addEventListener('click', e => {
+                if(SQUARE_URL === '#'){ e.preventDefault(); alert('決済リンクは準備中です。'); }
+            });
+        }
+        </script>
 </body>
 </html>
