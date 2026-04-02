@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アカウント設定 | TAmJ 不動産開発</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@200;300;400;500;700&family=Noto+Serif+JP:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/corporate.css">
+    <link rel="stylesheet" href="../css/tools.css">
+    <style>
+        .account-page { min-height: 100vh; background: var(--cream); }
+        .account-wrap { max-width: 640px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+
+        .account-header { margin-bottom: 40px; }
+        .account-header .label { font-family: var(--font-display); font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--gray-400); display: block; margin-bottom: 8px; }
+        .account-header h1 { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: .04em; color: var(--black); margin: 0; }
+
+        /* ── カード ── */
+        .setting-card { background: #fff; border: 1px solid var(--gray-200); padding: 32px; margin-bottom: 20px; }
+        .setting-card .card-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal); margin: 0 0 24px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+
+        /* ── フォーム ── */
+        .form-field { margin-bottom: 20px; }
+        .form-field label { display: block; font-size: 12px; font-weight: 500; color: var(--gray-500); letter-spacing: .03em; margin-bottom: 6px; }
+        .form-field input { width: 100%; padding: 12px 14px; border: 1px solid var(--gray-200); background: var(--warm-white); font-size: 14px; color: var(--charcoal); font-family: inherit; box-sizing: border-box; transition: border-color .3s; }
+        .form-field input:focus { outline: none; border-color: var(--charcoal); }
+        .form-field input:disabled { background: var(--cream); color: var(--gray-400); cursor: not-allowed; }
+        .form-field .hint { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+        .btn-save { padding: 12px 28px; font-size: 13px; font-weight: 700; letter-spacing: 1px; border: 2px solid var(--charcoal); background: transparent; color: var(--charcoal); cursor: pointer; transition: all .3s; }
+        .btn-save:hover { background: var(--charcoal); color: #fff; }
+        .btn-save:disabled { opacity: .5; cursor: not-allowed; }
+
+        .msg { font-size: 12px; margin-top: 12px; padding: 10px 14px; display: none; }
+        .msg.success { background: #f0fdf4; color: #16a34a; border-left: 3px solid #16a34a; display: block; }
+        .msg.error   { background: #fef2f2; color: #dc2626; border-left: 3px solid #dc2626; display: block; }
+
+        /* ── プランバッジ ── */
+        .plan-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .plan-badge { display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .plan-badge.free { background: var(--gray-100); color: var(--gray-500); }
+        .plan-badge.paid { background: var(--primary-pale); color: var(--primary); border: 1px solid var(--primary); }
+        .plan-expires { font-size: 12px; color: var(--gray-400); }
+
+        .btn-upgrade { padding: 10px 24px; font-size: 12px; font-weight: 700; letter-spacing: 1px; background: var(--primary); color: #fff; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: background .3s; }
+        .btn-upgrade:hover { background: var(--primary-dark); }
+
+        /* ── 危険ゾーン ── */
+        .danger-card { border-color: #fca5a5; }
+        .danger-card .card-title { color: #dc2626; border-color: #fecaca; }
+        .btn-logout { padding: 10px 24px; font-size: 12px; font-weight: 700; letter-spacing: 1px; border: 2px solid #dc2626; background: transparent; color: #dc2626; cursor: pointer; transition: all .3s; }
+        .btn-logout:hover { background: #dc2626; color: #fff; }
+
+        .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray-500); text-decoration: none; margin-bottom: 32px; transition: color .2s; }
+        .back-link:hover { color: var(--black); }
+    </style>
+</head>
+<body class="account-page">
+
+    <header id="siteHeader">
+        <a href="../index.html" class="header-logo"><img src="../logo.png" alt="TAmJ"></a>
+        <nav class="header-nav">
+            <a href="../index.html">Top</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="index.html">MyPage</a>
+            <a href="../https://tamjump.github.io/TAmj/contact.html" class="nav-cta">Contact</a>
+        </nav>
+    </header>
+
+    <div class="account-wrap">
+        <a href="index.html" class="back-link">← 会員ページに戻る</a>
+
+        <div class="account-header">
+            <span class="label">Account Settings</span>
+            <h1>アカウント設定</h1>
+        </div>
+
+        <!-- ── プラン情報 ── -->
+        <div class="setting-card">
+            <div class="card-title">現在のプラン</div>
+            <div class="plan-row">
+                <div>
+                    <span class="plan-badge" id="planBadge">Free</span>
+                    <div class="plan-expires" id="planExpires" style="margin-top:6px;display:none"></div>
+                </div>
+                <a href="https://square.link/u/w9nRYlU1" class="btn-upgrade" id="upgradeBtn" target="_blank">Proにアップグレード</a>
+            </div>
+        </div>
+
+        <!-- ── 表示名の変更 ── -->
+        <div class="setting-card">
+            <div class="card-title">表示名の変更</div>
+            <div class="form-field">
+                <label>表示名</label>
+                <input type="text" id="nameInput" placeholder="お名前">
+            </div>
+            <button class="btn-save" id="saveNameBtn" onclick="saveName()">保存する</button>
+            <div class="msg" id="nameMsg"></div>
+        </div>
+
+        <!-- ── メールアドレスの変更 ── -->
+        <div class="setting-card">
+            <div class="card-title">メールアドレスの変更</div>
+            <div class="form-field">
+                <label>現在のメールアドレス</label>
+                <input type="email" id="currentEmail" disabled>
+            </div>
+            <div class="form-field">
+                <label>新しいメールアドレス</label>
+                <input type="email" id="newEmail" placeholder="新しいメールアドレス">
+            </div>
+            <div class="form-field">
+                <label>パスワード（本人確認）</label>
+                <input type="password" id="emailConfirmPassword" placeholder="現在のパスワード">
+            </div>
+            <button class="btn-save" id="saveEmailBtn" onclick="saveEmail()">変更する</button>
+            <div class="msg" id="emailMsg"></div>
+        </div>
+
+        <!-- ── パスワードの変更 ── -->
+        <div class="setting-card">
+            <div class="card-title">パスワードの変更</div>
+            <div class="form-field">
+                <label>現在のパスワード</label>
+                <input type="password" id="currentPassword" placeholder="現在のパスワード">
+            </div>
+            <div class="form-field">
+                <label>新しいパスワード（8文字以上）</label>
+                <input type="password" id="newPassword" placeholder="新しいパスワード">
+            </div>
+            <div class="form-field">
+                <label>新しいパスワード（確認）</label>
+                <input type="password" id="newPassword2" placeholder="もう一度入力">
+            </div>
+            <button class="btn-save" id="savePasswordBtn" onclick="savePassword()">変更する</button>
+            <div class="msg" id="passwordMsg"></div>
+        </div>
+
+        <!-- ── ログアウト ── -->
+        <div class="setting-card danger-card">
+            <div class="card-title">ログアウト</div>
+            <button class="btn-logout" onclick="doLogout()">ログアウトする</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="../logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Account</h4><a href="../register.html">会員登録</a><a href="../login.html">ログイン</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="https://tamjump.github.io/TAmj/contact.html">お問合せ</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const API = 'https://tamjump-member-api.animalb001.workers.dev';
+        let currentUser = null;
+
+        const h = document.getElementById('siteHeader');
+        if (h) window.addEventListener('scroll', () => h.classList.toggle('scrolled', window.scrollY > 50));
+
+        // ログインチェック・ユーザー情報表示
+        onAuthReady(user => {
+            if (!user) {
+                location.href = '../login.html?return=' + encodeURIComponent(location.pathname);
+                return;
+            }
+            currentUser = user;
+            document.getElementById('nameInput').value = user.name || '';
+            document.getElementById('currentEmail').value = user.email || '';
+
+            // プランバッジ
+            const badge = document.getElementById('planBadge');
+            const expires = document.getElementById('planExpires');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            if (user.plan === 'paid') {
+                badge.textContent = 'Pro';
+                badge.className = 'plan-badge paid';
+                upgradeBtn.style.display = 'none';
+                if (user.proExpiresAt) {
+                    const d = new Date(user.proExpiresAt);
+                    expires.textContent = `有効期限: ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+                    expires.style.display = 'block';
+                }
+            }
+        });
+
+        // 表示名の保存
+        async function saveName() {
+            const name = document.getElementById('nameInput').value.trim();
+            const msg  = document.getElementById('nameMsg');
+            const btn  = document.getElementById('saveNameBtn');
+            msg.className = 'msg';
+
+            if (!name) { msg.className = 'msg error'; msg.textContent = '名前を入力してください。'; return; }
+
+            btn.disabled = true; btn.textContent = '保存中...';
+            try {
+                const res  = await fetch(`${API}/api/auth/update-profile`, {
+                    method: 'POST', credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name }),
+                });
+                const data = await res.json();
+                if (data.ok) { msg.className = 'msg success'; msg.textContent = '表示名を変更しました。'; }
+                else         { msg.className = 'msg error';   msg.textContent = data.error || '変更に失敗しました。'; }
+            } catch { msg.className = 'msg error'; msg.textContent = '通信エラーが発生しました。'; }
+            btn.disabled = false; btn.textContent = '保存する';
+        }
+
+        // メールアドレスの変更
+        async function saveEmail() {
+            const newEmail = document.getElementById('newEmail').value.trim();
+            const password = document.getElementById('emailConfirmPassword').value;
+            const msg      = document.getElementById('emailMsg');
+            const btn      = document.getElementById('saveEmailBtn');
+            msg.className  = 'msg';
+
+            if (!newEmail || !password) { msg.className = 'msg error'; msg.textContent = '全ての項目を入力してください。'; return; }
+
+            btn.disabled = true; btn.textContent = '変更中...';
+            try {
+                const res  = await fetch(`${API}/api/auth/update-email`, {
+                    method: 'POST', credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newEmail, password }),
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    msg.className = 'msg success';
+                    msg.textContent = 'メールアドレスを変更しました。';
+                    document.getElementById('currentEmail').value = newEmail;
+                    document.getElementById('newEmail').value = '';
+                    document.getElementById('emailConfirmPassword').value = '';
+                } else {
+                    msg.className = 'msg error'; msg.textContent = data.error || '変更に失敗しました。';
+                }
+            } catch { msg.className = 'msg error'; msg.textContent = '通信エラーが発生しました。'; }
+            btn.disabled = false; btn.textContent = '変更する';
+        }
+
+        // パスワードの変更
+        async function savePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword     = document.getElementById('newPassword').value;
+            const newPassword2    = document.getElementById('newPassword2').value;
+            const msg  = document.getElementById('passwordMsg');
+            const btn  = document.getElementById('savePasswordBtn');
+            msg.className = 'msg';
+
+            if (!currentPassword || !newPassword || !newPassword2) { msg.className = 'msg error'; msg.textContent = '全ての項目を入力してください。'; return; }
+            if (newPassword.length < 8) { msg.className = 'msg error'; msg.textContent = '新しいパスワードは8文字以上にしてください。'; return; }
+            if (newPassword !== newPassword2) { msg.className = 'msg error'; msg.textContent = 'パスワードが一致しません。'; return; }
+
+            btn.disabled = true; btn.textContent = '変更中...';
+            try {
+                const res  = await fetch(`${API}/api/auth/update-password`, {
+                    method: 'POST', credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword }),
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    msg.className = 'msg success'; msg.textContent = 'パスワードを変更しました。';
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('newPassword2').value = '';
+                } else {
+                    msg.className = 'msg error'; msg.textContent = data.error || '変更に失敗しました。';
+                }
+            } catch { msg.className = 'msg error'; msg.textContent = '通信エラーが発生しました。'; }
+            btn.disabled = false; btn.textContent = '変更する';
+        }
+
+        // ログアウト
+        async function doLogout() {
+            await logoutUser();
+            location.href = '../login.html';
+        }
+    </script>
+</body>
+</html>
