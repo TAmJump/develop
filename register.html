@@ -28,7 +28,6 @@
         .auth-error.show{display:block}
         .auth-link{font-size:13px;color:var(--gray-500);margin-top:20px;text-align:center}
         .auth-link a{color:var(--charcoal);font-weight:600;border-bottom:1px solid var(--charcoal);transition:color .3s}
-        .auth-link a:hover{color:var(--primary);border-bottom-color:var(--primary)}
         .auth-note{font-size:11px;color:var(--gray-400);line-height:1.8;margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100)}
         .cf-turnstile{margin:16px 0}
     </style>
@@ -61,8 +60,11 @@
                 <label>パスワード（8文字以上）</label>
                 <input type="password" id="regPassword" placeholder="••••••••" autocomplete="new-password">
             </div>
-            <div id="turnstile-container" class="cf-turnstile" data-sitekey="0x4AAAAAACzYM9MQXQVBO1-o" data-callback="onTurnstileSuccess" data-theme="light"></div>
-            <button class="auth-btn" id="btnRegister" disabled>会員登録（無料）</button>
+            <div id="turnstile-container" class="cf-turnstile"
+                data-sitekey="0x4AAAAAACzYM9MQXQVBO1-o"
+                data-theme="light">
+            </div>
+            <button class="auth-btn" id="btnRegister">会員登録（無料）</button>
             <div class="auth-error" id="regError"></div>
             <div class="auth-link">
                 すでにアカウントをお持ちの方 <a href="login.html">ログイン</a>
@@ -91,14 +93,6 @@
         const h = document.getElementById('siteHeader');
         if(h) window.addEventListener('scroll', () => h.classList.toggle('scrolled', window.scrollY > 50));
 
-        let turnstileToken = '';
-
-        // Turnstileコールバックをグローバルに登録
-        window.onTurnstileSuccess = function(token) {
-            turnstileToken = token;
-            document.getElementById('btnRegister').disabled = false;
-        };
-
         onAuthReady(user => {
             if(user) location.href = 'members/index.html';
         });
@@ -118,6 +112,11 @@
                 err.classList.add('show');
                 return;
             }
+
+            // Turnstileトークンを取得
+            const turnstileInput = document.querySelector('#turnstile-container [name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value : '';
+
             if(!turnstileToken) {
                 err.textContent = 'ボット確認を完了してください。';
                 err.classList.add('show');
@@ -140,8 +139,6 @@
                 btn.textContent = '会員登録（無料）';
                 if(typeof turnstile !== 'undefined') {
                     turnstile.reset('#turnstile-container');
-                    turnstileToken = '';
-                    btn.disabled = true;
                 }
             }
         });
