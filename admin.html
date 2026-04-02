@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者ダッシュボード | タムジ.Develop</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;background:#f5f5f0;color:#111;min-height:100vh;font-size:14px}
+
+/* ── ログイン画面 ── */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.login-box{background:#fff;border:1px solid #e6e6e0;padding:48px 40px;width:100%;max-width:380px}
+.login-box h1{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.login-box p{font-size:12px;color:#999;margin-bottom:28px}
+.login-box input{width:100%;padding:11px 14px;border:1px solid #ddd;font-size:14px;font-family:inherit;margin-bottom:12px}
+.login-box input:focus{outline:none;border-color:#111}
+.login-box button{width:100%;padding:12px;background:#111;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer}
+.login-box button:hover{background:#333}
+.login-err{font-size:12px;color:#C94040;margin-top:8px;display:none}
+.login-err.show{display:block}
+
+/* ── メイン画面 ── */
+#mainScreen{display:none}
+.topbar{background:#111;color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:14px;font-weight:700;letter-spacing:.05em}
+.topbar .logout-btn{font-size:11px;color:#aaa;cursor:pointer;border:1px solid #444;padding:4px 12px;transition:all .2s}
+.topbar .logout-btn:hover{color:#fff;border-color:#fff}
+
+.wrap{max-width:1100px;margin:0 auto;padding:28px}
+
+/* ── 統計カード ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border:1px solid #e6e6e0;padding:20px 24px}
+.stat-label{font-size:11px;color:#999;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.stat-value{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#111}
+.stat-value.pro{color:#16a34a}
+.stat-value.free{color:#555}
+
+/* ── 検索・フィルター ── */
+.toolbar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.toolbar input{padding:9px 14px;border:1px solid #ddd;font-size:13px;font-family:inherit;width:280px}
+.toolbar input:focus{outline:none;border-color:#111}
+.toolbar select{padding:9px 14px;border:1px solid #ddd;font-size:13px;font-family:inherit;background:#fff;cursor:pointer}
+.toolbar .refresh-btn{padding:9px 20px;background:#111;color:#fff;border:none;font-size:12px;font-weight:700;cursor:pointer}
+.toolbar .refresh-btn:hover{background:#333}
+
+/* ── テーブル ── */
+.table-wrap{background:#fff;border:1px solid #e6e6e0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 16px;border-bottom:2px solid #111;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#555;white-space:nowrap}
+td{padding:10px 16px;border-bottom:1px solid #f0f0ec;vertical-align:middle}
+tr:hover td{background:#fafaf8}
+.email-cell{font-family:'JetBrains Mono',monospace;font-size:12px;color:#111}
+.name-cell{font-weight:500}
+.plan-badge{display:inline-block;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.5px;border-radius:2px}
+.plan-badge.paid{background:#dcfce7;color:#166534}
+.plan-badge.free{background:#f1f5f9;color:#64748b}
+.verified-badge{font-size:11px}
+.verified-badge.yes{color:#16a34a}
+.verified-badge.no{color:#dc2626}
+.expires-cell{font-size:11px;font-family:'JetBrains Mono',monospace;color:#999}
+.expires-cell.expired{color:#dc2626}
+.action-btns{display:flex;gap:6px;white-space:nowrap}
+.btn-upgrade{padding:5px 12px;font-size:11px;font-weight:700;background:#16a34a;color:#fff;border:none;cursor:pointer;transition:background .2s}
+.btn-upgrade:hover{background:#15803d}
+.btn-downgrade{padding:5px 12px;font-size:11px;font-weight:700;background:transparent;color:#555;border:1px solid #ddd;cursor:pointer;transition:all .2s}
+.btn-downgrade:hover{border-color:#111;color:#111}
+.btn-delete{padding:5px 12px;font-size:11px;font-weight:700;background:transparent;color:#dc2626;border:1px solid #fca5a5;cursor:pointer;transition:all .2s}
+.btn-delete:hover{background:#dc2626;color:#fff;border-color:#dc2626}
+
+/* ── ページネーション ── */
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:16px;border-top:1px solid #e6e6e0;font-size:12px;color:#999}
+.page-btns{display:flex;gap:8px}
+.page-btn{padding:6px 14px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer}
+.page-btn:hover{border-color:#111}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── トースト ── */
+#toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:4px;font-size:13px;font-weight:600;display:none;z-index:9999}
+#toast.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+#toast.error{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+
+@media(max-width:768px){
+  .stats{grid-template-columns:1fr 1fr}
+  .toolbar input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ── ログイン画面 ── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>管理者ダッシュボード</h1>
+    <p>タムジ.Develop 管理者専用</p>
+    <input type="password" id="adminTokenInput" placeholder="管理者トークン" autocomplete="off">
+    <button onclick="doLogin()">ログイン</button>
+    <div class="login-err" id="loginErr">トークンが正しくありません</div>
+  </div>
+</div>
+
+<!-- ── メイン画面 ── -->
+<div id="mainScreen">
+  <div class="topbar">
+    <h1>🛠 タムジ.Develop 管理者ダッシュボード</h1>
+    <span class="logout-btn" onclick="doLogout()">ログアウト</span>
+  </div>
+
+  <div class="wrap">
+    <!-- 統計 -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">総会員数</div>
+        <div class="stat-value" id="statTotal">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Proプラン</div>
+        <div class="stat-value pro" id="statPro">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Freeプラン</div>
+        <div class="stat-value free" id="statFree">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">メール未認証</div>
+        <div class="stat-value" id="statUnverified">—</div>
+      </div>
+    </div>
+
+    <!-- ツールバー -->
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="メールアドレス・名前で検索..." oninput="filterTable()">
+      <select id="planFilter" onchange="filterTable()">
+        <option value="">すべてのプラン</option>
+        <option value="paid">Proのみ</option>
+        <option value="free">Freeのみ</option>
+      </select>
+      <button class="refresh-btn" onclick="loadUsers()">↻ 更新</button>
+    </div>
+
+    <!-- テーブル -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>メールアドレス</th>
+            <th>プラン</th>
+            <th>認証</th>
+            <th>Pro期限</th>
+            <th>最終更新</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">読み込み中...</td></tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <span id="pageInfo">—</span>
+        <div class="page-btns">
+          <button class="page-btn" id="prevBtn" onclick="changePage(-1)" disabled>← 前へ</button>
+          <button class="page-btn" id="nextBtn" onclick="changePage(1)" disabled>次へ →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'https://tamjump-member-api.animalb001.workers.dev';
+let adminToken = '';
+let allUsers = [];
+let currentPage = 1;
+const PAGE_SIZE = 20;
+
+// ── 認証 ──────────────────────────────────────────────────
+function doLogin() {
+  const token = document.getElementById('adminTokenInput').value.trim();
+  if (!token) return;
+  adminToken = token;
+  sessionStorage.setItem('admin_token', token);
+  loadUsers();
+}
+
+function doLogout() {
+  adminToken = '';
+  sessionStorage.removeItem('admin_token');
+  document.getElementById('mainScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminTokenInput').value = '';
+}
+
+document.getElementById('adminTokenInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── データ読み込み ──────────────────────────────────────────
+async function loadUsers() {
+  try {
+    const res = await fetch(`${API}/api/admin/users?page=1&limit=1000`, {
+      headers: { 'X-Admin-Token': adminToken }
+    });
+
+    if (res.status === 403) {
+      document.getElementById('loginErr').classList.add('show');
+      return;
+    }
+
+    document.getElementById('loginErr').classList.remove('show');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
+
+    const data = await res.json();
+    allUsers = data.users || [];
+
+    updateStats();
+    renderTable();
+  } catch(e) {
+    showToast('通信エラーが発生しました', 'error');
+  }
+}
+
+// ── 統計更新 ──────────────────────────────────────────────
+function updateStats() {
+  const total = allUsers.length;
+  const pro   = allUsers.filter(u => u.plan === 'paid').length;
+  const free  = allUsers.filter(u => u.plan === 'free').length;
+  const unver = allUsers.filter(u => !u.email_verified).length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPro').textContent   = pro;
+  document.getElementById('statFree').textContent  = free;
+  document.getElementById('statUnverified').textContent = unver;
+}
+
+// ── テーブル描画 ──────────────────────────────────────────
+function getFilteredUsers() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const plan   = document.getElementById('planFilter').value;
+  return allUsers.filter(u => {
+    const matchSearch = !search || u.email.toLowerCase().includes(search) || (u.name||'').toLowerCase().includes(search);
+    const matchPlan   = !plan   || u.plan === plan;
+    return matchSearch && matchPlan;
+  });
+}
+
+function filterTable() {
+  currentPage = 1;
+  renderTable();
+}
+
+function renderTable() {
+  const filtered = getFilteredUsers();
+  const total    = filtered.length;
+  const start    = (currentPage - 1) * PAGE_SIZE;
+  const page     = filtered.slice(start, start + PAGE_SIZE);
+  const now      = new Date();
+
+  const tbody = document.getElementById('userTableBody');
+
+  if (page.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;">会員が見つかりません</td></tr>';
+  } else {
+    tbody.innerHTML = page.map(u => {
+      const expires = u.pro_expires_at ? new Date(u.pro_expires_at) : null;
+      const isExpired = expires && expires < now;
+      const expiresStr = expires
+        ? `${expires.getFullYear()}/${expires.getMonth()+1}/${expires.getDate()}`
+        : '—';
+      const updatedStr = u.updated_at ? u.updated_at.slice(0,10) : '—';
+
+      return `<tr>
+        <td class="name-cell">${esc(u.name || '—')}</td>
+        <td class="email-cell">${esc(u.email)}</td>
+        <td><span class="plan-badge ${u.plan}">${u.plan === 'paid' ? 'Pro' : 'Free'}</span></td>
+        <td><span class="verified-badge ${u.email_verified ? 'yes' : 'no'}">${u.email_verified ? '✓ 認証済' : '✗ 未認証'}</span></td>
+        <td class="expires-cell ${isExpired ? 'expired' : ''}">${expiresStr}${isExpired ? ' (期限切れ)' : ''}</td>
+        <td style="color:#999;font-size:12px">${updatedStr}</td>
+        <td>
+          <div class="action-btns">
+            ${u.plan === 'free'
+              ? `<button class="btn-upgrade" onclick="upgradeUser('${esc(u.email)}')">Pro昇格</button>`
+              : `<button class="btn-downgrade" onclick="downgradeUser('${esc(u.email)}')">Free化</button>`
+            }
+            <button class="btn-delete" onclick="deleteUser('${esc(u.email)}', '${esc(u.name||'')}')">削除</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // ページネーション
+  document.getElementById('pageInfo').textContent = `${start+1}〜${Math.min(start+PAGE_SIZE, total)} 件 / 全${total}件`;
+  document.getElementById('prevBtn').disabled = currentPage <= 1;
+  document.getElementById('nextBtn').disabled = start + PAGE_SIZE >= total;
+}
+
+function changePage(dir) {
+  currentPage += dir;
+  renderTable();
+}
+
+// ── 操作 ──────────────────────────────────────────────────
+async function upgradeUser(email) {
+  if (!confirm(`${email} をProプランに昇格しますか？`)) return;
+  try {
+    const res = await fetch(`${API}/api/admin/upgrade`, {
+      method: 'POST',
+      headers: { 'X-Admin-Token': adminToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, action: 'upgrade' })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast(`${email} をProに昇格しました`, 'success');
+      const u = allUsers.find(u => u.email === email);
+      if (u) { u.plan = 'paid'; u.pro_expires_at = new Date(Date.now() + 35*24*60*60*1000).toISOString(); }
+      updateStats(); renderTable();
+    } else {
+      showToast(data.error || '失敗しました', 'error');
+    }
+  } catch { showToast('通信エラー', 'error'); }
+}
+
+async function downgradeUser(email) {
+  if (!confirm(`${email} をFreeプランに変更しますか？`)) return;
+  try {
+    const res = await fetch(`${API}/api/admin/upgrade`, {
+      method: 'POST',
+      headers: { 'X-Admin-Token': adminToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, action: 'downgrade' })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast(`${email} をFreeに変更しました`, 'success');
+      const u = allUsers.find(u => u.email === email);
+      if (u) { u.plan = 'free'; u.pro_expires_at = null; }
+      updateStats(); renderTable();
+    } else {
+      showToast(data.error || '失敗しました', 'error');
+    }
+  } catch { showToast('通信エラー', 'error'); }
+}
+
+async function deleteUser(email, name) {
+  if (!confirm(`【警告】${name || email} を完全に削除します。この操作は取り消せません。\n\n本当に削除しますか？`)) return;
+  try {
+    const res = await fetch(`${API}/api/admin/user`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': adminToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast(`${email} を削除しました`, 'success');
+      allUsers = allUsers.filter(u => u.email !== email);
+      updateStats(); renderTable();
+    } else {
+      showToast(data.error || '失敗しました', 'error');
+    }
+  } catch { showToast('通信エラー', 'error'); }
+}
+
+// ── トースト ──────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = type;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── 初期化 ────────────────────────────────────────────────
+const saved = sessionStorage.getItem('admin_token');
+if (saved) { adminToken = saved; loadUsers(); }
+</script>
+</body>
+</html>

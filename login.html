@@ -32,6 +32,11 @@
         .auth-forgot:hover{color:var(--primary)}
         .auth-success{font-size:12px;color:#16a34a;margin-top:12px;display:none;line-height:1.6}
         .auth-success.show{display:block}
+        .resend-box{background:#fff8e8;border-left:3px solid #C4960E;padding:12px 16px;margin-top:12px;font-size:12px;color:#5A4500;display:none}
+        .resend-box.show{display:block}
+        .resend-btn{margin-top:8px;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;border:1px solid #C4960E;background:transparent;color:#C4960E;cursor:pointer;transition:all .3s}
+        .resend-btn:hover{background:#C4960E;color:#fff}
+        .resend-btn:disabled{opacity:.5;cursor:not-allowed}
     </style>
 </head>
 <body class="auth-page">
@@ -62,6 +67,10 @@
             <button class="auth-btn" id="btnLogin">ログイン</button>
             <div class="auth-error" id="loginError"></div>
             <div class="auth-success" id="loginSuccess"></div>
+            <div class="resend-box" id="resendBox">
+                メールアドレスの確認が完了していません。<br>確認メールを再送しますか？
+                <br><button class="resend-btn" id="resendBtn" onclick="resendVerification()">確認メールを再送する</button>
+            </div>
             <div class="auth-link">
                 アカウントをお持ちでない方 <a href="register.html">会員登録（無料）</a>
             </div>
@@ -95,10 +104,12 @@
         document.getElementById('btnLogin').addEventListener('click', async()=>{
             const btn=document.getElementById('btnLogin');
             const err=document.getElementById('loginError');
+            const resendBox=document.getElementById('resendBox');
             const email=document.getElementById('loginEmail').value.trim();
             const pw=document.getElementById('loginPassword').value;
 
             err.classList.remove('show');
+            resendBox.classList.remove('show');
             if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
 
             btn.disabled=true;btn.textContent='ログイン中…';
@@ -107,7 +118,11 @@
                 const params=new URLSearchParams(location.search);
                 location.href=decodeURIComponent(params.get('return')||'members/index.html');
             } else {
-                err.textContent=result.error;err.classList.add('show');
+                if(result.error && result.error.includes('確認されていません')){
+                    resendBox.classList.add('show');
+                } else {
+                    err.textContent=result.error;err.classList.add('show');
+                }
                 btn.disabled=false;btn.textContent='ログイン';
             }
         });
@@ -116,19 +131,27 @@
             if(e.key==='Enter') document.getElementById('btnLogin').click();
         });
 
-        document.getElementById('btnForgot').addEventListener('click', async()=>{
+        async function resendVerification() {
             const email=document.getElementById('loginEmail').value.trim();
-            const err=document.getElementById('loginError');
             const suc=document.getElementById('loginSuccess');
-            err.classList.remove('show');suc.classList.remove('show');
-            if(!email){err.textContent='メールアドレスを入力してからクリックしてください。';err.classList.add('show');return;}
-            const result=await resetPassword(email);
-            if(result.ok){
-                suc.textContent='パスワードリセットメールを送信しました。';suc.classList.add('show');
-            } else {
-                err.textContent=result.error;err.classList.add('show');
-            }
-        });
+            const resendBox=document.getElementById('resendBox');
+            const btn=document.getElementById('resendBtn');
+            if(!email){return;}
+            btn.disabled=true;btn.textContent='送信中...';
+            try {
+                const res=await fetch('https://tamjump-member-api.animalb001.workers.dev/api/auth/resend-verification',{
+                    method:'POST',headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({email})
+                });
+                const data=await res.json();
+                if(data.ok){
+                    resendBox.classList.remove('show');
+                    suc.textContent='確認メールを再送しました。メールをご確認ください。';
+                    suc.classList.add('show');
+                }
+            } catch{}
+            btn.disabled=false;btn.textContent='確認メールを再送する';
+        }
     </script>
 </body>
 </html>
