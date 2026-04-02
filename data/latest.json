@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-04-01",
-  "fetchTime": "2026-04-01T22:33:05.755Z",
+  "fetchDate": "2026-04-02",
+  "fetchTime": "2026-04-02T22:27:32.674Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,24 +10,16 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 53739.68,
-    "usdjpy": 158.651,
-    "brent": 100.55,
-    "copper": 5.622,
+    "nikkei": 52463.27,
+    "usdjpy": 159.561,
+    "brent": 109.05,
+    "copper": 5.682,
     "jgb10y": 2.18
   },
   "history30d": [
     {
-      "date": "2026-02-20",
-      "nikkei": 56825.699,
-      "usdjpy": 155.16,
-      "brent": 71.76,
-      "copper": 5.831,
-      "jgb10y": 2.18
-    },
-    {
       "date": "2026-02-23",
-      "nikkei": 53739.68,
+      "nikkei": 52463.27,
       "usdjpy": 154.339,
       "brent": 71.49,
       "copper": 5.773,
@@ -179,7 +171,7 @@
     },
     {
       "date": "2026-03-20",
-      "nikkei": 53739.68,
+      "nikkei": 52463.27,
       "usdjpy": 157.924,
       "brent": 112.19,
       "copper": 5.343,
@@ -227,10 +219,10 @@
     },
     {
       "date": "2026-03-29",
-      "nikkei": 53739.68,
+      "nikkei": 52463.27,
       "usdjpy": 160.234,
-      "brent": 100.55,
-      "copper": 5.622,
+      "brent": 109.05,
+      "copper": 5.682,
       "jgb10y": 2.18
     },
     {
@@ -252,13 +244,21 @@
     {
       "date": "2026-04-01",
       "nikkei": 53739.68,
-      "usdjpy": 158.651,
-      "brent": 100.55,
-      "copper": 5.622,
+      "usdjpy": 158.688,
+      "brent": 101.16,
+      "copper": 5.624,
+      "jgb10y": 2.18
+    },
+    {
+      "date": "2026-04-02",
+      "nikkei": 52463.27,
+      "usdjpy": 159.561,
+      "brent": 109.05,
+      "copper": 5.681,
       "jgb10y": 2.18
     }
   ],
-  "mci": 2.2926,
+  "mci": 2.305,
   "weights": {
     "usdjpy": 0.35,
     "copper": 0.25,
