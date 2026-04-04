@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-04-03",
-  "fetchTime": "2026-04-03T22:28:31.613Z",
+  "fetchDate": "2026-04-04",
+  "fetchTime": "2026-04-04T22:24:42.979Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -251,7 +251,7 @@
     },
     {
       "date": "2026-04-03",
-      "nikkei": 53123.49,
+      "nikkei": 53123.488,
       "usdjpy": 159.632,
       "brent": 109.05,
       "copper": 5.682,
