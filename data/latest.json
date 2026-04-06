@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-04-05",
-  "fetchTime": "2026-04-05T22:26:47.273Z",
+  "fetchDate": "2026-04-06",
+  "fetchTime": "2026-04-06T22:31:29.820Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,21 +10,13 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 53123.49,
-    "usdjpy": 159.731,
-    "brent": 111.17,
-    "copper": 5.627,
+    "nikkei": 53413.68,
+    "usdjpy": 159.611,
+    "brent": 109.69,
+    "copper": 5.621,
     "jgb10y": 2.18
   },
   "history30d": [
-    {
-      "date": "2026-02-25",
-      "nikkei": 58583.121,
-      "usdjpy": 155.88,
-      "brent": 70.85,
-      "copper": 5.979,
-      "jgb10y": 2.18
-    },
     {
       "date": "2026-02-26",
       "nikkei": 58753.391,
@@ -155,7 +147,7 @@
     },
     {
       "date": "2026-03-20",
-      "nikkei": 53123.49,
+      "nikkei": 53413.68,
       "usdjpy": 157.924,
       "brent": 112.19,
       "copper": 5.343,
@@ -203,10 +195,10 @@
     },
     {
       "date": "2026-03-29",
-      "nikkei": 53123.49,
+      "nikkei": 53413.68,
       "usdjpy": 160.234,
-      "brent": 111.17,
-      "copper": 5.627,
+      "brent": 109.69,
+      "copper": 5.621,
       "jgb10y": 2.18
     },
     {
@@ -244,21 +236,29 @@
     {
       "date": "2026-04-03",
       "nikkei": 53123.488,
-      "usdjpy": 159.731,
-      "brent": 111.17,
-      "copper": 5.627,
+      "usdjpy": 159.611,
+      "brent": 109.69,
+      "copper": 5.621,
       "jgb10y": 2.18
     },
     {
       "date": "2026-04-05",
-      "nikkei": 53123.49,
-      "usdjpy": 159.731,
-      "brent": 111.17,
-      "copper": 5.627,
+      "nikkei": 53413.68,
+      "usdjpy": 159.78,
+      "brent": 109.69,
+      "copper": 5.621,
+      "jgb10y": 2.18
+    },
+    {
+      "date": "2026-04-06",
+      "nikkei": 53413.68,
+      "usdjpy": 159.611,
+      "brent": 109.69,
+      "copper": 5.621,
       "jgb10y": 2.18
     }
   ],
-  "mci": 2.3092,
+  "mci": 2.3078,
   "weights": {
     "usdjpy": 0.35,
     "copper": 0.25,
