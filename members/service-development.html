@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/tools.css">
 <style>.pay-gate{display:none;position:fixed;inset:0;z-index:2000;background:rgba(12,12,12,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center}.pay-gate.show{display:flex}.pay-gate-card{background:#fff;padding:48px 40px;max-width:400px;width:90%;text-align:center}.pay-gate-card h2{font-family:var(--font-serif);font-size:1.3rem;font-weight:400;margin:0 0 12px;color:var(--black)}.pay-gate-card p{font-size:13px;color:var(--gray-500);font-weight:300;line-height:1.8;margin:0 0 24px}.pay-gate-card .price{font-family:var(--font-display);font-size:42px;font-weight:600;color:var(--primary);margin:16px 0 4px}.pay-gate-card .unit{font-size:12px;color:var(--gray-400);margin-bottom:24px}.pay-gate-card .btn-pay{display:block;width:100%;padding:14px;font-size:13px;font-weight:700;letter-spacing:1px;border:none;background:var(--charcoal);color:#fff;cursor:pointer;transition:background .3s}.pay-gate-card .btn-pay:hover{background:var(--primary)}.pay-gate-card .btn-back{display:inline-block;margin-top:12px;font-size:12px;color:var(--gray-400);text-decoration:none;border-bottom:1px solid var(--gray-300)}.pay-gate-card .btn-back:hover{color:var(--primary)}
 .idx-chip{background:#fff;padding:3px 8px;font-size:.62rem;display:flex;align-items:center;gap:4px;border:1px solid var(--gray-200)}.idx-label{color:var(--gray-400);font-size:.55rem;letter-spacing:.5px}.idx-val{font-family:var(--font-display);font-weight:600;color:var(--charcoal)}.idx-up{color:#16a34a}.idx-down{color:#dc2626}
-.mci-ind{padding:.5rem .6rem;background:var(--warm-white);text-align:center;border:1px solid var(--gray-200)}.mci-ind-label{font-size:.52rem;color:var(--gray-500);letter-spacing:.5px}.mci-ind-wt{font-size:.48rem;color:var(--gray-400);margin-top:1px}.mci-ind-val{font-family:var(--font-display);font-size:.75rem;font-weight:700;color:var(--black);margin-top:2px}.mci-ind-chg{font-size:.5rem;margin-top:1px}
+.mci-ind{padding:.8rem 1rem;background:var(--warm-white);text-align:left;border:1px solid var(--gray-200)}.mci-ind-label{font-size:.58rem;color:var(--gray-500);letter-spacing:.5px;text-transform:uppercase}.mci-ind-wt{font-size:.52rem;color:var(--gray-400);margin-top:1px;margin-bottom:.4rem}.mci-ind-val{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--black);margin-top:2px}.mci-ind-chg{font-size:.6rem;margin-top:2px;font-weight:600}
 .mci-struct-row{background:var(--warm-white);padding:5px 8px;text-align:center;border-radius:2px;border:1px solid var(--gray-200)}.mci-struct-name{display:block;font-size:.5rem;color:var(--gray-500);letter-spacing:1px}.mci-struct-val{display:block;font-family:var(--font-display);font-size:.78rem;font-weight:700;color:var(--black);margin-top:1px}.mci-struct-pct{display:block;font-size:.52rem;font-weight:600;margin-top:1px}</style>
 </head>
 <body>
@@ -49,7 +49,7 @@
                 </label>
             </div>
             <!-- 5 Indicators -->
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin-bottom:.6rem" id="marketValues">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin-bottom:.6rem" id="marketValues">
                 <div class="mci-ind"><div class="mci-ind-label">ドル円</div><div class="mci-ind-wt">×0.27</div><div class="mci-ind-val" id="mv_usdjpy">—</div><div class="mci-ind-chg" id="mv_usdjpy_chg"></div></div>
                 <div class="mci-ind"><div class="mci-ind-label">銅 $/lb</div><div class="mci-ind-wt">×0.18</div><div class="mci-ind-val" id="mv_copper">—</div><div class="mci-ind-chg" id="mv_copper_chg"></div></div>
                 <div class="mci-ind"><div class="mci-ind-label">鉄鋼 SLX</div><div class="mci-ind-wt">×0.15</div><div class="mci-ind-val" id="mv_steel">—</div><div class="mci-ind-chg" id="mv_steel_chg"></div></div>
@@ -551,7 +551,7 @@
 
         function updateMarketUI(vals, ratios){
             const base = MARKET_CONFIG.baseValues;
-            // ■5指標 現在値 + 2022基準比
+            // ■8指標 現在値 + 2022基準比
             [{key:'usdjpy',fmt:v=>v.toFixed(1)},{key:'copper',fmt:v=>v.toFixed(2)},{key:'steel',fmt:v=>v.toFixed(1)},{key:'brent',fmt:v=>v.toFixed(1)},{key:'nikkei',fmt:v=>Math.round(v).toLocaleString()},{key:'lumber',fmt:v=>v.toFixed(0)},{key:'cnyJpy',fmt:v=>v.toFixed(2)},{key:'jgb10y',fmt:v=>v.toFixed(2)+'%'}]
             .forEach(({key,fmt})=>{
                 const vE=document.getElementById('mv_'+key), cE=document.getElementById('mv_'+key+'_chg');
