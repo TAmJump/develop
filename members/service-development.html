@@ -50,11 +50,14 @@
             </div>
             <!-- 5 Indicators -->
             <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin-bottom:.6rem" id="marketValues">
-                <div class="mci-ind"><div class="mci-ind-label">ドル円</div><div class="mci-ind-wt">×0.35</div><div class="mci-ind-val" id="mv_usdjpy">—</div><div class="mci-ind-chg" id="mv_usdjpy_chg"></div></div>
-                <div class="mci-ind"><div class="mci-ind-label">銅 $/lb</div><div class="mci-ind-wt">×0.25</div><div class="mci-ind-val" id="mv_copper">—</div><div class="mci-ind-chg" id="mv_copper_chg"></div></div>
-                <div class="mci-ind"><div class="mci-ind-label">原油 Brent</div><div class="mci-ind-wt">×0.15</div><div class="mci-ind-val" id="mv_brent">—</div><div class="mci-ind-chg" id="mv_brent_chg"></div></div>
-                <div class="mci-ind"><div class="mci-ind-label">日経平均</div><div class="mci-ind-wt">×0.15</div><div class="mci-ind-val" id="mv_nikkei">—</div><div class="mci-ind-chg" id="mv_nikkei_chg"></div></div>
-                <div class="mci-ind"><div class="mci-ind-label">長期金利</div><div class="mci-ind-wt">×0.10</div><div class="mci-ind-val" id="mv_jgb10y">—</div><div class="mci-ind-chg" id="mv_jgb10y_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">ドル円</div><div class="mci-ind-wt">×0.27</div><div class="mci-ind-val" id="mv_usdjpy">—</div><div class="mci-ind-chg" id="mv_usdjpy_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">銅 $/lb</div><div class="mci-ind-wt">×0.18</div><div class="mci-ind-val" id="mv_copper">—</div><div class="mci-ind-chg" id="mv_copper_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">鉄鋼 SLX</div><div class="mci-ind-wt">×0.15</div><div class="mci-ind-val" id="mv_steel">—</div><div class="mci-ind-chg" id="mv_steel_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">原油 Brent</div><div class="mci-ind-wt">×0.12</div><div class="mci-ind-val" id="mv_brent">—</div><div class="mci-ind-chg" id="mv_brent_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">日経平均</div><div class="mci-ind-wt">×0.10</div><div class="mci-ind-val" id="mv_nikkei">—</div><div class="mci-ind-chg" id="mv_nikkei_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">木材 LBS</div><div class="mci-ind-wt">×0.08</div><div class="mci-ind-val" id="mv_lumber">—</div><div class="mci-ind-chg" id="mv_lumber_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">人民元/円</div><div class="mci-ind-wt">×0.06</div><div class="mci-ind-val" id="mv_cnyJpy">—</div><div class="mci-ind-chg" id="mv_cnyJpy_chg"></div></div>
+                <div class="mci-ind"><div class="mci-ind-label">長期金利</div><div class="mci-ind-wt">×0.04</div><div class="mci-ind-val" id="mv_jgb10y">—</div><div class="mci-ind-chg" id="mv_jgb10y_chg"></div></div>
             </div>
             <!-- Sub-indices + Structure + Controls -->
             <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.6rem">
@@ -431,25 +434,25 @@
         const MARKET_CONFIG = {
             baseDate: '2022-04-01',
             baseLabel: '2022年基準',
-            baseValues: { nikkei:27500, usdjpy:131.0, brent:95.0, copper:4.30, jgb10y:0.20 },
+            baseValues: { nikkei:27500, usdjpy:131.0, brent:95.0, copper:4.30, jgb10y:0.20, cnyJpy:19.5, steel:42.0, lumber:450.0 },
             // MCI統合（構造無関係の全体指数）
-            mciWeights: { usdjpy:0.35, copper:0.25, brent:0.15, nikkei:0.15, jgb10y:0.10 },
+            mciWeights: { usdjpy:0.27, copper:0.18, steel:0.15, brent:0.12, nikkei:0.10, lumber:0.08, cnyJpy:0.06, jgb10y:0.04 },
             // 設備 MEP（全構造共通）
-            mepWeights: { usdjpy:0.40, copper:0.35, brent:0.10, nikkei:0.05, jgb10y:0.10 },
+            mepWeights: { usdjpy:0.35, copper:0.30, steel:0.10, brent:0.10, nikkei:0.05, lumber:0.03, cnyJpy:0.05, jgb10y:0.02 },
             mepRatio: 0.25,
             cap: 0.35,
             perIndicatorCap: 0.60,
             // ■構造別ウェイト（建築躯体部分）
             // 各指標への感度が構造で異なる
             structureWeights: {
-                '木造': { usdjpy:0.20, copper:0.10, brent:0.15, nikkei:0.25, jgb10y:0.30,
-                          label:'木造（準耐火）', note:'国産材比率高→為替感度低、労務・金利が支配' },
-                'S造':  { usdjpy:0.30, copper:0.25, brent:0.15, nikkei:0.15, jgb10y:0.15,
+                '木造': { usdjpy:0.15, copper:0.08, steel:0.08, brent:0.12, nikkei:0.20, lumber:0.18, cnyJpy:0.04, jgb10y:0.15,
+                          label:'木造（準耐火）', note:'国産材比率高→為替感度低、木材・労務・金利が支配' },
+                'S造':  { usdjpy:0.25, copper:0.20, steel:0.22, brent:0.12, nikkei:0.10, lumber:0.03, cnyJpy:0.05, jgb10y:0.03,
                           label:'S造（鉄骨）', note:'鉄鋼＝銅相関高、為替で鋼材価格変動' },
-                'RC':   { usdjpy:0.35, copper:0.20, brent:0.15, nikkei:0.15, jgb10y:0.15,
-                          label:'RC造（鉄筋コンクリート）', note:'セメント＋鉄筋＝原油・銅連動' },
-                'SRC':  { usdjpy:0.35, copper:0.22, brent:0.15, nikkei:0.13, jgb10y:0.15,
-                          label:'SRC造', note:'RC＋鉄骨ハイブリッド、銅感度やや高' }
+                'RC':   { usdjpy:0.27, copper:0.18, steel:0.15, brent:0.12, nikkei:0.10, lumber:0.02, cnyJpy:0.12, jgb10y:0.04,
+                          label:'RC造（鉄筋コンクリート）', note:'セメント＋鉄筋＝原油・銅連動、中国材影響大' },
+                'SRC':  { usdjpy:0.26, copper:0.19, steel:0.18, brent:0.12, nikkei:0.10, lumber:0.02, cnyJpy:0.10, jgb10y:0.03,
+                          label:'SRC造', note:'RC＋鉄骨ハイブリッド、鉄鋼・銅感度高' }
             },
             // ■用途別補正係数（構造指数に乗算）
             // 用途特有のコスト構造を反映
@@ -462,7 +465,7 @@
             }
         };
         // 2026年2月時点の実勢値（latest.jsonで上書きされる）
-        const CURRENT_2026 = { nikkei:57143, usdjpy:153.7, brent:68.3, copper:5.71, jgb10y:2.18 };
+        const CURRENT_2026 = { nikkei:57143, usdjpy:153.7, brent:68.3, copper:5.71, jgb10y:2.18, cnyJpy:21.2, steel:48.5, lumber:520.0 };
         let marketData = { current: {...CURRENT_2026}, history30d: [], fetchDate:'2026-02-18' };
         let marketIndex = { building:1.0, mep:1.0, mci:1.0, byStructure:{} };
 
@@ -549,7 +552,7 @@
         function updateMarketUI(vals, ratios){
             const base = MARKET_CONFIG.baseValues;
             // ■5指標 現在値 + 2022基準比
-            [{key:'usdjpy',fmt:v=>v.toFixed(1)},{key:'copper',fmt:v=>v.toFixed(2)},{key:'brent',fmt:v=>v.toFixed(1)},{key:'nikkei',fmt:v=>Math.round(v).toLocaleString()},{key:'jgb10y',fmt:v=>v.toFixed(2)+'%'}]
+            [{key:'usdjpy',fmt:v=>v.toFixed(1)},{key:'copper',fmt:v=>v.toFixed(2)},{key:'steel',fmt:v=>v.toFixed(1)},{key:'brent',fmt:v=>v.toFixed(1)},{key:'nikkei',fmt:v=>Math.round(v).toLocaleString()},{key:'lumber',fmt:v=>v.toFixed(0)},{key:'cnyJpy',fmt:v=>v.toFixed(2)},{key:'jgb10y',fmt:v=>v.toFixed(2)+'%'}]
             .forEach(({key,fmt})=>{
                 const vE=document.getElementById('mv_'+key), cE=document.getElementById('mv_'+key+'_chg');
                 if(vE) vE.textContent = fmt(vals[key]||base[key]);
@@ -1537,8 +1540,6 @@
             w.document.close();
         }
     </script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="../js/auth.js"></script>
     <script src="../js/plan-gate.js"></script>
 <script>requireAuth();handlePaymentSuccess();</script>
