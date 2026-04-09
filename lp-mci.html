@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開発費が上がる本当の理由 | タムジ.Develop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@200;300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #C8161D;
+  --primary-dark: #a01118;
+  --primary-pale: #fef2f2;
+  --black: #1a1a1a;
+  --charcoal: #2d2d2d;
+  --g700: #444;
+  --g500: #777;
+  --g400: #999;
+  --g300: #bbb;
+  --g200: #d5d5d5;
+  --g100: #e8e6e3;
+  --cream: #f6f4f1;
+  --warm-white: #fbfaf8;
+  --font-sans: 'Noto Sans JP', sans-serif;
+  --font-serif: 'Noto Serif JP', serif;
+  --font-display: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--warm-white);
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ── HEADER ── */
+.site-header {
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--g100);
+  background: var(--warm-white);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-logo {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  color: var(--black);
+}
+.site-logo span { color: var(--primary); }
+.header-link {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+  padding-bottom: 2px;
+  transition: opacity .2s;
+}
+.header-link:hover { opacity: .7; }
+
+/* ── HERO ── */
+.hero {
+  padding: 100px 60px 80px;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-bottom: 3px solid var(--primary);
+}
+
+.hero-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3.5vw, 46px);
+  font-weight: 300;
+  line-height: 1.45;
+  letter-spacing: .03em;
+  color: var(--black);
+  margin-bottom: 28px;
+}
+
+.hero-title strong {
+  font-weight: 600;
+  color: var(--primary);
+  display: block;
+}
+
+.hero-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--g500);
+  line-height: 2.2;
+  max-width: 560px;
+  margin-bottom: 48px;
+  border-left: 3px solid var(--primary);
+  padding-left: 20px;
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 14px 36px;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background .3s;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+
+.scroll-down {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--g400);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.scroll-down::after {
+  content: '↓';
+  color: var(--primary);
+}
+
+/* ── SECTIONS ── */
+.section {
+  padding: 100px 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: .04em;
+  color: var(--black);
+  margin-bottom: 40px;
+}
+
+.divider { border: none; border-top: 1px solid var(--g100); }
+
+/* ── QUESTION LIST ── */
+.q-list { list-style: none; border-top: 1px solid var(--g100); }
+.q-item {
+  border-bottom: 1px solid var(--g100);
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 16px;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .5s, transform .5s;
+}
+.q-item.visible { opacity: 1; transform: translateY(0); }
+.q-num {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 1px;
+  padding-top: 2px;
+}
+.q-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--charcoal);
+  line-height: 1.9;
+}
+
+/* ── INDICATOR BAND（赤帯） ── */
+.indicator-band {
+  background: var(--primary);
+  padding: 60px;
+}
+.indicator-band-inner { max-width: 1000px; margin: 0 auto; }
+.band-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  display: block;
+  margin-bottom: 16px;
+}
+.band-title {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.band-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  line-height: 2;
+  margin-bottom: 40px;
+}
+
+/* 指標カード */
+.ind-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.15);
+  margin-bottom: 24px;
+}
+.ind-card {
+  background: rgba(255,255,255,0.06);
+  padding: 24px 16px;
+  text-align: center;
+  transition: background .3s;
+  cursor: default;
+}
+.ind-card:hover { background: rgba(255,255,255,0.12); }
+.ind-no {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 12px;
+}
+.ind-weight {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 6px;
+  filter: blur(6px);
+  user-select: none;
+  transition: filter .3s;
+}
+.ind-card:hover .ind-weight { filter: blur(0); }
+.ind-weight small { font-size: 14px; font-weight: 300; }
+.ind-name {
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  filter: blur(5px);
+  transition: filter .3s, color .3s;
+  user-select: none;
+}
+.ind-card:hover .ind-name {
+  filter: blur(0);
+  color: rgba(255,255,255,0.7);
+}
+.band-note {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.35);
+  line-height: 2;
+}
+
+/* ── IMPACT 2COLUMN ── */
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--g100);
+  margin-bottom: 60px;
+}
+.impact-card {
+  background: var(--warm-white);
+  padding: 40px 36px;
+}
+.impact-side {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.impact-stat {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.impact-stat-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--g400);
+  margin-bottom: 20px;
+}
+.impact-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--black);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.impact-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--g500);
+  line-height: 2;
+}
+
+/* ── TIMELINE ── */
+.tl-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.tl {
+  position: relative;
+  padding-left: 24px;
+  border-left: 2px solid var(--g100);
+}
+.tl-item { padding-bottom: 32px; position: relative; }
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--warm-white);
+  outline: 1px solid var(--primary);
+}
+.tl-year {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.tl-val {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.tl-val.current { color: var(--primary); }
+.tl-desc { font-size: 12px; font-weight: 300; color: var(--g500); }
+
+.quote-box {
+  background: var(--cream);
+  border-left: 3px solid var(--primary);
+  padding: 32px 28px;
+}
+.quote-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--black);
+  margin-bottom: 20px;
+}
+.quote-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--g500);
+  line-height: 2;
+}
+
+/* ── FEATURE LIST ── */
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--g100);
+  margin-bottom: 48px;
+}
+.feature-item {
+  background: var(--warm-white);
+  padding: 32px 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.feature-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-pale);
+  border: 1px solid rgba(200,22,29,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+.feature-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+.feature-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--g500);
+  line-height: 1.8;
+}
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: var(--cream);
+  border-top: 3px solid var(--primary);
+  padding: 80px 60px;
+  text-align: center;
+}
+.cta-title {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 300;
+  color: var(--black);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.cta-title strong { color: var(--primary); font-weight: 500; }
+.cta-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--g500);
+  line-height: 2.2;
+  margin-bottom: 40px;
+}
+.cta-price {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--g400);
+  margin-top: 20px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 32px 60px;
+  border-top: 1px solid var(--g100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--warm-white);
+}
+.footer-brand {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--g500);
+  letter-spacing: .06em;
+}
+.footer-brand span { color: var(--primary); }
+.footer-copy {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--g400);
+  letter-spacing: 1px;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-label { animation: fadeUp .6s .1s ease both; }
+.hero-title { animation: fadeUp .6s .25s ease both; }
+.hero-sub   { animation: fadeUp .6s .4s ease both; }
+.hero-bottom{ animation: fadeUp .6s .55s ease both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .site-header { padding: 16px 24px; }
+  .hero { padding: 80px 24px 60px; }
+  .section { padding: 72px 24px; }
+  .indicator-band { padding: 48px 24px; }
+  .ind-grid { grid-template-columns: repeat(2, 1fr); }
+  .impact-grid { grid-template-columns: 1fr; }
+  .tl-wrap { grid-template-columns: 1fr; }
+  .feature-list { grid-template-columns: 1fr; }
+  .cta-band { padding: 60px 24px; }
+  footer { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-logo">タムジ.<span>Develop</span></div>
+  <a href="https://develop.tamjump.com/register.html" class="header-link">無料で始める →</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-label">Market Intelligence — 建設コストの構造</span>
+  <h1 class="hero-title">
+    業界の常識が、変わっています。<br>
+    <strong>根拠、持っていますか？</strong>
+  </h1>
+  <p class="hero-sub">
+    数字で語れる提案が、求められています。<br>
+    建設コストを動かす指標は8つ。その構造を知った提案が、今の基準です。
+  </p>
+  <div class="hero-bottom">
+    <a href="https://develop.tamjump.com/register.html" class="btn-primary">無料で登録する</a>
+    <span class="scroll-down">スクロールして確認する</span>
+  </div>
+</div>
+
+<!-- Q SECTION -->
+<div class="section">
+  <span class="section-label reveal">The Question</span>
+  <h2 class="section-title reveal">根拠、持っていますか？</h2>
+  <ul class="q-list">
+    <li class="q-item">
+      <span class="q-num">Q1</span>
+      <span class="q-text">建設費が2012年比で何パーセント上昇しているか、数字で即答できますか？</span>
+    </li>
+    <li class="q-item">
+      <span class="q-num">Q2</span>
+      <span class="q-text">ドル円が1円動くと、RC造の建築費がどれだけ変わるか、説明できますか？</span>
+    </li>
+    <li class="q-item">
+      <span class="q-num">Q3</span>
+      <span class="q-text">銅の国際価格と、介護施設の設備費の関係を、買い手に提示できますか？</span>
+    </li>
+    <li class="q-item">
+      <span class="q-num">Q4</span>
+      <span class="q-text">金利が上昇した場合、土地取得にまわせる予算がどう圧縮されるか、試算できますか？</span>
+    </li>
+    <li class="q-item">
+      <span class="q-num">Q5</span>
+      <span class="q-text">「今の価格」ではなく、「3ヶ月後の費用感」を根拠をもって提案できますか？</span>
+    </li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<!-- INDICATOR BAND（赤帯） -->
+<div class="indicator-band">
+  <div class="indicator-band-inner">
+    <span class="band-label">The Structure — MCI指数の構成</span>
+    <h2 class="band-title">建設コストを動かす指標は、8つある。</h2>
+    <p class="band-sub">
+      為替・資材・エネルギー・市場・金融——それぞれの領域から、建設費を動かす指標を選定。<br>
+      ウェイト配分は当社独自のロジックによります。
+    </p>
+
+    <div class="ind-grid">
+      <div class="ind-card">
+        <div class="ind-no">指標 01</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">ドル円（USD/JPY）</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 02</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">人民元/円（CNY/JPY）</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 03</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">銅先物（Copper）</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 04</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">鉄筋・鉄鋼（HRC）</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 05</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">木材（Lumber）</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 06</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">Brent原油</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 07</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">日経平均</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-no">指標 08</div>
+        <div class="ind-weight">●●<small>%</small></div>
+        <div class="ind-name">長期金利（JGB10Y）</div>
+      </div>
+    </div>
+
+    <p class="band-note">
+      カードにカーソルを乗せると、指標名とウェイトが表示されます。<br>
+      各指標の選定理由・ウェイト配分・計算ロジックの詳細は会員登録後にご確認いただけます。
+    </p>
+  </div>
+</div>
+
+<!-- IMPACT SECTION -->
+<div class="section">
+  <span class="section-label reveal">Why It Matters — 売る側も、買う側も</span>
+  <h2 class="section-title reveal">
+    今は「先の値段」で動く時代。<br>根拠のない提案は、交渉にならない。
+  </h2>
+
+  <div class="impact-grid reveal">
+    <div class="impact-card">
+      <div class="impact-side">Seller — 売り手</div>
+      <div class="impact-stat">+119<span style="font-size:22px;color:var(--g400)">%</span></div>
+      <div class="impact-stat-label">RC造 建設コスト指数 / 2012年比</div>
+      <div class="impact-title">「適正価格」を根拠で示せていますか？</div>
+      <div class="impact-desc">
+        建設費が上がっているから土地価格も上がって当然——その論理は正しい。
+        でも数字がなければ、交渉にならない。
+        根拠のある売却条件が、最終的に高い成約率を生む。
+      </div>
+    </div>
+    <div class="impact-card">
+      <div class="impact-side">Buyer — 買い手</div>
+      <div class="impact-stat" style="color: var(--charcoal);">×1.28</div>
+      <div class="impact-stat-label">介護施設 設備費補正係数（MCI概算）</div>
+      <div class="impact-title">今の見積もりは、1ヶ月後も有効ですか？</div>
+      <div class="impact-desc">
+        ドル円・銅価格・金利が動けば、見積もりは変わる。
+        「いつの価格か」を問わずに投資判断をするのは、
+        マーケットリスクを無視して事業を始めるようなものです。
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-wrap reveal">
+    <div>
+      <div style="font-family:var(--font-display);font-size:10px;letter-spacing:3px;color:var(--primary);margin-bottom:24px;">RC造 坪単価の推移</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-year">2012</div>
+          <div class="tl-val">約 52<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">基準年</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2015</div>
+          <div class="tl-val">約 68<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+31% ── アベノミクス・建設ラッシュ</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2019</div>
+          <div class="tl-val">約 85<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+63% ── 消費増税・オリンピック需要</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2020</div>
+          <div class="tl-val">約 87<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+67% ── コロナ禍・工事停滞</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2021</div>
+          <div class="tl-val">約 93<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+79% ── ウッドショック・資材不足</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2022</div>
+          <div class="tl-val">約 99<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+90% ── ウクライナ侵攻・円安急進</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div class="tl-val">約 112<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+115% ── 金利上昇・人手不足</div>
+        </div>
+        <div class="tl-item" style="padding-bottom:0">
+          <div class="tl-year">2025</div>
+          <div class="tl-val current">約 115<span style="font-size:14px;font-weight:300;color:var(--g500)"> 万円/坪</span></div>
+          <div class="tl-desc">+119% ── MCI指数による実勢推計</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <div class="quote-text">
+        「物価が上がっているので…」<br>
+        <span style="color:var(--g500)">この一言で、何億円の判断をさせようとしていますか。</span>
+      </div>
+      <div class="quote-sub">
+        世界で資金を動かすファンドの担当者は、コストドライバーを指標ベースで把握しています。
+        同じ土俵で提案できる人間が、今の不動産・建設業界にどれだけいるでしょうか。<br><br>
+        タムジ.Developは、その「根拠」を誰でも使えるツールとして提供します。
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- FEATURE SECTION -->
+<div class="section">
+  <span class="section-label reveal">The Tool — できること</span>
+  <h2 class="section-title reveal">
+    8指標と連動した<br>開発費算定ツール。無料で使える。
+  </h2>
+
+  <div class="feature-list reveal">
+    <div class="feature-item">
+      <div class="feature-icon">01</div>
+      <div>
+        <div class="feature-name">開発費シミュレーター</div>
+        <div class="feature-desc">施設種別・入居者数・構造を入力するだけ。MCI指数でリアルタイムに補正された建設費を算出。木造/S造/RC/SRCの4構造を並列比較。</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">02</div>
+      <div>
+        <div class="feature-name">什器備品費 算定ツール</div>
+        <div class="feature-desc">介護施設の什器備品をカテゴリ別に選定。購入・リースの月次コスト比較も自動計算。銅・ドル円指標で設備費を補正。</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">03</div>
+      <div>
+        <div class="feature-name">MCI指数 リアルタイム表示</div>
+        <div class="feature-desc">8指標の現在値・変動率・建設費への寄与度を常時表示。「今日の市場で、今の建設費を出す」がコンセプト。</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">Pro</div>
+      <div>
+        <div class="feature-name">詳細見積 / スキーム構造設計</div>
+        <div class="feature-desc">工種別コスト内訳・PDF出力・IFRS16対応の財務設計資料。Proプラン（¥300/月）で利用可能。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div style="max-width:600px;margin:0 auto;">
+    <h2 class="cta-title">
+      世界基準の提案資料を、<br><strong>5分で。無料で。</strong>
+    </h2>
+    <p class="cta-sub">
+      会員登録（無料）で開発費シミュレーターと什器備品費算定ツールをすぐに使えます。<br>
+      Proプラン（¥300/月）で詳細見積・スキーム設計・PDF出力まで対応。
+    </p>
+    <a href="https://develop.tamjump.com/register.html" class="btn-primary">無料で会員登録する</a>
+    <p class="cta-price">FREE — 月3回まで無料　/　PRO ¥300 / 月</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">タムジ.<span>Develop</span></div>
+  <div class="footer-copy">© 2026 タムジ株式会社 — develop.tamjump.com</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      if (e.target.classList.contains('q-list')) {
+        e.target.querySelectorAll('.q-item').forEach((item, i) => {
+          setTimeout(() => item.classList.add('visible'), i * 100);
+        });
+      }
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal, .q-list').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
