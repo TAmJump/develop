@@ -21,7 +21,10 @@ const SYMBOLS = {
   usdjpy:  'USDJPY%3DX',
   brent:   'BZ%3DF',
   copper:  'HG%3DF',
-  jgb10y:  '%5EIRXX'  // Japan 10Y Govt Bond Index (fallback below)
+  jgb10y:  '%5EIRXX',  // Japan 10Y Govt Bond Index (fallback below)
+  cnyJpy:  'CNYJPY%3DX', // 人民元/円
+  steel:   'SLX',        // 鉄鋼ETF（HRC先物代替）
+  lumber:  'LBS%3DF'     // 木材先物
 };
 
 // JGB 10Yは直接取れないことがあるので、別途フォールバック
@@ -89,7 +92,8 @@ async function main() {
   try { existing = JSON.parse(fs.readFileSync(outPath, 'utf8')); } catch {}
   
   const baseValues = existing.baseValues || {
-    nikkei: 27500, usdjpy: 131.0, brent: 95.0, copper: 4.30, jgb10y: 0.20
+    nikkei: 27500, usdjpy: 131.0, brent: 95.0, copper: 4.30, jgb10y: 0.20,
+    cnyJpy: 19.5, steel: 42.0, lumber: 450.0
   };
   
   // 各指標を取得
@@ -134,7 +138,10 @@ async function main() {
   });
   
   // MCI計算（確認用）
-  const weights = { usdjpy: 0.35, copper: 0.25, brent: 0.15, nikkei: 0.15, jgb10y: 0.10 };
+  const weights = {
+    usdjpy: 0.27, copper: 0.18, steel: 0.15, brent: 0.12,
+    nikkei: 0.10, lumber: 0.08, cnyJpy: 0.06, jgb10y: 0.04
+  };
   let mci = 0;
   for (const [k, w] of Object.entries(weights)) {
     mci += w * (results[k] / baseValues[k]);
