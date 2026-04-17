@@ -1,377 +1,1690 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>不動産開発 | TAmJ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/corporate.css">
-    <link rel="stylesheet" href="css/tools.css">
-    <style>
-        /* ── Hero: warm light overlay ── */
-        .idx-hero{background:var(--cream);color:var(--black);padding:11rem 2rem 5rem;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;border-bottom:3px solid var(--primary)}
-        .idx-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,244,241,.7) 0%,rgba(246,244,241,.85) 50%,rgba(246,244,241,.95) 100%),url('no-no3.png') center/cover;opacity:1}
-        .idx-hero>*{position:relative;z-index:1}
-        .idx-hero .label{font-family:var(--font-display);font-size:12px;letter-spacing:8px;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:24px}
-        .idx-hero h1{font-family:var(--font-serif);font-size:clamp(1.5rem,4vw,2.6rem);font-weight:500;letter-spacing:.08em;line-height:1.6;margin:0 0 20px;color:var(--black)}
-        .idx-hero .sub{font-size:14px;font-weight:400;color:var(--gray-700);line-height:2.2;margin:0 auto;max-width:560px}
-        .idx-hero .cta-row{display:flex;gap:12px;justify-content:center;margin-top:36px;flex-wrap:wrap}
-        .idx-hero .cta-btn{padding:12px 32px;font-size:13px;font-weight:700;letter-spacing:1px;border:none;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
-        .idx-hero .cta-btn.primary{background:var(--primary);color:#fff}
-        .idx-hero .cta-btn.primary:hover{background:var(--primary-dark)}
-        .idx-hero .cta-btn.ghost{background:transparent;border:1px solid var(--gray-300);color:var(--charcoal)}
-        .idx-hero .cta-btn.ghost:hover{border-color:var(--charcoal);color:var(--black)}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>さかえビル 入口サイン使用 | ご提案書・契約書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Noto+Serif+JP:wght@400;500;600;700;900&family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#B8924A; --gold-pale:#F9F5EC; --gold-border:rgba(184,146,74,0.3);
+  --white:#fff; --black:#111; --g7:#444; --g6:#666; --g5:#888; --g4:#999;
+  --g3:#ccc; --g2:#e0e0e0; --g1:#f5f5f5;
+  --green:#2E7D32; --green-pale:#EFF7F0;
+  --blue:#1565C0; --blue-pale:#EEF3FB;
+  --red:#B71C1C; --red-pale:#FCF1F1;
+  --orange:#E65100; --orange-pale:#FEF3EC;
+  --jp:'Noto Sans JP',sans-serif;
+  --jp-serif:'Noto Serif JP',serif;
+  --en:'Cormorant Garamond','Inter',serif;
+  --es:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--jp);color:var(--black);background:var(--white);-webkit-font-smoothing:antialiased;line-height:1.8;font-size:14px;}
 
-        /* ── Sections ── */
-        .idx-section{padding:5rem 2rem}
-        .idx-section .narrow{max-width:800px;margin:0 auto}
-        .idx-section .wide{max-width:1000px;margin:0 auto}
-        .idx-section .slabel{font-family:var(--font-display);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:8px}
-        .idx-section h2{font-family:var(--font-serif);font-size:clamp(1.2rem,3vw,1.7rem);font-weight:500;letter-spacing:.04em;margin:0 0 16px;color:var(--black)}
-        .idx-section .section-lead{font-size:14px;font-weight:400;line-height:2;color:var(--gray-700);margin:0 0 40px;max-width:600px}
-        .idx-section.cream{background:var(--cream);border-top:1px solid var(--gray-100)}
-        .idx-section.warm{background:var(--warm-white)}
+.print-only{display:none;}
 
-        .idx-body{font-size:15px;font-weight:400;line-height:2.2;color:var(--charcoal);border-left:3px solid var(--primary);padding-left:24px;margin-bottom:0}
+.doc-header{background:var(--white);color:var(--black);padding:36px 52px;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;border-bottom:3px solid var(--gold);}
+.doc-tag{font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.doc-title{font-size:24px;font-weight:900;color:var(--black);line-height:1.4;margin-bottom:6px;}
+.doc-sub{font-size:13px;color:var(--g5);font-weight:400;line-height:1.8;}
+.doc-meta{text-align:right;font-family:var(--es);font-size:11px;color:var(--g4);line-height:2.2;flex-shrink:0;}
+.doc-meta strong{color:var(--gold);font-weight:700;font-size:13px;display:block;margin-bottom:2px;}
 
-        /* ── Preview ── */
-        .preview-block{margin-top:48px;position:relative}
-        .preview-caption{font-size:12px;color:var(--gray-500);text-align:center;margin-top:16px;font-weight:400;font-style:italic}
+/* ── PAGE TABS ── */
+.page-tabs{background:var(--white);border-bottom:1px solid var(--g2);padding:0 52px;display:flex;gap:0;position:sticky;top:0;z-index:10;align-items:stretch;}
+.tabs-left{display:flex;gap:0;flex:1;}
+.tabs-right{display:flex;align-items:center;}
+.tab-btn{padding:16px 36px;background:transparent;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:var(--jp);font-size:13px;font-weight:700;color:var(--g5);letter-spacing:3px;transition:all .2s;margin-bottom:-1px;}
+.tab-btn:hover{color:var(--g7);background:var(--g1);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-btn .en{font-family:var(--es);font-size:9px;color:var(--g4);display:block;letter-spacing:2px;margin-top:2px;font-weight:600;}
+.tab-btn.active .en{color:var(--gold);}
+.btn-print{padding:9px 22px;background:var(--black);border:1.5px solid var(--black);color:var(--white);font-weight:700;font-size:12px;cursor:pointer;border-radius:2px;transition:all .2s;letter-spacing:2px;font-family:var(--jp);}
+.btn-print:hover{background:var(--gold);border-color:var(--gold);color:var(--white);}
+.btn-print .en{font-family:var(--es);font-size:9px;letter-spacing:2px;margin-left:6px;opacity:0.7;}
+.page-content{display:none;}
+.page-content.active{display:block;}
 
-        /* ── Feature Rows (alternating) ── */
-        .feat-rows{max-width:960px;margin:0 auto}
-        .feat-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:56px 0;border-bottom:1px solid var(--gray-100)}
-        .feat-row:last-child{border-bottom:none}
-        .feat-row.reverse .feat-text{order:1}
-        .feat-row.reverse .feat-img{order:2}
-        @media(max-width:768px){.feat-row{grid-template-columns:1fr;gap:24px;padding:32px 0}.feat-row.reverse .feat-text,.feat-row.reverse .feat-img{order:unset}}
-        .feat-text .feat-num{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:3px;color:var(--primary);margin-bottom:8px}
-        .feat-text h3{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--black);letter-spacing:.03em;margin:0 0 12px}
-        .feat-text p{font-size:14px;font-weight:400;line-height:2;color:var(--gray-700);margin:0 0 16px}
-        .feat-text .feat-tags{display:flex;gap:6px;flex-wrap:wrap}
-        .feat-text .feat-tag{font-size:10px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border:1px solid var(--gray-300);color:var(--gray-700)}
-        .feat-text .feat-tag.pro{border-color:var(--primary);color:var(--primary);background:var(--primary-pale)}
-        .feat-img{background:#fff;border:1px solid var(--gray-200);border-radius:6px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
-        .feat-img img{width:100%;display:block}
+.notice{background:var(--gold-pale);border-bottom:1px solid var(--gold-border);padding:10px 52px;font-size:12px;color:var(--g7);display:flex;align-items:center;gap:10px;}
 
+.main{max-width:1020px;margin:0 auto;padding:44px 52px 72px;}
 
-        /* ── Steps ── */
-        .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:40px}
-        .step{text-align:center;padding:0 8px}
-        .step-num{font-family:var(--font-display);font-size:48px;font-weight:700;color:var(--gray-200);line-height:1;margin-bottom:12px}
-        .step h4{font-size:15px;font-weight:700;color:var(--black);margin:0 0 8px}
-        .step p{font-size:13px;font-weight:400;line-height:1.8;color:var(--gray-700);margin:0}
+.sec-label{font-family:var(--en);font-size:11px;font-weight:600;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:7px;}
+.sec-title{font-size:18px;font-weight:900;color:var(--black);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--g2);}
+.sec-divider{border:none;border-top:1px solid var(--g2);margin:44px 0;}
 
-        /* ── Pricing ── */
-        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:720px;margin:40px auto 0}
-        .pr-card{background:#fff;border:2px solid var(--gray-200);padding:36px 32px;text-align:center;transition:all .3s;position:relative}
-        .pr-card.featured{border-color:var(--primary);box-shadow:0 8px 40px rgba(200,22,29,.08)}
-        .pr-card .badge-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 14px;text-transform:uppercase}
-        .pr-card .plan-name{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--charcoal)}
-        .pr-card .price{font-family:var(--font-display);font-size:44px;font-weight:600;color:var(--black);line-height:1;margin:16px 0 4px}
-        .pr-card .price small{font-size:16px;font-weight:400}
-        .pr-card .price-unit{font-size:13px;color:var(--gray-700);font-weight:400;margin-bottom:4px}
-        .pr-card .price-annual{font-size:12px;color:var(--primary);font-weight:500;margin-bottom:20px;min-height:18px}
-        .pr-card ul{text-align:left;padding:0;list-style:none;margin:0 0 24px}
-        .pr-card li{font-size:13px;color:var(--gray-700);font-weight:400;padding:8px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:8px;line-height:1.6}
-        .pr-card li::before{content:'✓';font-size:11px;color:var(--primary);font-weight:700;margin-top:2px}
-        .pr-card li.disabled{color:var(--gray-300)}
-        .pr-card li.disabled::before{content:'—';color:var(--gray-300)}
-        .pr-card .btn-plan{display:block;width:100%;padding:14px;font-size:13px;font-weight:700;letter-spacing:1px;border:2px solid var(--charcoal);background:transparent;color:var(--charcoal);cursor:pointer;transition:all .3s;text-decoration:none;text-align:center}
-        .pr-card .btn-plan:hover{background:var(--charcoal);color:#fff}
-        .pr-card.featured .btn-plan{background:var(--primary);color:#fff;border-color:var(--primary)}
-        .pr-card.featured .btn-plan:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--g2);border:1px solid var(--g2);border-radius:3px;overflow:hidden;margin-bottom:24px;}
+.kpi{background:var(--white);padding:20px 14px;text-align:center;}
+.kpi.accent{background:var(--gold-pale);}
+.kpi-v{font-family:var(--en);font-size:28px;font-weight:700;color:var(--black);line-height:1.2;}
+.kpi-v .u{font-family:var(--jp);font-size:12px;font-weight:500;color:var(--g5);}
+.kpi-l{font-size:11px;color:var(--g5);margin-top:4px;line-height:1.4;}
 
-        /* ── FAQ ── */
-        .faq-list{max-width:640px;margin:40px auto 0}
-        .faq-item{border-bottom:1px solid var(--gray-200);padding:16px 0}
-        .faq-item dt{font-size:14px;font-weight:600;color:var(--black);margin-bottom:6px}
-        .faq-item dd{font-size:13px;font-weight:400;color:var(--gray-700);line-height:1.9;margin:0}
+/* ── SIGN INPUT ── */
+.sign-input-section{border:2px solid var(--gold);border-radius:4px;margin-bottom:24px;overflow:hidden;}
+.sign-input-header{background:var(--gold-pale);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--gold-border);flex-wrap:wrap;gap:10px;}
+.sign-input-title{font-size:13px;font-weight:700;color:var(--black);letter-spacing:1px;}
+.sign-input-title .tag{font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-right:10px;}
+.sign-input-unit{font-size:12px;color:var(--g7);}
+.sign-input-unit strong{font-family:var(--en);font-size:16px;color:var(--gold);font-weight:700;margin:0 3px;}
 
-        /* ── CTA Band ── */
-        .cta-band{padding:56px 2rem;text-align:center;background:var(--cream);border-top:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100)}
-        .cta-band p{font-size:16px;font-weight:400;color:var(--charcoal);margin:0 0 20px}
-        .cta-band .cta-btn{padding:14px 40px;font-size:14px;font-weight:700;letter-spacing:1px;border:none;background:var(--primary);color:#fff;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
-        .cta-band .cta-btn:hover{background:var(--primary-dark)}
+.sign-input-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);}
+.sign-input-table thead th{background:var(--g1);padding:10px 12px;font-size:10px;font-weight:700;color:var(--g5);letter-spacing:1px;border-bottom:1px solid var(--g2);text-align:center;white-space:nowrap;}
+.sign-input-table tbody td{padding:12px;border-bottom:1px solid var(--g2);text-align:center;color:var(--black);vertical-align:middle;}
+.sign-input-table tbody td.no-cell{font-family:var(--en);font-size:13px;font-weight:700;color:var(--g5);}
+.sign-input-table tbody td.area-cell,.sign-input-table tbody td.sub-cell{font-family:var(--en);font-size:14px;font-weight:700;color:var(--black);}
+.sign-input-table tbody td.sub-cell{color:var(--gold);}
+.sign-input-table tbody td input{width:68px;padding:6px 8px;border:1px solid var(--g2);border-radius:2px;font-size:14px;font-family:var(--en);font-weight:700;text-align:center;background:#FFFDF7;color:var(--black);outline:none;-moz-appearance:textfield;}
+.sign-input-table tbody td input::-webkit-outer-spin-button,.sign-input-table tbody td input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.sign-input-table tbody td input:focus{border-color:var(--gold);background:var(--gold-pale);}
+.sign-input-table tbody td .u-cm{font-size:11px;color:var(--g5);margin-left:4px;}
+.sign-input-table tbody td.rate-sel-cell{padding:8px 10px;text-align:left;min-width:230px;}
+.sign-input-table tbody td .in-rate{width:100%;padding:7px 8px;border:1px solid var(--g2);border-radius:2px;font-size:12px;font-family:var(--jp);font-weight:600;background:#FFFDF7;color:var(--black);outline:none;cursor:pointer;}
+.sign-input-table tbody td .in-rate:focus{border-color:var(--gold);background:var(--gold-pale);}
+.sign-input-table tbody td.rate-cell{font-family:var(--en);font-size:14px;font-weight:700;color:var(--gold);}
+.sign-input-table tfoot td{background:var(--gold-pale);padding:14px 12px;font-family:var(--en);font-size:15px;font-weight:900;color:var(--black);text-align:center;border-top:2px solid var(--gold);}
+.sign-input-table tfoot td.tot-label{font-family:var(--jp);font-size:12px;font-weight:700;color:var(--g7);text-align:right;letter-spacing:2px;}
 
-        .light-band{padding:48px 2rem;text-align:center}
-        .light-band p{font-size:15px;font-weight:400;color:var(--gray-700);margin:0 0 16px}
-        .light-band .text-link{font-size:14px;font-weight:600;color:var(--charcoal);letter-spacing:1px;padding-bottom:2px;border-bottom:1.5px solid var(--charcoal);transition:all .3s;text-decoration:none}
-        .light-band .text-link:hover{color:var(--primary);border-bottom-color:var(--primary)}
-    </style>
+.btn-remove{padding:4px 10px;background:transparent;border:1px solid var(--g3);color:var(--g6);font-size:11px;cursor:pointer;border-radius:2px;transition:all .2s;font-family:var(--jp);}
+.btn-remove:hover{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+.btn-remove:disabled{opacity:.3;cursor:not-allowed;}
+
+.sign-input-footer{padding:14px 20px;background:var(--white);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--g2);flex-wrap:wrap;gap:10px;}
+.btn-add{padding:9px 22px;background:var(--white);border:1.5px solid var(--gold);color:var(--gold);font-weight:700;font-size:12px;cursor:pointer;border-radius:2px;transition:all .2s;letter-spacing:1px;font-family:var(--jp);}
+.btn-add:hover{background:var(--gold);color:var(--white);}
+.sign-footer-hint{font-size:11px;color:var(--g5);}
+
+.calc-display{background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:3px;padding:14px 20px;margin-bottom:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.calc-display .calc-l{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:2px;}
+.calc-display .calc-formula{font-size:12px;color:var(--g7);font-family:var(--en);font-weight:500;}
+.calc-display .calc-formula strong{color:var(--black);font-weight:700;}
+.calc-display .calc-area{font-family:var(--en);font-size:14px;color:var(--g7);font-weight:600;}
+.calc-display .calc-area strong{color:var(--black);}
+
+.spec-table{width:100%;border-collapse:collapse;margin-bottom:36px;font-size:13px;}
+.spec-table th,.spec-table td{padding:11px 16px;border-bottom:1px solid var(--g2);text-align:left;}
+.spec-table th{font-weight:600;color:var(--g5);background:var(--g1);width:180px;white-space:nowrap;}
+.spec-table td{color:var(--black);font-weight:500;}
+.spec-table td strong{color:var(--gold);font-weight:700;}
+
+.driver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px;}
+.driver-card{border:1px solid var(--g2);border-radius:3px;padding:20px 18px;}
+.driver-tag{font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.driver-name{font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px;}
+.driver-val{font-family:var(--en);font-size:22px;font-weight:700;color:var(--black);line-height:1.1;margin-bottom:4px;}
+.driver-val .u{font-family:var(--jp);font-size:11px;color:var(--g5);}
+.driver-sub{font-size:11px;color:var(--g5);line-height:1.7;}
+.driver-sub em{color:var(--green);font-style:normal;font-weight:600;}
+.driver-sub span.up{color:var(--red);font-weight:600;}
+
+.formula{background:var(--g1);border:1px solid var(--g2);border-radius:3px;padding:20px 24px;margin-bottom:36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;}
+.f-box{background:var(--white);border:1px solid var(--g2);border-radius:2px;padding:8px 14px;text-align:center;min-width:120px;}
+.f-box .fl{font-size:10px;color:var(--g5);margin-bottom:2px;}
+.f-box .fv{font-size:13px;font-weight:700;color:var(--black);}
+.f-op{color:var(--gold);font-size:20px;font-weight:300;}
+.f-result{background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:2px;padding:10px 18px;text-align:center;min-width:150px;}
+.f-result .fl{font-size:10px;color:var(--gold);font-weight:600;margin-bottom:2px;}
+.f-result .fv{font-size:15px;font-weight:900;color:var(--black);}
+
+.scale-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:13px;}
+.scale-table th,.scale-table td{padding:11px 14px;border-bottom:1px solid var(--g2);text-align:left;vertical-align:middle;}
+.scale-table thead th{background:var(--g1);font-size:11px;font-weight:700;color:var(--g5);letter-spacing:1px;text-align:center;}
+.scale-table thead th:first-child{text-align:left;}
+.scale-table tbody th{font-weight:600;color:var(--black);background:transparent;min-width:160px;}
+.scale-table td{text-align:center;color:var(--black);font-weight:500;}
+.scale-table .col-std{background:rgba(184,146,74,0.06);}
+
+/* ── MCI 10年推移テーブル ── */
+.mci-table-wrap{width:100%;overflow-x:auto;margin-bottom:10px;}
+.mci-table{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--jp);}
+.mci-table thead th{background:var(--g1);padding:9px 8px;font-size:10.5px;font-weight:700;color:var(--g6);letter-spacing:0.5px;border-bottom:1.5px solid var(--g2);text-align:center;white-space:nowrap;line-height:1.4;}
+.mci-table thead th .sub{font-family:var(--es);font-size:9px;color:var(--g5);font-weight:500;letter-spacing:0.5px;}
+.mci-table tbody td{padding:8px 8px;border-bottom:1px solid var(--g2);text-align:center;color:var(--g7);font-family:var(--en);font-weight:600;font-size:13px;white-space:nowrap;}
+.mci-table tbody td:first-child{font-family:var(--jp);color:var(--black);font-weight:600;font-size:12px;text-align:left;padding-left:14px;white-space:nowrap;}
+.mci-table tbody td.mci-v{color:var(--black);font-weight:700;font-size:13.5px;}
+.mci-table tbody td.mci-v.base{color:var(--gold);font-weight:900;font-size:14.5px;}
+.mci-table tbody td.mci-v.current{color:var(--green);font-weight:900;font-size:14.5px;}
+.mci-table tbody td.lvl-neg{color:var(--g5);font-weight:600;}
+.mci-table tbody td.lvl-pos{color:var(--green);font-weight:700;}
+.mci-table tbody td.lvl-pos.current{font-weight:900;font-size:14px;}
+.mci-table tbody td.lvl-base{color:var(--gold);font-weight:700;}
+.mci-table tbody tr.mci-base td{background:rgba(184,146,74,0.07);border-top:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);}
+.mci-table tbody tr.mci-current td{background:rgba(46,125,50,0.06);border-top:1.5px solid var(--green);}
+.mci-foot{font-size:10.5px;color:var(--g5);line-height:1.9;margin-top:10px;margin-bottom:22px;padding:10px 14px;background:var(--g1);border-left:3px solid var(--g3);}
+
+/* ── MCI 8指標スナップショットテーブル ── */
+.mci-snap{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--jp);border:1px solid var(--g2);}
+.mci-snap thead th{background:var(--g1);padding:9px 10px;font-size:10px;font-weight:700;color:var(--g6);letter-spacing:1px;border-bottom:1.5px solid var(--g2);text-align:center;line-height:1.4;white-space:nowrap;}
+.mci-snap thead th .sub{font-family:var(--es);font-size:8.5px;color:var(--g5);font-weight:500;letter-spacing:0.5px;}
+.mci-snap thead th.name{text-align:left;}
+.mci-snap tbody td{padding:9px 10px;border-bottom:1px solid var(--g2);vertical-align:middle;}
+.mci-snap tbody td.n{text-align:center;font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;width:40px;}
+.mci-snap tbody td.name{font-weight:600;color:var(--black);font-size:12px;}
+.mci-snap tbody td.name .en{font-family:var(--es);font-size:9px;color:var(--g5);font-weight:500;letter-spacing:1px;margin-left:6px;}
+.mci-snap tbody td.unit{font-size:11px;color:var(--g6);text-align:center;white-space:nowrap;}
+.mci-snap tbody td.val{text-align:right;font-family:var(--en);font-size:13px;font-weight:600;color:var(--g7);white-space:nowrap;}
+.mci-snap tbody td.val.current{color:var(--black);font-weight:700;font-size:14px;}
+.mci-snap tbody td.val .note-s{font-size:9px;color:var(--g5);vertical-align:super;margin-left:2px;}
+.mci-snap tbody td.date{text-align:center;font-family:var(--en);font-size:11px;color:var(--g6);white-space:nowrap;}
+.mci-snap tbody td.src{text-align:center;font-family:var(--es);font-size:10px;color:var(--g5);white-space:nowrap;}
+.mci-snap tbody tr:last-child td{border-bottom:none;}
+.mci-snap tbody tr:hover{background:var(--gold-pale);}
+
+.value-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px;}
+.value-item{border:1px solid var(--g2);border-radius:3px;padding:18px 20px;background:var(--white);}
+.value-num{font-family:var(--en);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.value-head{font-size:14px;font-weight:700;color:var(--black);margin-bottom:8px;line-height:1.5;}
+.value-desc{font-size:12px;color:var(--g6);line-height:1.9;}
+
+.note{border:1px solid var(--gold-border);background:var(--gold-pale);border-radius:3px;padding:20px 24px;margin-bottom:20px;}
+.note.green{background:var(--green-pale);border-color:rgba(46,125,50,0.3);}
+.note p{font-size:12px;color:var(--g7);line-height:2.1;}
+.note p strong{color:var(--black);}
+
+/* ── SEAL AREA (shared proposal & contract) ── */
+.seal-intro{font-size:12px;color:var(--g7);line-height:2;margin-bottom:20px;padding:14px 18px;background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:3px;}
+.c-sig-area{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;margin-bottom:20px;}
+.c-sig-box{border:1px solid var(--g3);padding:22px 20px 28px;background:var(--white);}
+.c-sig-label{font-weight:900;font-size:15px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--g3);color:var(--black);letter-spacing:4px;}
+.c-sig-label .role{font-family:var(--jp);font-size:10px;font-weight:600;color:var(--g5);letter-spacing:2px;margin-left:8px;}
+.c-sig-field{font-size:12px;color:var(--g6);margin-bottom:6px;line-height:1.9;}
+.c-sig-date{font-size:12px;color:var(--g6);margin-top:12px;padding-top:10px;border-top:1px dashed var(--g3);}
+.c-sig-seal{text-align:right;font-size:12px;margin-top:20px;color:var(--g5);padding:18px 18px;border:1px dashed var(--g3);display:inline-block;float:right;letter-spacing:4px;font-weight:600;}
+
+/* ── CONTRACT DOC ── */
+.contract-main{max-width:880px;margin:0 auto;padding:60px 52px 72px;background:var(--white);font-size:13.5px;line-height:1.95;color:var(--black);}
+.c-title{font-size:22px;font-weight:900;text-align:center;letter-spacing:8px;padding-bottom:22px;margin-bottom:36px;border-bottom:2px solid var(--black);}
+.c-parties{margin-bottom:28px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.c-party{border:1px solid var(--g2);padding:18px 20px;background:var(--g1);}
+.c-party-role{font-weight:700;margin-bottom:10px;padding-bottom:6px;border-bottom:1px dashed var(--g3);font-size:13px;color:var(--black);}
+.c-party-fields{font-size:12px;color:var(--g6);line-height:2.1;}
+.c-preamble{margin-bottom:32px;padding:16px 20px;background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:3px;font-size:13px;line-height:2;}
+.c-article{margin-bottom:22px;}
+.c-article-title{font-weight:900;color:var(--black);margin-bottom:8px;padding:6px 12px;background:var(--g1);border-left:4px solid var(--gold);font-size:14px;}
+.c-article-body{padding:0 8px 0 16px;font-size:13px;line-height:2.05;color:var(--g7);}
+.c-article-body ol{padding-left:24px;margin:6px 0;}
+.c-article-body ol li{margin-bottom:6px;}
+.c-article-body ul.no-num{list-style:none;padding-left:16px;margin:6px 0;}
+.c-article-body ul.no-num li{margin-bottom:4px;text-indent:-1.2em;padding-left:1.2em;}
+.c-article-body ul.no-num li:before{content:"";margin-right:0;}
+.c-emphasis{color:var(--gold);font-weight:900;background:var(--gold-pale);padding:1px 6px;border-radius:2px;}
+.c-dynamic{color:var(--gold);font-weight:900;font-family:var(--en);background:var(--gold-pale);padding:1px 6px;border-radius:2px;border-bottom:2px dashed var(--gold);}
+.c-closing{text-align:center;margin:36px 0 28px;font-size:13px;color:var(--g7);}
+.c-date{text-align:center;margin-bottom:32px;font-size:14px;letter-spacing:4px;}
+
+.contract-notice{background:var(--green-pale);border:1px solid rgba(46,125,50,0.3);border-radius:3px;padding:16px 20px;margin-bottom:32px;font-size:12px;color:var(--g7);line-height:1.9;}
+.contract-notice strong{color:var(--green);}
+
+.doc-footer{border-top:1px solid var(--g2);padding:22px 52px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--g4);}
+.doc-footer strong{color:var(--g7);}
+.disclaimer{background:var(--g1);border-top:1px solid var(--g2);padding:16px 52px;font-size:10px;color:var(--g4);line-height:2;}
+
+/* ═══════════════════════════════════════════ */
+/* ════ PRINT STYLESHEET (A3横・2面表示) ════ */
+/* ═══════════════════════════════════════════ */
+@media print {
+  @page {
+    size: A3 landscape;
+    margin: 15mm 20mm 15mm 20mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    font-size: 10.5pt;
+    line-height: 1.75;
+    color: #111;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  *{
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 画面要素を非表示 */
+  .page-tabs,
+  .notice,
+  .contract-notice,
+  .btn-print,
+  .btn-add,
+  .btn-remove,
+  .sign-input-footer,
+  .sign-footer-hint,
+  .doc-footer,
+  .disclaimer,
+  .tab-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  /* アクティブなタブだけ印刷 */
+  .page-content{display:none!important;}
+  .page-content.active{display:block!important;}
+
+  /* 印刷専用要素を表示 */
+  .print-only{display:block!important;}
+
+  /* 画面用ヘッダー非表示 */
+  .doc-header{display:none!important;}
+
+  /* ── PRINT COVER (カラムの上に全幅表示) ── */
+  .print-cover{
+    padding:16mm 0 10mm;
+    border-bottom:2pt solid var(--gold);
+    margin-bottom:8mm;
+    position:relative;
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+  .print-cover::before{
+    content:"";
+    position:absolute;
+    top:9mm;
+    left:0;
+    right:0;
+    height:0.5pt;
+    background:var(--gold);
+  }
+  .print-cover-tag{
+    font-family:var(--es);
+    font-size:9pt;
+    font-weight:700;
+    color:var(--gold);
+    letter-spacing:6pt;
+    margin-bottom:8mm;
+    text-transform:uppercase;
+  }
+  .print-cover-doctype{
+    font-family:var(--jp-serif);
+    font-size:12pt;
+    color:var(--g6);
+    letter-spacing:10pt;
+    margin-bottom:4mm;
+    font-weight:500;
+  }
+  .print-cover-title{
+    font-family:var(--jp-serif);
+    font-size:26pt;
+    font-weight:900;
+    color:var(--black);
+    line-height:1.3;
+    letter-spacing:2pt;
+    margin-bottom:8mm;
+  }
+  .print-cover-sub{
+    font-size:11pt;
+    color:var(--g6);
+    line-height:1.9;
+    margin-bottom:6mm;
+    padding-left:4mm;
+    border-left:2pt solid var(--gold);
+  }
+  .print-cover-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10mm;
+    padding-top:4mm;
+    border-top:0.5pt solid var(--g3);
+    font-size:9pt;
+    color:var(--g5);
+    font-family:var(--es);
+    letter-spacing:1pt;
+  }
+  .print-cover-meta .meta-item strong{
+    display:block;
+    font-family:var(--jp);
+    color:var(--gold);
+    font-size:10pt;
+    margin-bottom:1mm;
+    letter-spacing:2pt;
+  }
+
+  /* ═══ 2-UP レイアウト（中央縦ライン付き） ═══ */
+  .main,.contract-main{
+    column-count:2;
+    column-gap:24mm;
+    column-rule:0.5pt solid #999;
+    column-fill:auto;
+    padding:0;
+    margin:0;
+    max-width:100%;
+    width:100%;
+  }
+
+  /* カラムをまたがない要素 */
+  .kpi-grid,.sign-input-section,.calc-display,.spec-table,
+  .driver-card,.formula,.value-item,.note,
+  .c-article,.c-party,.c-sig-box,
+  .print-footer,table,tr{
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .sec-label{font-size:8pt;letter-spacing:3pt;margin-top:8mm;break-after:avoid;page-break-after:avoid;}
+  .sec-label:first-of-type{margin-top:0;}
+  .sec-title{font-size:14pt;margin-bottom:5mm;padding-bottom:2.5mm;border-bottom-width:1.5pt;break-after:avoid;page-break-after:avoid;}
+  .sec-divider{margin:6mm 0;border-top:0.5pt solid var(--g3);}
+
+  /* ── KPI グリッド ── */
+  .kpi-grid{
+    grid-template-columns:repeat(4,1fr);
+    margin-bottom:6mm;
+  }
+  .kpi{padding:3.5mm 2mm;}
+  .kpi-v{font-size:16pt;font-weight:700;}
+  .kpi-v .u{font-size:9pt;margin-left:2pt;}
+  .kpi-l{font-size:7.5pt;margin-top:1.5mm;line-height:1.4;}
+  .kpi.accent{
+    grid-column:1 / -1;
+    padding:5mm 4mm;
+    border-top:2pt solid var(--gold);
+  }
+  .kpi.accent .kpi-v{font-size:24pt;letter-spacing:1pt;}
+  .kpi.accent .kpi-v .u{font-size:11pt;}
+  .kpi.accent .kpi-l{font-size:8pt;margin-top:2mm;letter-spacing:2pt;}
+
+  /* ── サイン仕様入力 ── */
+  .sign-input-section{margin-bottom:5mm;}
+  .sign-input-header{padding:3mm 4mm;}
+  .sign-input-title{font-size:10pt;}
+  .sign-input-unit{font-size:9pt;}
+  .sign-input-unit strong{font-size:11pt;}
+  .sign-input-table{font-size:9.5pt;}
+  .sign-input-table thead th{padding:2.5mm 2mm;font-size:7.5pt;}
+  .sign-input-table tbody td{padding:3.5mm 2mm;}
+  .sign-input-table tbody td input{
+    border:none!important;
+    background:transparent!important;
+    padding:0!important;
+    width:auto!important;
+    min-width:7mm;
+    font-weight:700;
+    color:var(--black)!important;
+    font-size:12pt;
+  }
+  .sign-input-table tbody td.area-cell,
+  .sign-input-table tbody td.sub-cell{font-size:12pt;}
+  .sign-input-table tbody td .u-cm{font-size:8pt;}
+  .sign-input-table tfoot td{padding:4mm 2mm;font-size:13pt;}
+  .sign-input-table tfoot td.tot-label{font-size:9pt;}
+
+  /* ── 自動算出ディスプレイ ── */
+  .calc-display{
+    padding:3.5mm 5mm;
+    margin-bottom:6mm;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:3mm;
+  }
+  .calc-display .calc-l{font-size:8pt;}
+  .calc-display .calc-formula{font-size:10pt;}
+  .calc-display .calc-formula strong{font-size:12pt;}
+  .calc-display .calc-area{font-size:10pt;}
+  .calc-display .calc-area strong{font-size:12pt;}
+
+  /* ── スペックテーブル ── */
+  .spec-table{font-size:9.5pt;margin-bottom:6mm;}
+  .spec-table th,.spec-table td{padding:2.5mm 3mm;}
+  .spec-table th{width:30mm;}
+  .spec-table td strong{font-size:10.5pt;}
+
+  /* ── ドライバーグリッド（縦積み） ── */
+  .driver-grid{gap:2mm;margin-bottom:6mm;grid-template-columns:1fr;}
+  .driver-card{padding:3.5mm 4mm;}
+  .driver-name{font-size:10pt;}
+  .driver-val{font-size:14pt;}
+  .driver-val .u{font-size:8.5pt;}
+  .driver-sub{font-size:9pt;line-height:1.7;}
+
+  /* ── 単価算出式（縦積み） ── */
+  .formula{
+    padding:4mm 4mm;
+    margin-bottom:6mm;
+    gap:2mm;
+    font-size:9.5pt;
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .f-box{padding:2mm 3mm;min-width:0;text-align:left;}
+  .f-box .fl{font-size:7.5pt;}
+  .f-box .fv{font-size:10pt;}
+  .f-op{font-size:13pt;text-align:center;margin:0;}
+  .f-result{padding:2.5mm 3mm;min-width:0;text-align:left;}
+  .f-result .fl{font-size:7.5pt;}
+  .f-result .fv{font-size:12pt;}
+
+  /* ── 価値ドライバー（縦積み） ── */
+  .value-list{gap:2mm;margin-bottom:6mm;grid-template-columns:1fr;}
+  .value-item{padding:3.5mm 4mm;}
+  .value-num{font-size:8.5pt;}
+  .value-head{font-size:10.5pt;margin-bottom:2mm;}
+  .value-desc{font-size:9pt;line-height:1.8;}
+
+  /* ── 料金ブロック ── */
+  [style*="border:2px solid var(--gold)"]{margin-bottom:6mm!important;}
+  [style*="font-size:56px"]{font-size:30pt!important;letter-spacing:1pt!important;}
+  [style*="font-size:56px"] span[style*="font-size:18px"]{font-size:12pt!important;}
+
+  /* ── 契約条件テーブル ── */
+  .scale-table{font-size:9.5pt;margin-bottom:5mm;}
+  .scale-table th,.scale-table td{padding:2.5mm 2.5mm;}
+  .scale-table th{width:28mm;}
+  .scale-table td strong{font-size:10.5pt;}
+
+  /* ── ノートボックス ── */
+  .note{padding:3mm 4mm;margin-bottom:4mm;}
+  .note p{font-size:9pt;line-height:1.85;}
+
+  /* ── MCI 8指標スナップショットテーブル（全幅スパン） ── */
+  .mci-snap{
+    column-span:all;
+    font-size:8.5pt;
+    margin-bottom:3mm;
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+  .mci-snap thead th{padding:1.8mm 2mm;font-size:7.5pt;}
+  .mci-snap thead th .sub{font-size:6.5pt;}
+  .mci-snap tbody td{padding:1.8mm 2mm;}
+  .mci-snap tbody td.n{font-size:7.5pt;}
+  .mci-snap tbody td.name{font-size:8.5pt;}
+  .mci-snap tbody td.name .en{font-size:6.5pt;}
+  .mci-snap tbody td.unit{font-size:7.5pt;}
+  .mci-snap tbody td.val{font-size:9pt;}
+  .mci-snap tbody td.val.current{font-size:10pt;}
+  .mci-snap tbody td.date{font-size:7.5pt;}
+  .mci-snap tbody td.src{font-size:7pt;}
+
+  /* ── MCI 10年推移テーブル（全幅スパン） ── */
+  .mci-table-wrap{
+    column-span:all;
+    overflow:visible;
+    margin-bottom:3mm;
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+  .mci-table{font-size:9pt;}
+  .mci-table thead th{padding:2mm 1.5mm;font-size:8pt;line-height:1.3;}
+  .mci-table thead th .sub{font-size:7pt;}
+  .mci-table tbody td{padding:2mm 1.5mm;font-size:9pt;}
+  .mci-table tbody td:first-child{padding-left:3mm;font-size:9pt;}
+  .mci-table tbody td.mci-v{font-size:10pt;}
+  .mci-table tbody td.mci-v.base,.mci-table tbody td.mci-v.current{font-size:11pt;}
+  .mci-table tbody td.lvl-pos.current{font-size:10pt;}
+  .mci-foot{
+    column-span:all;
+    font-size:7.5pt;
+    line-height:1.7;
+    padding:2.5mm 4mm;
+    margin-top:2mm;
+    margin-bottom:5mm;
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  /* ── 捺印エリア（カラム全幅スパン） ── */
+  .seal-section{
+    column-span:all;
+    break-before:column;
+    padding-top:6mm;
+    margin-top:4mm;
+    border-top:1pt solid var(--g3);
+  }
+  .seal-intro{font-size:10pt;padding:4mm 5mm;margin-bottom:8mm;line-height:2;}
+  .c-sig-area{
+    gap:6mm;
+    margin-top:6mm;
+    grid-template-columns:1fr 1fr;
+  }
+  .c-sig-box{padding:6mm 6mm 9mm;}
+  .c-sig-label{font-size:14pt;margin-bottom:5mm;padding-bottom:3mm;letter-spacing:8pt;}
+  .c-sig-label .role{font-size:9pt;letter-spacing:2pt;}
+  .c-sig-field{font-size:10.5pt;line-height:2.4;margin-bottom:2mm;}
+  .c-sig-date{font-size:10.5pt;margin-top:5mm;padding-top:3mm;}
+  .c-sig-seal{padding:7mm 7mm;font-size:11pt;letter-spacing:7pt;margin-top:5mm;}
+
+  /* ── 契約書 印刷 ── */
+  /* タイトル・前文・日付・署名欄は全幅スパン */
+  .c-title{
+    column-span:all;
+    font-family:var(--jp-serif);
+    font-size:22pt;
+    letter-spacing:10pt;
+    padding-bottom:5mm;
+    margin-bottom:8mm;
+    border-bottom-width:1.5pt;
+  }
+  .c-parties{
+    grid-template-columns:1fr;
+    gap:3mm;
+    margin-bottom:5mm;
+  }
+  .c-party{padding:3mm 4mm;}
+  .c-party-role{font-size:10pt;margin-bottom:2mm;padding-bottom:2mm;}
+  .c-party-fields{font-size:9.5pt;line-height:2.1;}
+  .c-preamble{padding:3mm 4mm;margin-bottom:6mm;font-size:10pt;line-height:1.9;}
+
+  .c-article{margin-bottom:4mm;}
+  .c-article-title{font-size:11pt;padding:2mm 3mm;margin-bottom:2mm;border-left-width:3pt;}
+  .c-article-body{padding:0 3mm;font-size:9.5pt;line-height:1.9;}
+  .c-article-body ol{padding-left:5mm;margin:2mm 0;}
+  .c-article-body ol li{margin-bottom:1mm;}
+
+  .c-emphasis{padding:0 3pt;font-size:10pt;font-weight:900;}
+  .c-dynamic{padding:0 3pt;font-size:11pt;font-weight:900;}
+  .c-article-body strong{font-size:10.5pt;}
+
+  /* 契約書末尾：終結句・日付・署名欄は全幅スパン */
+  .c-closing{
+    column-span:all;
+    margin:8mm 0 5mm;
+    font-size:10.5pt;
+    padding-top:4mm;
+    border-top:1pt solid var(--g3);
+  }
+  .c-date{
+    column-span:all;
+    margin-bottom:8mm;
+    font-size:12pt;
+    letter-spacing:8pt;
+  }
+  .contract-main > .c-sig-area{
+    column-span:all;
+    grid-template-columns:1fr 1fr;
+    gap:6mm;
+    margin-top:4mm;
+  }
+
+  /* ── 印刷専用フッター ── */
+  .print-footer{
+    column-span:all;
+    display:block!important;
+    margin-top:8mm;
+    padding-top:3mm;
+    border-top:0.5pt solid var(--g3);
+    font-size:8pt;
+    color:var(--g5);
+    text-align:center;
+    letter-spacing:2pt;
+    font-family:var(--es);
+  }
+  .print-footer strong{
+    color:var(--gold);
+    font-family:var(--jp);
+    font-weight:700;
+    margin:0 6pt;
+    font-size:9pt;
+  }
+}
+
+@media(max-width:768px){
+  .doc-header{flex-direction:column;padding:24px;gap:16px;}
+  .main,.contract-main{padding:24px;}
+  .kpi-grid{grid-template-columns:repeat(3,1fr);}
+  .driver-grid,.value-list,.c-parties,.c-sig-area{grid-template-columns:1fr;}
+  .formula{flex-direction:column;align-items:flex-start;}
+  .scale-table,.sign-input-table{font-size:11px;}
+  .scale-table th,.scale-table td,.sign-input-table th,.sign-input-table td{padding:8px;}
+  .sign-input-table tbody td input{width:56px;font-size:12px;}
+  .page-tabs{padding:0 20px;flex-wrap:wrap;}
+  .tab-btn{padding:14px 18px;font-size:12px;letter-spacing:1px;}
+  .btn-print{padding:8px 14px;font-size:11px;letter-spacing:1px;}
+}
+</style>
 </head>
 <body>
-<a class="corp-back" href="https://tamjump.github.io/TAmj/index.html"><span class="arr">&larr;</span> TAmJ.Corp</a>
 
-    <header id="siteHeader">
-        <a href="index.html" class="header-logo"><img src="logo.png" alt="TAmJ"></a>
-        <nav class="header-nav">
-            <a href="index.html">Top</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="login.html" data-auth="logged-out">Login</a>
-            <a href="members/index.html" data-auth="logged-in" style="display:none">MyPage</a>
-            <a href="https://tamjump.github.io/TAmj/contact.html" class="nav-cta">Contact</a>
-        </nav>
-    </header>
+<!-- HEADER (画面のみ) -->
+<header class="doc-header">
+  <div>
+    <div class="doc-tag">Entrance Signage — Proposal &amp; Contract</div>
+    <div class="doc-title">さかえビル 入口サイン使用</div>
+    <div class="doc-sub">
+      エントランス専用サイン設置・使用に関するご提案および契約書<br>
+      所在地：東京都練馬区豊玉北5-11-4 ／ 2〜3階 介護施設案内サイン ／ 共用部恒久設置
+    </div>
+  </div>
+  <div class="doc-meta">
+    <strong>さかえビル</strong>
+    作成：2026年4月<br>
+    用途：テナント様・管理関係者向け<br>
+    DOC: SKE-SIGN-2026-v1
+  </div>
+</header>
 
-    <!-- ══ Hero ══ -->
-    <section class="idx-hero">
-        <span class="label">Development × Financial Design</span>
-        <h1>開発のすべてを、設計する。</h1>
-        <p class="sub">建設見積ではなく「開発×財務設計」の統合提案。<br>建物の持ち方まで設計できる、唯一のプラットフォーム。</p>
-        <div class="cta-row">
-            <a href="register.html" class="cta-btn primary">無料で始める</a>
-            <a href="#features" class="cta-btn ghost">できることを見る ↓</a>
-        </div>
-    </section>
+<!-- TABS (画面のみ) -->
+<nav class="page-tabs no-print">
+  <div class="tabs-left">
+    <button type="button" class="tab-btn active" data-target="proposal">
+      提案書
+      <span class="en">PROPOSAL</span>
+    </button>
+    <button type="button" class="tab-btn" data-target="contract">
+      契約書
+      <span class="en">CONTRACT</span>
+    </button>
+  </div>
+  <div class="tabs-right">
+    <button type="button" class="btn-print" onclick="window.print()">印刷<span class="en">PRINT</span></button>
+  </div>
+</nav>
 
-    <!-- ══ Introduction ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <p class="idx-body reveal">医療・介護施設の開発に必要なすべてのプロセスを支援します。土地取得から建築費概算、什器備品の選定、リース設計、そしてBS影響やリース会計基準に基づく仕訳シートの出力まで。開発に必要な意思決定を、データで裏付けます。</p>
-        </div>
-    </section>
+<!-- ═══════════════════════ 提案書 ═══════════════════════ -->
+<div id="proposal" class="page-content active">
 
-    <!-- ══ Preview: MCI ══ -->
-    <section class="idx-section cream" id="features">
-        <div class="narrow">
-            <div class="reveal">
-                <span class="slabel">Live Market Data</span>
-                <h2>建築コスト指数をリアルタイムで追跡</h2>
-                <p class="section-lead">為替・資源・株価・金利の8指標を加重平均し、2022年基準の建築コスト倍率を日次で自動更新。構造別の差も一目で確認できます。</p>
-            </div>
-            <div class="preview-block reveal">
-                <img src="img/feat-mci.png" alt="MCI — Macro Construction Index" style="width:100%;display:block;border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.08);border:1px solid var(--gray-200)">
-                <p class="preview-caption" style="margin-top:20px">MCI（Macro Construction Index）— TAmJが独自に開発・算出するマクロ建設コスト指数</p>
-            </div>
-        </div>
-    </section>
+<!-- 印刷専用表紙 -->
+<div class="print-only print-cover">
+  <div class="print-cover-tag">Entrance Signage — Proposal</div>
+  <div class="print-cover-doctype">ご提案書</div>
+  <div class="print-cover-title">さかえビル<br>入口サイン使用</div>
+  <div class="print-cover-sub">
+    エントランス専用サイン設置・使用に関するご提案<br>
+    2〜3階 介護施設案内サイン ／ 共用部恒久設置
+  </div>
+  <div class="print-cover-meta">
+    <div class="meta-item">
+      <strong>所在地</strong>
+      東京都練馬区豊玉北5-11-4
+    </div>
+    <div class="meta-item">
+      <strong>作成日</strong>
+      2026年4月
+    </div>
+    <div class="meta-item">
+      <strong>DOCUMENT ID</strong>
+      SKE-SIGN-2026-v1
+    </div>
+  </div>
+</div>
 
-    <!-- ══ Features ══ -->
-    <section class="idx-section" style="padding-bottom:2rem">
-        <div class="feat-rows">
-            <div style="text-align:center;margin-bottom:24px" class="reveal">
-                <span class="slabel">Tools</span>
-                <h2 style="font-family:var(--font-serif);font-size:clamp(1.2rem,3vw,1.7rem);font-weight:500;letter-spacing:.04em;margin:0 0 8px;color:var(--black)">開発支援ツール</h2>
-                <p style="font-size:14px;color:var(--gray-700);margin:0">Freeプランでも月3回まで利用可能。</p>
-            </div>
+<!-- NOTICE -->
+<div class="notice">
+  本資料はさかえビル入口部分における専用サインの設置および月額使用条件に関する提案書です。月額は「サイン仕様入力」で <strong style="color:var(--gold);">区分・寸法・面数</strong> を選択・入力すると、<strong style="color:var(--gold);">第8条 標準料金表（6〜13円／1㎝角・月・税別）</strong> に基づき自動算定されます。本件標準は第8条第4号（A区分・専用・恒久・高視認 ＝ 13円）です。
+</div>
 
-            <!-- 01 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-01.png" alt="開発費シミュレーター" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">01 — SIMULATOR</div>
-                    <h3>開発費シミュレーター</h3>
-                    <p>施設種別＋入居者数から面積→建築費→投資額を自動概算。47都道府県の建築単価に対応し、MCI（マクロ建設指数）で日次補正。構造・階数・用途係数を反映した実勢ベースの概算を瞬時に算出します。</p>
-                    <div class="feat-tags"><span class="feat-tag">47都道府県</span><span class="feat-tag">4構造対応</span><span class="feat-tag">MCI連動</span></div>
-                </div>
-            </div>
+<div class="main">
 
-            <!-- 02 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">02 — EQUIPMENT</div>
-                    <h3>什器備品＋リース設計</h3>
-                    <p>施設に必要な什器備品を統合マスタから一括選定。入居者数に応じて数量を自動算出し、購入・リースの比較やカテゴリ別の費用概算を瞬時に表示します。エントリー／ミドル／ハイエンドの3グレード対応。</p>
-                    <div class="feat-tags"><span class="feat-tag">統合マスタ</span><span class="feat-tag">リース比較</span><span class="feat-tag">3グレード</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-02.png" alt="什器備品選定" style="width:100%;display:block"></div>
-            </div>
+<!-- 01 設置概要 -->
+<div class="sec-label">01 — Overview</div>
+<div class="sec-title">設置概要 / ビル構成</div>
 
-            <!-- 03 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-03.png" alt="オーナー収支計算" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">03 — INCOME</div>
-                    <h3>オーナー収支計算</h3>
-                    <p>NOI利回り・表面利回り・返済後CF・CCR（自己資金利回り）を自動算出。融資条件（LTV・金利・期間）を変えて収支への影響を瞬時にシミュレーション。投資判断に必要な指標を一画面で確認できます。</p>
-                    <div class="feat-tags"><span class="feat-tag">NOI/CCR</span><span class="feat-tag">融資条件可変</span></div>
-                </div>
-            </div>
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-v"><span id="kpi-types">1</span><span class="u">種</span></div>
+    <div class="kpi-l">サイン種類数<br>（仕様別）</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-v"><span id="kpi-count">1</span><span class="u">面</span></div>
+    <div class="kpi-l">合計設置面数<br>（全種合算）</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-v"><span id="kpi-area">2,500</span><span class="u">㎠</span></div>
+    <div class="kpi-l">合計面積<br>（全サイン合計）</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-v">恒久<span class="u">設置</span></div>
+    <div class="kpi-l">設置方式<br>（正式サイン扱い）</div>
+  </div>
+  <div class="kpi accent">
+    <div class="kpi-v"><span id="kpi-monthly">32,500</span><span class="u">円/月</span></div>
+    <div class="kpi-l">月額使用料合計<br>（税別・自動算出）</div>
+  </div>
+</div>
 
-            <!-- 04 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">04 — EXPORT</div>
-                    <h3>見積PDF出力</h3>
-                    <p>概算サマリー・設備明細・収支計算をPDF/CSVで出力。そのまま社内稟議や金融機関への概算資料として活用できます。フェーズ別の内訳、構造別比較表も含む詳細見積形式。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">PDF/CSV</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-04.png" alt="見積PDF出力" style="width:100%;display:block"></div>
-            </div>
+<div class="sign-input-section">
+  <div class="sign-input-header">
+    <div class="sign-input-title"><span class="tag">◆ INPUT</span>サイン仕様入力</div>
+    <div class="sign-input-unit">第8条 標準料金：<strong>6〜13円</strong>／1㎝角・月（税別）｜区分選択により自動適用</div>
+  </div>
+  <table class="sign-input-table">
+    <thead>
+      <tr>
+        <th style="width:40px;">No.</th>
+        <th>区分（第8条）</th>
+        <th>幅</th>
+        <th>高さ</th>
+        <th>面数</th>
+        <th>単価</th>
+        <th>合計面積</th>
+        <th>小計（円／月）</th>
+        <th style="width:70px;" class="no-print">操作</th>
+      </tr>
+    </thead>
+    <tbody id="sign-rows"></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="6" class="tot-label">合計</td>
+        <td><span id="foot-area">2,500</span> ㎠</td>
+        <td><span id="foot-monthly">32,500</span> 円／月</td>
+        <td class="no-print"></td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="sign-input-footer">
+    <button id="btn-add" class="btn-add" type="button">+ サイン仕様を追加</button>
+    <div class="sign-footer-hint">※ サイズが異なるサインを複数追加できます。不要な行は「削除」で除外できます。</div>
+  </div>
+</div>
 
-            <!-- 05 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-05.png" alt="財務設計資料" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">05 — FINANCIAL</div>
-                    <h3>財務設計資料</h3>
-                    <p>BS影響概算表・リース会計設計（IFRS16/ASC842対応）を自動生成。オンバランス（自社保有）・オフバランス（リース）・SPC分離の3パターンを比較し、財務インパクトを可視化します。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">IFRS16</span><span class="feat-tag">BS影響概算</span></div>
-                </div>
-            </div>
+<div class="calc-display">
+  <div>
+    <div class="calc-l">AUTO CALCULATION</div>
+    <div class="calc-formula">適用単価 <strong id="calc-rate">13円</strong>／1㎝角・月 × 合計面積 <strong id="calc-area">2,500</strong>㎠ <span style="color:var(--gold);">=</span> <strong id="calc-monthly">32,500</strong>円／月（税別）</div>
+  </div>
+  <div class="calc-area">年額換算：<strong id="calc-yearly">390,000</strong>円</div>
+</div>
 
-            <!-- 06 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">06 — SCHEME</div>
-                    <h3>スキーム構造設計</h3>
-                    <p>三層構造（資産保有SPC＋運営会社＋投資ファンド）による可変型スキーム。保有形態の違いによる税務・会計・ガバナンスへの影響を比較し、最適なストラクチャーを設計します。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">SPC</span><span class="feat-tag">全パターン対応</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-06.png" alt="スキーム構造設計" style="width:100%;display:block"></div>
-            </div>
-        </div>
-    </section>
+<table class="spec-table">
+  <tr><th>物件名称</th><td>さかえビル</td></tr>
+  <tr><th>所在地</th><td>東京都練馬区豊玉北5-11-4</td></tr>
+  <tr><th>ビル構成</th><td>1階：駐車場 ／ 2〜3階：<strong>介護施設</strong> ／ 4階：クリニック</td></tr>
+  <tr><th>近隣環境</th><td>高齢者・福祉関連事業の集積エリア（医療・介護動線上）</td></tr>
+  <tr><th>設置対象</th><td>2〜3階入居 介護施設の案内サイン</td></tr>
+  <tr><th>設置位置</th><td>ビル入口正面 <strong>ファーストサイン位置</strong>（来訪者視認性 最優位）</td></tr>
+  <tr><th>サイン仕様</th><td>上記「サイン仕様入力」参照 ／ 合計 <strong id="spec-area">2,500</strong>㎠ ／ <strong id="spec-count">1</strong>面 ／ <strong id="spec-types">1</strong>種類</td></tr>
+  <tr><th>設置方式</th><td>恒久設置方式（仮設掲示ではない正式サイン扱い）</td></tr>
+  <tr><th>費用負担区分</th><td>製作・設置・維持・原状回復 → 利用者負担<br>場所の使用許諾・管理統制 → オーナー管理</td></tr>
+  <tr><th>区分</th><td>共用部（エントランス）／ オーナー管理範囲</td></tr>
+</table>
 
-    <!-- ══ How it works ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">How it works</span>
-                <h2>3ステップで始められます</h2>
-            </div>
-            <div class="steps reveal">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h4>無料で会員登録</h4>
-                    <p>Googleアカウントまたはメールアドレスで30秒で登録完了。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h4>条件を入力</h4>
-                    <p>施設種別と入居者数を入力。面積・建築費・投資額が自動で算出されます。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h4>結果を活用</h4>
-                    <p>概算結果をPDF出力し、社内稟議や金融機関への提出にそのまま活用。</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<hr class="sec-divider">
 
-    <!-- ══ Pricing ══ -->
-    <section class="idx-section cream" id="pricing">
-        <div class="wide">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">Pricing</span>
-                <h2>料金プラン</h2>
-                <p class="section-lead" style="margin:0 auto;">まずは無料で始めて、必要に応じてProへ。</p>
-            </div>
-            <div class="pricing-grid reveal">
-                <div class="pr-card">
-                    <div class="plan-name">Free</div>
-                    <div class="price">¥0</div>
-                    <div class="price-unit">ずっと無料</div>
-                    <div class="price-annual">&nbsp;</div>
-                    <ul>
-                        <li>シミュレーション 月3回まで</li>
-                        <li>MCI指数の閲覧</li>
-                        <li>オーナー収支計算</li>
-                        <li>設備明細の閲覧</li>
-                        <li>データ保存 1件まで</li>
-                        <li class="disabled">見積PDF/CSV出力</li>
-                        <li class="disabled">財務設計資料</li>
-                        <li class="disabled">スキーム構造設計</li>
-                    </ul>
-                    <a href="register.html" class="btn-plan">無料で登録する</a>
-                </div>
-                <div class="pr-card featured">
-                    <span class="badge-pop">おすすめ</span>
-                    <div class="plan-name">Pro</div>
-                    <div class="price">¥300<small>/月</small></div>
-                    <div class="price-unit">税抜</div>
-                    <div class="price-annual">Square決済・クレジットカード不要</div>
-                    <ul>
-                        <li>シミュレーション 無制限</li>
-                        <li>MCI指数の閲覧</li>
-                        <li>オーナー収支計算</li>
-                        <li>設備明細の編集・出力</li>
-                        <li>データ保存 無制限</li>
-                        <li>見積PDF/CSV出力</li>
-                        <li>財務設計資料（IFRS16対応）</li>
-                        <li>スキーム構造設計</li>
-                    </ul>
-                    <a href="https://square.link/u/w9nRYlU1" class="btn-plan" id="idxProBtn" target="_blank">Proで始める</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- 02 相場根拠 -->
+<div class="sec-label">02 — Market Basis</div>
+<div class="sec-title">月額設定の相場根拠 ─ 公表データと類型比較</div>
 
-    <!-- ══ FAQ ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">FAQ</span>
-                <h2>よくあるご質問</h2>
-            </div>
-            <dl class="faq-list reveal">
-                <div class="faq-item">
-                    <dt>Freeプランに期間制限はありますか？</dt>
-                    <dd>ありません。月3回までのシミュレーションはずっと無料でお使いいただけます。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>Proプランはいつでも解約できますか？</dt>
-                    <dd>はい。月額プランはいつでも解約可能で、解約後は次の更新日からFreeプランに戻ります。解約後は翌月からFreeプランに戻ります。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>決済方法は？</dt>
-                    <dd>クレジットカード（Visa, Mastercard, AMEX, JCB）に対応しています。Square（スクエア）によるセキュアな決済処理を行います。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>FreeからProへのアップグレードは簡単にできますか？</dt>
-                    <dd>はい。会員ページからワンクリックでアップグレード可能です。Freeプランで保存したデータはそのまま引き継がれます。</dd>
-                </div>
-            </dl>
-        </div>
-    </section>
+<div class="driver-grid">
+  <div class="driver-card">
+    <div class="driver-tag">Reference A — Tenant Bldg.</div>
+    <div class="driver-name">テナントビル 共用部サイン使用料</div>
+    <div class="driver-val">5,000〜20,000<span class="u">円/月</span></div>
+    <div class="driver-sub">
+      一般的な入居テナント看板枠の目安<br>
+      <em>本提案の主要参照レンジ</em><br>
+      ※小規模案内枠〜標準壁面枠
+    </div>
+  </div>
+  <div class="driver-card">
+    <div class="driver-tag">Reference B — Wall Media</div>
+    <div class="driver-name">壁面看板（広告媒体・都市部）</div>
+    <div class="driver-val">50,000〜500,000<span class="u">円/月</span></div>
+    <div class="driver-sub">
+      壁面広告媒体としての掲載相場<br>
+      <span class="up">上限参考</span>（純広告・大型・好立地）<br>
+      ※本件は媒体ではなく案内枠のため不適用
+    </div>
+  </div>
+  <div class="driver-card">
+    <div class="driver-tag">Reference C — Small Media</div>
+    <div class="driver-name">小型案内媒体（電柱広告等）</div>
+    <div class="driver-val">2,200〜4,000<span class="u">円/月</span></div>
+    <div class="driver-sub">
+      住宅街〜都市部の小型案内表示<br>
+      下限参考（視認性・専用性は低い）<br>
+      ※本件は入口ファーストサインのため上振れ要
+    </div>
+  </div>
+</div>
 
-    <!-- ══ CTA ══ -->
-    <section class="cta-band reveal">
-        <p>まずは無料で、開発シミュレーションを体験してみませんか。</p>
-        <a href="register.html" class="cta-btn">無料で会員登録 →</a>
-    </section>
+<div class="formula">
+  <div class="f-box">
+    <div class="fl">共用部サイン 基準レンジ</div>
+    <div class="fv">5,000〜20,000円</div>
+  </div>
+  <div class="f-op">×</div>
+  <div class="f-box">
+    <div class="fl">視認性・専用性・恒久設置補正</div>
+    <div class="fv">区分別 4段階</div>
+  </div>
+  <div class="f-op">=</div>
+  <div class="f-result">
+    <div class="fl">第8条 標準料金</div>
+    <div class="fv">6・8・10・13円／1㎝角・月</div>
+  </div>
+</div>
 
-    <section class="light-band reveal">
-        <p>ご相談・お問合せはお気軽にどうぞ。</p>
-        <a href="https://tamjump.github.io/TAmj/contact.html" class="text-link">お問合せ →</a>
-    </section>
+<div class="note">
+  <p>
+    <strong>【相場に関する前提】</strong><br>
+    看板使用料には、路線価のような公的な全国一律の単価表は存在しません。月額は、周辺賃料・視認性・設置方式・表示内容・テナント構成を総合して決まる相対価格です。本提案では、テナントビル共用部サインの公表相場を基準に、位置（A/B/C区分）・性質（案内／専用／広告）・設置方法（仮設／半恒久／恒久）に応じて <strong>第8条 標準料金表（6・8・10・13円／1㎝角・月）</strong> を定めています。本件（2〜3階介護施設／入口正面／恒久設置）は <strong>第8条第4号（13円）</strong> が適用され、50cm × 50cm（2,500㎠）× 1面で月額32,500円となります。
+  </p>
+</div>
 
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
-            <div class="footer-links">
-                <div class="footer-col"><h4>Service</h4><a href="pricing.html">料金プラン</a></div>
-                <div class="footer-col"><h4>Account</h4><a href="register.html">会員登録</a><a href="login.html">ログイン</a><a href="members/index.html">会員ページ</a></div>
-                <div class="footer-col"><h4>Support</h4><a href="https://tamjump.github.io/TAmj/contact.html">お問合せ</a></div>
-                <div class="footer-col"><h4>Legal</h4><a href="https://tamjump.github.io/TAmj/privacy.html">Privacy Policy</a><a href="https://tamjump.github.io/TAmj/terms.html">Terms</a><a href="https://tamjump.github.io/TAmj/commerce.html">特定商取引法</a></div>
-            </div>
-        </div>
-        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
-    </footer>
-    <script src="js/auth.js"></script>
-    <script>
-        const h=document.getElementById('siteHeader');
-        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
-        const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-        document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-        onAuthReady(user=>updateAuthUI(user));
-        document.querySelectorAll('a[href^="#"]').forEach(a=>{
-            a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
-        });
-            // Square決済リンク（準備でき次第ここに設定）
-        const SQUARE_URL = 'https://square.link/u/w9nRYlU1';
-        const idxProBtn = document.getElementById('idxProBtn');
-        if(idxProBtn){
-            idxProBtn.href = SQUARE_URL;
-            idxProBtn.addEventListener('click', e => {
-                if(SQUARE_URL === '#'){ e.preventDefault(); alert('決済リンクは準備中です。'); }
-            });
-        }
-        </script>
+<hr class="sec-divider">
+
+<!-- 03 プレミア価値 -->
+<div class="sec-label">03 — Value Drivers</div>
+<div class="sec-title">本サイン枠のプレミア価値 ─ 6つの根拠</div>
+
+<div class="value-list">
+  <div class="value-item">
+    <div class="value-num">01</div>
+    <div class="value-head">入口正面のファーストサイン</div>
+    <div class="value-desc">
+      単なる壁面表示ではなく、ビル来訪者・ご家族・見学者・ケアマネジャー・搬送関係者が最初に認識する建物の顔です。視認順序における最優位ポジションであり、他の壁面位置とは価値が明確に区別されます。
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-num">02</div>
+    <div class="value-head">医療・介護動線上の高視認立地</div>
+    <div class="value-desc">
+      近隣に高齢者・福祉関連事業が集積するエリアに位置し、ターゲット層の生活導線に対して視認性が高い枠です。介護施設の案内として、駅前の純広告枠とは異なる「到達性」の価値を持ちます。
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-num">03</div>
+    <div class="value-head">恒久設置方式による正式サイン扱い</div>
+    <div class="value-desc">
+      恒久設置方式を前提とする正式サイン扱いであり、仮設掲示とは明確に区分されます。美観管理・設置承認・将来の原状回復までを含めた共用部の恒久使用として位置づけられます。
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-num">04</div>
+    <div class="value-head">建物全体の品位・統一管理</div>
+    <div class="value-desc">
+      入口サインは建物全体の印象を決定づける要素です。オーナー側で美観・表示内容・他テナントとの調和を統一管理することで、ビル全体の資産価値とテナント構成（介護・医療）に見合う品位が維持されます。
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-num">05</div>
+    <div class="value-head">単独専有枠（他掲示なし）</div>
+    <div class="value-desc">
+      入口正面の対象位置は、介護施設案内サインの専有枠とし、他掲示との混在を排除します。専用表示枠としての希少性が保たれるため、案内価値が薄まらず、利用者側にとっても視認性を担保できます。
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-num">06</div>
+    <div class="value-head">設置承認・管理統制の対価</div>
+    <div class="value-desc">
+      場所貸しにとどまらず、設置位置の確保・承認手続・設置後の管理調整までをオーナー側で引き受けます。これは共用部の物理的使用許諾と、建物管理上の承認行為を合わせた対価として月額に反映されます。
+    </div>
+  </div>
+</div>
+
+<hr class="sec-divider">
+
+<!-- 04 料金 -->
+<div class="sec-label">04 — Proposed Pricing</div>
+<div class="sec-title">ご提案料金</div>
+
+<div style="border:2px solid var(--gold);border-radius:4px;overflow:hidden;margin-bottom:28px;">
+  <div style="background:var(--gold-pale);padding:24px 32px;border-bottom:1px solid var(--gold-border);">
+    <div style="font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:3px;margin-bottom:8px;">PROPOSED PRICING</div>
+    <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;">
+      <div style="font-family:var(--en);font-size:56px;font-weight:700;color:var(--black);line-height:1;"><span id="main-monthly">32,500</span><span style="font-family:var(--jp);font-size:18px;font-weight:500;color:var(--g5);">円／月</span></div>
+      <div style="font-size:13px;color:var(--g6);line-height:1.9;">
+        税別 ／ 第8条第4号（A区分・高視認）単価 13円／1㎝角・月<br>
+        年額換算：<strong id="main-yearly" style="color:var(--black);">390,000</strong>円 ／ 税別<br>
+        合計面積 <strong id="main-area" style="color:var(--black);">2,500</strong>㎠ ／ <strong id="main-count" style="color:var(--black);">1</strong>面
+      </div>
+    </div>
+  </div>
+  <div style="padding:24px 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--g2);">
+    <div style="background:var(--white);padding:16px 14px;text-align:center;">
+      <div style="font-size:11px;color:var(--g5);margin-bottom:6px;">適用区分</div>
+      <div style="font-size:12px;font-weight:700;color:var(--black);line-height:1.5;">第8条第4号<br>A区分・恒久・高視認</div>
+    </div>
+    <div style="background:var(--white);padding:16px 14px;text-align:center;">
+      <div style="font-size:11px;color:var(--g5);margin-bottom:6px;">支払方法</div>
+      <div style="font-size:12px;font-weight:700;color:var(--black);line-height:1.5;">毎月末<br>翌月分前払</div>
+    </div>
+    <div style="background:var(--white);padding:16px 14px;text-align:center;">
+      <div style="font-size:11px;color:var(--g5);margin-bottom:6px;">設置承認料</div>
+      <div style="font-size:12px;font-weight:700;color:var(--black);line-height:1.5;">50,000円<br>（税別・第11条）</div>
+    </div>
+    <div style="background:var(--white);padding:16px 14px;text-align:center;">
+      <div style="font-size:11px;color:var(--g5);margin-bottom:6px;">設置方式</div>
+      <div style="font-size:12px;font-weight:700;color:var(--black);line-height:1.5;">恒久設置<br>（正式サイン扱い）</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sec-divider">
+
+<!-- 05 契約条件 -->
+<div class="sec-label">05 — Contract Terms</div>
+<div class="sec-title">主な契約条件（要旨）</div>
+
+<table class="scale-table">
+  <thead>
+    <tr>
+      <th>項目</th>
+      <th class="col-std" colspan="2">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>対象場所</th>
+      <td class="col-std" colspan="2" style="text-align:left;">さかえビル入口付近の指定壁面（位置・寸法・仕様は甲の承認事項）</td>
+    </tr>
+    <tr>
+      <th>表示内容</th>
+      <td class="col-std" colspan="2" style="text-align:left;">2〜3階入居 介護施設名、業態、案内表示、ロゴ等（甲承認範囲内）</td>
+    </tr>
+    <tr>
+      <th>設置仕様</th>
+      <td class="col-std" colspan="2" style="text-align:left;">「サイン仕様入力」参照（合計面積 <strong id="terms-area">2,500</strong> ㎠ ／ <strong id="terms-count">1</strong> 面 ／ <strong id="terms-types">1</strong> 種類）／ 恒久設置</td>
+    </tr>
+    <tr>
+      <th>適用区分</th>
+      <td class="col-std" colspan="2" style="text-align:left;"><strong>第8条第4号</strong>　A区分・専用表示サイン・恒久設置・建物入口正面の高視認位置</td>
+    </tr>
+    <tr>
+      <th>標準単価（第8条）</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        ① C区分・案内・仮設：<strong>6円</strong> ／ ② B区分・案内・半恒久：<strong>8円</strong> ／ ③ A区分・専用・恒久：<strong>10円</strong> ／ ④ A区分・専用・恒久・高視認：<strong>13円</strong>　（単位：円／1㎝角・月・税別）
+      </td>
+    </tr>
+    <tr>
+      <th>月額使用料</th>
+      <td class="col-std" colspan="2" style="text-align:left;"><strong><span id="terms-monthly">32,500</span> 円／月（税別）</strong>　毎月末限り翌月分前払 ／ 日割計算なし<br>※合計面積 × 単価により自動算出。サイン追加・変更時は協議のうえ再算定。</td>
+    </tr>
+    <tr>
+      <th>設置承認料（第11条）</th>
+      <td class="col-std" colspan="2" style="text-align:left;"><strong>50,000円（税別）</strong>　恒久設置を行う場合の標準額</td>
+    </tr>
+    <tr>
+      <th>面積の算定方法</th>
+      <td class="col-std" colspan="2" style="text-align:left;">縦寸法（cm）× 横寸法（cm）（第9条）</td>
+    </tr>
+    <tr>
+      <th>費用負担</th>
+      <td class="col-std" colspan="2" style="text-align:left;">製作・設置・申請・維持・修繕・撤去・原状回復 → 乙（利用者）負担</td>
+    </tr>
+    <tr>
+      <th>加算・減額</th>
+      <td class="col-std" colspan="2" style="text-align:left;">管理者判断により加算要素（第12条）・減額要素（第13条）の適用可</td>
+    </tr>
+    <tr>
+      <th>決定権限</th>
+      <td class="col-std" colspan="2" style="text-align:left;">建物所有者またはその指定する管理者に帰属（第15条）</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note no-print">
+  <p>
+    <strong>【契約書本体について】</strong><br>
+    正式な契約書「<strong>さかえビル 入口サイン使用許諾契約書</strong>」は上部タブ「契約書」よりご確認いただけます。本提案書で入力された金額・合計面積・設置面数・種類数は、契約書内の該当箇所に自動で反映されます。最終的な文言・条項は契約書原本によります。
+  </p>
+</div>
+
+<hr class="sec-divider">
+
+<!-- 06 別紙（提案書）— 本件適用例 -->
+<div class="sec-label">06 — Application Example</div>
+<div class="sec-title">別紙（提案書）─ 本件適用例</div>
+
+<table class="scale-table">
+  <thead>
+    <tr>
+      <th>項目</th>
+      <th class="col-std" colspan="2">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>対象案件</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        さかえビル入口、2階〜3階入居 介護施設、施設名表示、建物入口正面の高視認位置、恒久設置
+      </td>
+    </tr>
+    <tr>
+      <th>適用区分</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        <strong>第8条第4号</strong>　A区分・専用表示サイン・恒久設置・建物入口正面の高視認位置（<strong>13円／1㎝角・月</strong>）
+      </td>
+    </tr>
+    <tr>
+      <th>サイン仕様</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        合計面積 <strong id="att-area">2,500</strong> ㎠ ／ <strong id="att-count">1</strong> 面 ／ <strong id="att-types">1</strong> 種類（「サイン仕様入力」参照）
+      </td>
+    </tr>
+    <tr>
+      <th>月額使用料</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        <strong><span id="att-monthly">32,500</span> 円（税別）</strong>　※合計面積 × 単価（区分別）により自動算出
+      </td>
+    </tr>
+    <tr>
+      <th>設置承認料</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        <strong>50,000円（税別）</strong>　第11条に基づく標準額
+      </td>
+    </tr>
+    <tr>
+      <th>年額換算</th>
+      <td class="col-std" colspan="2" style="text-align:left;">
+        <strong><span id="att-yearly">390,000</span> 円（税別）</strong>　※月額 × 12か月
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <p>
+    <strong>【本件適用例について】</strong><br>
+    本別紙は、本提案書の「サイン仕様入力」欄に基づく、さかえビル 入口サイン使用許諾契約書 第10条（本ビルにおける本件基準額）の具体的算定例を示したものです。サイン仕様の入力値を変更すると、本欄の各数値も自動で再算定されます。
+  </p>
+</div>
+
+<hr class="sec-divider">
+
+<hr class="sec-divider">
+
+<!-- 07 参考資料：MCI建設コスト指数 10年推移 -->
+<div class="sec-label">07 — Reference Material</div>
+<div class="sec-title">参考資料 ─ MCI建設コスト指数 10年推移</div>
+
+<div class="note">
+  <p>
+    <strong>【TAmJ MCI（Market Composite Index）について】</strong><br>
+    為替・資源・鉄鋼・市場・金融の領域から選定された <strong>公式8指標</strong> を加重統合し、建築・設備単価の水準変化を補正する TAmJ 独自の建設コスト指数です。2022年4月を基準（MCI=1.000）とし、本件のような建物入口サインの使用料水準を考察する際の、建築・不動産コスト基調の参照指標としてご活用いただけます。<br>
+    <span style="color:var(--gold);font-weight:700;">基準日：2022-04-01　／　現在値取得日：2026-04-10〜2026-04-16（各ソース）　／　本資料への反映日：2026-04-17</span><br>
+    出典：<a href="https://develop.tamjump.com/lp-mci.html" target="_blank" rel="noopener" style="color:var(--gold);font-weight:600;">develop.tamjump.com/lp-mci.html</a>（TAmJ独自算出・著作権所有）
+  </p>
+</div>
+
+<!-- 8指標 現在値スナップショット — 表題のみ -->
+<div style="margin:18px 0 22px;">
+  <div style="font-family:var(--es);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:3px;">LATEST SNAPSHOT — 実データ最新値（2026-02-18時点 / ダッシュボード実装）</div>
+</div>
+
+<div class="mci-table-wrap">
+<table class="mci-table">
+  <thead>
+    <tr>
+      <th>年</th>
+      <th>USD/JPY</th>
+      <th>鋼材指数<br><span class="sub">(2022=100)</span></th>
+      <th>Brent<br><span class="sub">($/bbl)</span></th>
+      <th>日経平均<br><span class="sub">(円)</span></th>
+      <th>長期金利<br><span class="sub">(%)</span></th>
+      <th>MCI<br><span class="sub">(RC造)</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2016</td><td>108.8</td><td>55</td><td>45.1</td><td>19,114</td><td>-0.07</td><td class="mci-v">0.855</td></tr>
+    <tr><td>2017</td><td>112.2</td><td>68</td><td>54.4</td><td>22,765</td><td>0.05</td><td class="mci-v">0.882</td></tr>
+    <tr><td>2018</td><td>110.4</td><td>83</td><td>71.3</td><td>20,015</td><td>0.01</td><td class="mci-v">0.908</td></tr>
+    <tr><td>2019</td><td>109.0</td><td>76</td><td>64.2</td><td>23,657</td><td>-0.02</td><td class="mci-v">0.875</td></tr>
+    <tr><td>2020</td><td>106.8</td><td>65</td><td>43.3</td><td>27,444</td><td>0.02</td><td class="mci-v">0.822</td></tr>
+    <tr><td>2021</td><td>110.0</td><td>95</td><td>70.9</td><td>28,791</td><td>0.07</td><td class="mci-v">0.912</td></tr>
+    <tr class="mci-base">
+      <td><strong>2022 ★基準</strong></td>
+      <td><strong>125.0</strong></td>
+      <td><strong>100</strong></td>
+      <td><strong>105.0</strong></td>
+      <td><strong>27,500</strong></td>
+      <td><strong>0.25</strong></td>
+      <td class="mci-v base">1.000</td>
+    </tr>
+    <tr><td>2023</td><td>140.5</td><td>88</td><td>82.5</td><td>33,464</td><td>0.62</td><td class="mci-v">1.082</td></tr>
+    <tr><td>2024</td><td>153.2</td><td>84</td><td>80.0</td><td>39,894</td><td>1.10</td><td class="mci-v">1.158</td></tr>
+    <tr><td>2025</td><td>152.0</td><td>108</td><td>75.0</td><td>50,339</td><td>1.52</td><td class="mci-v">1.198</td></tr>
+    <tr class="mci-current">
+      <td><strong>2026.03 ★★現在</strong></td>
+      <td><strong>157.5</strong></td>
+      <td><strong>135.5</strong></td>
+      <td><strong>84.1</strong></td>
+      <td><strong>54,890</strong></td>
+      <td><strong>2.18</strong></td>
+      <td class="mci-v current">1.230</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="mci-foot">
+  ★ 基準：2022-04-01（MCI=1.000）　★★ 画像スナップショット：2026-03-05　｜　鋼材指数：HRC先物ベース（2022年4月=100）　｜　Brent原油：年平均（2026.03は指標日時点）　｜　日経平均：年末値（2026.03は指標日時点 54,890円）　｜　長期金利：10年国債利回り　｜　MCI（RC）は TAmJ 独自算出・著作権所有　｜　ソース：<code>data/latest.json</code> 最終更新 2026-02-18
+</div>
+
+<div class="note green">
+  <p>
+    <strong>【本提案との関係】</strong><br>
+    MCI建設コスト指数は、2022年4月基準（1.000）に対し 2026年3月時点で <strong style="color:var(--green);">1.230</strong> を示し、建築・不動産水準の上昇基調を客観的に示しています。加えて、RC造 坪単価は2012年 約52万円／坪 → 2025年 約115万円／坪 と長期にわたり上昇しています（TAmJ.Develop 提供値）。入口サイン使用料は、建物価値・立地価値・建築コストを反映する性格を持つため、本提案の単価水準（第8条第4号 13円／1㎝角）は現下の市場環境および建築コスト水準に対して妥当な水準にあるものと判断できます。
+  </p>
+</div>
+
+<hr class="sec-divider">
+
+<!-- 08 捺印欄（提案書） -->
+<div class="sec-label">08 — Acknowledgment</div>
+<div class="sec-title">ご承諾 捺印欄</div>
+
+<div class="seal-section">
+  <div class="seal-intro">
+    上記のご提案内容についてご確認いただき、ご承諾いただけましたら、下記の捺印欄にご署名・ご捺印をお願いいたします。正式な契約条項は別紙「さかえビル 入口サイン使用許諾契約書」によるものとします。
+  </div>
+
+  <div class="c-sig-area">
+    <div class="c-sig-box">
+      <div class="c-sig-label">甲<span class="role">提案者</span></div>
+      <div class="c-sig-field">住所：東京都練馬区豊玉北5-11-4</div>
+      <div class="c-sig-field">名称：さかえビル　管理者</div>
+      <div class="c-sig-field">代表者：＿＿＿＿＿＿＿＿＿＿＿＿</div>
+      <div class="c-sig-date">日付：20＿＿ 年 ＿＿ 月 ＿＿ 日</div>
+      <div style="clear:both;overflow:hidden;"><span class="c-sig-seal">印</span></div>
+    </div>
+    <div class="c-sig-box">
+      <div class="c-sig-label">乙<span class="role">ご承諾者</span></div>
+      <div class="c-sig-field">住所：＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+      <div class="c-sig-field">名称：＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+      <div class="c-sig-field">代表者：＿＿＿＿＿＿＿＿＿＿＿＿</div>
+      <div class="c-sig-date">日付：20＿＿ 年 ＿＿ 月 ＿＿ 日</div>
+      <div style="clear:both;overflow:hidden;"><span class="c-sig-seal">印</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 印刷専用フッター -->
+<div class="print-only print-footer">
+  <strong>さかえビル</strong> 入口サイン使用 ご提案書 ／ DOC: SKE-SIGN-2026-v1 ／ 2026年4月
+</div>
+
+</div><!-- /main -->
+
+</div><!-- /proposal -->
+
+
+<!-- ═══════════════════════ 契約書 ═══════════════════════ -->
+<div id="contract" class="page-content">
+
+<!-- 印刷専用表紙 -->
+<div class="print-only print-cover">
+  <div class="print-cover-tag">Entrance Signage — Contract</div>
+  <div class="print-cover-doctype">契　約　書</div>
+  <div class="print-cover-title">さかえビル<br>入口サイン使用許諾契約書</div>
+  <div class="print-cover-sub">
+    エントランス専用サインの設置および使用に関する契約<br>
+    2〜3階 介護施設案内サイン ／ 共用部恒久設置
+  </div>
+  <div class="print-cover-meta">
+    <div class="meta-item">
+      <strong>所在地</strong>
+      東京都練馬区豊玉北5-11-4
+    </div>
+    <div class="meta-item">
+      <strong>作成日</strong>
+      2026年4月
+    </div>
+    <div class="meta-item">
+      <strong>DOCUMENT ID</strong>
+      SKE-SIGN-2026-v1
+    </div>
+  </div>
+</div>
+
+<div class="contract-main">
+
+<div class="contract-notice no-print">
+  <strong>【自動反映について】</strong> 本契約書内の <span style="color:var(--gold);font-weight:700;">ゴールド下線</span> で示された項目（月額使用料・合計面積・設置面数・種類数）は、「提案書」タブで入力されたサイン仕様に基づき自動で反映されています。入力値を変更すると本契約書の該当箇所にも即時反映されます。
+</div>
+
+<div class="c-title">さかえビル 入口サイン使用許諾契約書</div>
+
+<div class="c-parties">
+  <div class="c-party">
+    <div class="c-party-role">建物所有者兼許諾者（以下「甲」という。）</div>
+    <div class="c-party-fields">
+      住所：＿＿＿＿＿＿＿＿＿＿<br>
+      名称：＿＿＿＿＿＿＿＿＿＿<br>
+      代表者：＿＿＿＿＿＿＿＿＿＿
+    </div>
+  </div>
+  <div class="c-party">
+    <div class="c-party-role">使用者（以下「乙」という。）</div>
+    <div class="c-party-fields">
+      住所：＿＿＿＿＿＿＿＿＿＿<br>
+      名称：＿＿＿＿＿＿＿＿＿＿<br>
+      代表者：＿＿＿＿＿＿＿＿＿＿
+    </div>
+  </div>
+</div>
+
+<div class="c-preamble">
+  甲および乙は、乙が入居するさかえビル（東京都練馬区豊玉北5-11-4）の入口部分その他共用部に設置するサイン、看板、案内表示その他これらに類する表示物（以下「サイン」という。）の使用に関し、本「入口サイン使用許諾基準」に基づき、以下のとおり契約を締結する。
+</div>
+
+<!-- 第1条 -->
+<div class="c-article">
+  <div class="c-article-title">第1条（目的）</div>
+  <div class="c-article-body">
+    本基準は、さかえビルの入口部分その他共用部に設置するサインについて、建物の品位、美観、安全性および管理運営の統一を維持しつつ、適正な使用料を定めることを目的とする。
+  </div>
+</div>
+
+<!-- 第2条 -->
+<div class="c-article">
+  <div class="c-article-title">第2条（基本方針）</div>
+  <div class="c-article-body">
+    さかえビルにおける入口サインの使用料は、単なる看板面積のみを基準として定めるものではなく、次の各要素を総合的に勘案して決定する。
+    <ol style="list-style:none;padding-left:8px;margin-top:6px;">
+      <li>(1) 建物入口における視認性</li>
+      <li>(2) 来訪者導線上の重要性</li>
+      <li>(3) 医療・介護・福祉用途との親和性</li>
+      <li>(4) 建物全体の美観および品位への影響</li>
+      <li>(5) 共用部の継続使用に伴う管理負担</li>
+      <li>(6) 壁面への恒久設置に伴う原状回復リスク</li>
+      <li>(7) 他入居者との公平性および将来運用上の整合性</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第3条 -->
+<div class="c-article">
+  <div class="c-article-title">第3条（対象）</div>
+  <div class="c-article-body">
+    本基準の対象は、次の各号のいずれかに該当するサインとする。
+    <ol style="list-style:none;padding-left:8px;margin-top:6px;">
+      <li>(1) さかえビル入口付近に設置する施設名、屋号、案内表示</li>
+      <li>(2) さかえビル共用部の壁面、柱面、入口付近等に設置する表示物</li>
+      <li>(3) ボルト固定、アンカー固定その他恒久設置を伴う表示物</li>
+      <li>(4) 管理者が本基準の適用が相当と認めた表示物</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第4条 -->
+<div class="c-article">
+  <div class="c-article-title">第4条（サインの位置区分）</div>
+  <div class="c-article-body">
+    サイン使用料の算定にあたっては、対象位置を次の区分に分類する。
+    <ol>
+      <li><strong>A区分</strong>：建物入口正面、または入口導線上において最も高い視認性を有する位置。来訪者、利用者家族、関係事業者等が最初に認識する建物の顔となる場所をいう。</li>
+      <li><strong>B区分</strong>：入口周辺で視認性は高いが、A区分ほどの第一視認性までは有しない位置。</li>
+      <li><strong>C区分</strong>：建物内外において補助的な案内として機能する位置。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第5条 -->
+<div class="c-article">
+  <div class="c-article-title">第5条（サインの性質区分）</div>
+  <div class="c-article-body">
+    使用料算定にあたっては、サインの性質を次のとおり区分する。
+    <ol>
+      <li><strong>案内サイン</strong>：施設名、階数案内、来訪者向け表示等、建物利用上の案内を主たる目的とするもの。</li>
+      <li><strong>専用表示サイン</strong>：特定テナントの名称、ロゴ、ブランド表示等、特定利用者に向けた独占的表示価値を有するもの。</li>
+      <li><strong>広告性の強いサイン</strong>：案内を超えて、宣伝、募集、集客、営業促進等の性格を強く有するもの。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第6条 -->
+<div class="c-article">
+  <div class="c-article-title">第6条（設置方法区分）</div>
+  <div class="c-article-body">
+    使用料算定にあたっては、設置方法も考慮する。
+    <ol>
+      <li><strong>仮設表示</strong>：貼付、差込、簡易ビス留め等により容易に取り外し可能なもの。</li>
+      <li><strong>半恒久設置</strong>：専用金具等を用いるが、比較的軽微な復旧で撤去可能なもの。</li>
+      <li><strong>恒久設置</strong>：ボルト固定、アンカー固定、コンクリート壁面への穴あけ等を伴い、撤去時に補修・原状回復が必要となるもの。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第7条 -->
+<div class="c-article">
+  <div class="c-article-title">第7条（算定の基本原則）</div>
+  <div class="c-article-body">
+    入口サイン使用料は、以下の考え方に基づき決定する。
+    <ol style="list-style:none;padding-left:8px;margin-top:6px;">
+      <li>(1) 面積のみで一律決定しない。</li>
+      <li>(2) 視認性が高い位置ほど使用料を高く設定する。</li>
+      <li>(3) 専用性が高い表示ほど使用料を高く設定する。</li>
+      <li>(4) 恒久設置であるほど、管理負担および原状回復リスクを加味して高く設定する。</li>
+      <li>(5) 建物の品位、美観維持、安全管理、他テナントとの公平性を損なわない範囲で設定する。</li>
+      <li>(6) 将来、他テナントにも同様条件を適用できる水準で設定する。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第8条 標準料金 -->
+<div class="c-article">
+  <div class="c-article-title">第8条（標準料金）</div>
+  <div class="c-article-body">
+    さかえビルにおける入口サインの標準料金は、次のとおりとする。
+    <ol>
+      <li><strong>C区分 ／ 案内サイン ／ 仮設表示</strong>：月額 <span class="c-emphasis">6円</span>（税別）／ 1㎝角（1㎝×1㎝）を標準とする。</li>
+      <li><strong>B区分 ／ 案内サイン ／ 半恒久設置</strong>：月額 <span class="c-emphasis">8円</span>（税別）／ 1㎝角（1㎝×1㎝）を標準とする。</li>
+      <li><strong>A区分 ／ 専用表示サイン ／ 恒久設置</strong>：月額 <span class="c-emphasis">10円</span>（税別）／ 1㎝角（1㎝×1㎝）を標準とする。</li>
+      <li><strong>A区分 ／ 専用表示サイン ／ 恒久設置 ／ 建物入口正面の高視認位置</strong>：月額 <span class="c-emphasis">13円</span>（税別）／ 1㎝角（1㎝×1㎝）を標準とする。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第9条 -->
+<div class="c-article">
+  <div class="c-article-title">第9条（面積の算定方法）</div>
+  <div class="c-article-body">
+    <ol>
+      <li>使用料算定の基礎となる面積は、サインの <strong>縦寸法（cm）× 横寸法（cm）</strong> により算出する。</li>
+      <li>円形、楕円形その他の変形サインについても、原則として当該サインを包含する外接四角形の縦寸法および横寸法により算出する。</li>
+      <li>小数点以下の寸法が生じる場合は、各辺につき小数点以下を切り上げるものとする。</li>
+      <li>厚み、突き出し幅その他立体的要素は、別途管理上必要がある場合を除き、面積計算には含めない。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第10条 本件基準額 -->
+<div class="c-article">
+  <div class="c-article-title">第10条（本ビルにおける本件基準額）</div>
+  <div class="c-article-body">
+    <ol>
+      <li>さかえビル入口において、2階〜3階入居の介護施設の施設名表示を、建物入口正面の高視認位置に恒久設置する場合は、原則として <span class="c-emphasis">第8条第4号を適用</span> する。</li>
+      <li>本契約における実際の月額使用料は、別紙（提案書）の「サイン仕様入力」欄に記載された仕様に基づき算定するものとし、次のとおりとする。
+        <ul class="no-num" style="margin-top:6px;">
+          <li>承認仕様：合計面積 <span class="c-dynamic" id="ct-area">2,500</span> ㎠ ／ <span class="c-dynamic" id="ct-count">1</span> 面 ／ <span class="c-dynamic" id="ct-types">1</span> 種類</li>
+          <li>月額使用料：<span class="c-dynamic" id="ct-monthly">32,500</span> 円（税別）</li>
+        </ul>
+      </li>
+      <li>前項の金額は、入口正面の高視認位置における専用表示価値、医療・介護用途建物としての案内価値、恒久設置に伴う管理負担および原状回復リスクを踏まえた基準額とする。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第11条 設置承認料 -->
+<div class="c-article">
+  <div class="c-article-title">第11条（設置承認料）</div>
+  <div class="c-article-body">
+    <ol>
+      <li>恒久設置を伴う場合は、月額使用料とは別に、設置承認料を設定することができる。</li>
+      <li>設置承認料は、位置指定、共用部使用調整、施工承認、壁面使用許諾、美観調整その他管理負担の対価として取り扱う。</li>
+      <li>標準額は、次のとおりとする。
+        <ul class="no-num" style="margin-top:6px;">
+          <li>半恒久設置：<strong>30,000円</strong>（税別）</li>
+          <li>恒久設置：<strong>50,000円</strong>（税別）</li>
+        </ul>
+      </li>
+      <li>本件のように、恒久設置を行う場合の設置承認料は、<span class="c-emphasis">50,000円（税別）</span> を標準とする。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第12条 -->
+<div class="c-article">
+  <div class="c-article-title">第12条（加算要素）</div>
+  <div class="c-article-body">
+    次の各号のいずれかに該当する場合は、管理者判断により使用料または設置承認料を加算することができる。
+    <ol style="list-style:none;padding-left:8px;margin-top:6px;">
+      <li>(1) デザイン審査、複数回修正、特別な統一管理を要する場合</li>
+      <li>(2) 夜間視認性への配慮、照明設備等を伴う場合</li>
+      <li>(3) 工事条件が複雑である場合</li>
+      <li>(4) 他テナントとの調整が必要な場合</li>
+      <li>(5) 特に高い独占的表示価値を認める場合</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第13条 -->
+<div class="c-article">
+  <div class="c-article-title">第13条（減額要素）</div>
+  <div class="c-article-body">
+    次の各号のいずれかに該当する場合は、管理者判断により減額することができる。
+    <ol style="list-style:none;padding-left:8px;margin-top:6px;">
+      <li>(1) 建物全体の案内板の一部として統一表示する場合</li>
+      <li>(2) 独占性が弱く、補助的な案内にとどまる場合</li>
+      <li>(3) 仮設的で原状回復負担が極めて軽微な場合</li>
+      <li>(4) 建物全体の運営上、特に必要性が高い案内表示である場合</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第14条 -->
+<div class="c-article">
+  <div class="c-article-title">第14条（賃料等との関係）</div>
+  <div class="c-article-body">
+    <ol>
+      <li>入口サイン使用料は、建物の賃料、共益費その他の費用とは別建てとすることができる。</li>
+      <li>ただし、入居契約条件、運営方針または特別な事情により、賃料または共益費に含めて整理することを妨げない。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 第15条 -->
+<div class="c-article">
+  <div class="c-article-title">第15条(決定権限)</div>
+  <div class="c-article-body">
+    使用料、設置承認料、加算・減額の有無その他本基準の適用に関する最終決定権限は、建物所有者またはその指定する管理者に帰属する。
+  </div>
+</div>
+
+<!-- 第16条 -->
+<div class="c-article">
+  <div class="c-article-title">第16条（例外）</div>
+  <div class="c-article-body">
+    本基準により難い特別事情がある場合、建物所有者または管理者は、建物全体の利益、美観、安全、運営方針および他入居者との公平性を踏まえ、個別に金額および条件を決定することができる。
+  </div>
+</div>
+
+<!-- 第17条 -->
+<div class="c-article">
+  <div class="c-article-title">第17条(改定)</div>
+  <div class="c-article-body">
+    建物価値、周辺相場、管理コスト、法令改正、運営方針その他合理的な事情が生じた場合、建物所有者または管理者は、本基準を改定することができる。
+  </div>
+</div>
+
+<!-- 第18条 -->
+<div class="c-article">
+  <div class="c-article-title">第18条（附則）</div>
+  <div class="c-article-body">
+    本基準は、20＿＿年＿＿月＿＿日より適用する。
+  </div>
+</div>
+
+<div class="c-closing">
+  本契約締結の証として、本書2通を作成し、甲乙各1通を保有する。
+</div>
+
+<div class="c-date">
+  20＿＿ 年 ＿＿ 月 ＿＿ 日
+</div>
+
+<div class="c-sig-area">
+  <div class="c-sig-box">
+    <div class="c-sig-label">甲<span class="role">建物所有者兼許諾者</span></div>
+    <div class="c-sig-field">住所：＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="c-sig-field">名称：＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="c-sig-field">代表者：＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div style="clear:both;overflow:hidden;"><span class="c-sig-seal">印</span></div>
+  </div>
+  <div class="c-sig-box">
+    <div class="c-sig-label">乙<span class="role">使用者</span></div>
+    <div class="c-sig-field">住所：＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="c-sig-field">名称：＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="c-sig-field">代表者：＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+    <div style="clear:both;overflow:hidden;"><span class="c-sig-seal">印</span></div>
+  </div>
+</div>
+
+<!-- 印刷専用フッター -->
+<div class="print-only print-footer">
+  <strong>さかえビル</strong> 入口サイン使用許諾契約書 ／ DOC: SKE-SIGN-2026-v1 ／ 2026年4月
+</div>
+
+</div><!-- /contract-main -->
+
+</div><!-- /contract -->
+
+<footer class="doc-footer no-print">
+  <div><strong>さかえビル</strong> ／ 入口サイン使用 提案書・契約書</div>
+  <div>DOC-ID: SKE-SIGN-2026-v1 ／ 2026年4月</div>
+</footer>
+
+<div class="disclaimer no-print">
+  【免責事項】本資料の単価および月額は参考提案です。相場データは公表情報（テナントビル共用部サイン使用料、屋外広告媒体相場、小型案内媒体相場）に基づく一般的な目安です。本資料の内容は予告なく変更される場合があります。© 2026 さかえビル All Rights Reserved.
+</div>
+
+<script>
+(function(){
+  // 第8条 標準料金表（円／1㎝角・月 税別）
+  const RATE_TABLE = [
+    { id: 1, rate: 6,  label: 'C区分 ／ 案内・仮設' },
+    { id: 2, rate: 8,  label: 'B区分 ／ 案内・半恒久' },
+    { id: 3, rate: 10, label: 'A区分 ／ 専用・恒久' },
+    { id: 4, rate: 13, label: 'A区分 ／ 専用・恒久・高視認' }
+  ];
+  const DEFAULT_RATE_ID = 4; // 第8条第4号 A区分・高視認（本件基準）
+
+  const tableBody = document.getElementById('sign-rows');
+  const btnAdd = document.getElementById('btn-add');
+
+  const fmt = (n) => Math.round(n).toLocaleString('ja-JP');
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+  function buildRateOptions(selectedId){
+    return RATE_TABLE.map(r =>
+      '<option value="' + r.id + '" data-rate="' + r.rate + '"'
+      + (r.id === selectedId ? ' selected' : '')
+      + '>第' + r.id + '号：' + r.label + '（' + r.rate + '円）</option>'
+    ).join('');
+  }
+
+  function addRow(w, h, c, rateId){
+    rateId = rateId || DEFAULT_RATE_ID;
+    const tr = document.createElement('tr');
+    tr.innerHTML = ''
+      + '<td class="no-cell">—</td>'
+      + '<td class="rate-sel-cell"><select class="in-rate">' + buildRateOptions(rateId) + '</select></td>'
+      + '<td><input type="number" class="in-w" value="' + w + '" min="1" max="500" step="1"><span class="u-cm">cm</span></td>'
+      + '<td><input type="number" class="in-h" value="' + h + '" min="1" max="500" step="1"><span class="u-cm">cm</span></td>'
+      + '<td><input type="number" class="in-c" value="' + c + '" min="1" max="99" step="1"><span class="u-cm">面</span></td>'
+      + '<td class="rate-cell">—</td>'
+      + '<td class="area-cell">—</td>'
+      + '<td class="sub-cell">—</td>'
+      + '<td class="no-print"><button type="button" class="btn-remove">削除</button></td>';
+    tableBody.appendChild(tr);
+
+    tr.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', recalcAll);
+      el.addEventListener('change', recalcAll);
+    });
+    tr.querySelector('.btn-remove').addEventListener('click', () => {
+      if (tableBody.children.length > 1){
+        tr.remove();
+        recalcAll();
+      } else {
+        alert('少なくとも1つのサイン仕様が必要です。');
+      }
+    });
+
+    recalcAll();
+  }
+
+  function recalcAll(){
+    let totalArea = 0;
+    let totalCount = 0;
+    let signTypes = 0;
+    let totalMonthly = 0;
+    const rates = [];   // 使われている単価
+    const rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach((tr, idx) => {
+      const sel = tr.querySelector('.in-rate');
+      const selOpt = sel.options[sel.selectedIndex];
+      const rate = parseInt(selOpt.dataset.rate) || 0;
+      const w = Math.max(1, parseInt(tr.querySelector('.in-w').value) || 0);
+      const h = Math.max(1, parseInt(tr.querySelector('.in-h').value) || 0);
+      const c = Math.max(1, parseInt(tr.querySelector('.in-c').value) || 0);
+      const unitArea = w * h;
+      const rowArea  = unitArea * c;
+      const rowSub   = rowArea * rate;
+
+      tr.querySelector('.no-cell').textContent   = (idx + 1);
+      tr.querySelector('.rate-cell').textContent = rate + '円';
+      tr.querySelector('.area-cell').textContent = fmt(rowArea) + ' ㎠';
+      tr.querySelector('.sub-cell').textContent  = fmt(rowSub);
+
+      totalArea    += rowArea;
+      totalCount   += c;
+      signTypes    += 1;
+      totalMonthly += rowSub;
+      if (rates.indexOf(rate) === -1) rates.push(rate);
+
+      tr.querySelector('.btn-remove').disabled = (rows.length === 1);
+    });
+
+    const yearly = totalMonthly * 12;
+    // 表示用の単価文字列
+    rates.sort((a,b) => a - b);
+    const rateStr = rates.length === 1
+      ? rates[0] + '円'
+      : rates[0] + '〜' + rates[rates.length-1] + '円';
+
+    // テーブル合計
+    setText('foot-area',    fmt(totalArea));
+    setText('foot-monthly', fmt(totalMonthly));
+
+    // 01 KPI
+    setText('kpi-types',   signTypes);
+    setText('kpi-count',   totalCount);
+    setText('kpi-area',    fmt(totalArea));
+    setText('kpi-monthly', fmt(totalMonthly));
+
+    // 自動算出ディスプレイ
+    setText('calc-area',    fmt(totalArea));
+    setText('calc-monthly', fmt(totalMonthly));
+    setText('calc-yearly',  fmt(yearly));
+    setText('calc-rate',    rateStr);
+
+    // スペックテーブル
+    setText('spec-area',  fmt(totalArea));
+    setText('spec-count', totalCount);
+    setText('spec-types', signTypes);
+
+    // 04 メイン料金
+    setText('main-monthly', fmt(totalMonthly));
+    setText('main-yearly',  fmt(yearly));
+    setText('main-area',    fmt(totalArea));
+    setText('main-count',   totalCount);
+
+    // 05 契約条件
+    setText('terms-area',    fmt(totalArea));
+    setText('terms-count',   totalCount);
+    setText('terms-types',   signTypes);
+    setText('terms-monthly', fmt(totalMonthly));
+
+    // 06 別紙（提案書）
+    setText('att-area',    fmt(totalArea));
+    setText('att-count',   totalCount);
+    setText('att-types',   signTypes);
+    setText('att-monthly', fmt(totalMonthly));
+    setText('att-yearly',  fmt(yearly));
+
+    // 契約書（自動反映）
+    setText('ct-area',    fmt(totalArea));
+    setText('ct-count',   totalCount);
+    setText('ct-types',   signTypes);
+    setText('ct-monthly', fmt(totalMonthly));
+  }
+
+  btnAdd.addEventListener('click', () => {
+    addRow(50, 50, 1, DEFAULT_RATE_ID);
+  });
+
+  // 初期行：50×50cm × 1面、第8条第4号（13円）＝ 32,500円／月
+  addRow(50, 50, 1, DEFAULT_RATE_ID);
+
+  // タブ切替
+  const tabs = document.querySelectorAll('.tab-btn');
+  const pages = document.querySelectorAll('.page-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.target;
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      pages.forEach(p => p.classList.toggle('active', p.id === target));
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
