@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-04-20",
-  "fetchTime": "2026-04-20T22:38:51.379Z",
+  "fetchDate": "2026-04-21",
+  "fetchTime": "2026-04-21T22:34:21.020Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,27 +10,16 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 58824.89,
-    "usdjpy": 158.797,
-    "brent": 94.54,
-    "copper": 6.047,
-    "jgb10y": 4.25,
-    "cnyJpy": 23.262,
-    "steel": 202.26,
+    "nikkei": 59349.17,
+    "usdjpy": 159.38,
+    "brent": 93.64,
+    "copper": 6.016,
+    "jgb10y": 4.292,
+    "cnyJpy": 23.341,
+    "steel": 208.06,
     "lumber": 762.7
   },
   "history30d": [
-    {
-      "date": "2026-03-16",
-      "nikkei": 53751.148,
-      "usdjpy": 159.568,
-      "brent": 100.21,
-      "copper": 5.791,
-      "jgb10y": 4.22,
-      "cnyJpy": 23.133,
-      "steel": 162.74,
-      "lumber": 762.7
-    },
     {
       "date": "2026-03-17",
       "nikkei": 53700.391,
@@ -66,7 +55,7 @@
     },
     {
       "date": "2026-03-20",
-      "nikkei": 58824.89,
+      "nikkei": 59349.17,
       "usdjpy": 157.924,
       "brent": 112.19,
       "copper": 5.343,
@@ -132,13 +121,13 @@
     },
     {
       "date": "2026-03-29",
-      "nikkei": 58824.89,
+      "nikkei": 59349.17,
       "usdjpy": 160.234,
-      "brent": 94.54,
-      "copper": 6.047,
-      "jgb10y": 4.25,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
       "cnyJpy": 23.182,
-      "steel": 202.26,
+      "steel": 208.06,
       "lumber": 762.7
     },
     {
@@ -188,23 +177,23 @@
     {
       "date": "2026-04-03",
       "nikkei": 53123.488,
-      "usdjpy": 158.797,
-      "brent": 94.54,
-      "copper": 6.047,
-      "jgb10y": 4.25,
-      "cnyJpy": 23.262,
-      "steel": 202.26,
+      "usdjpy": 159.38,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
+      "cnyJpy": 23.341,
+      "steel": 208.06,
       "lumber": 762.7
     },
     {
       "date": "2026-04-05",
-      "nikkei": 58824.89,
+      "nikkei": 59349.17,
       "usdjpy": 159.78,
-      "brent": 94.54,
-      "copper": 6.047,
-      "jgb10y": 4.25,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
       "cnyJpy": 23.214,
-      "steel": 202.26,
+      "steel": 208.06,
       "lumber": 762.7
     },
     {
@@ -254,23 +243,23 @@
     {
       "date": "2026-04-10",
       "nikkei": 56924.109,
-      "usdjpy": 158.797,
+      "usdjpy": 159.38,
       "brent": 95.2,
       "copper": 5.871,
       "jgb10y": 4.317,
-      "cnyJpy": 23.262,
+      "cnyJpy": 23.341,
       "steel": 186.12,
       "lumber": 762.7
     },
     {
       "date": "2026-04-12",
-      "nikkei": 58824.89,
+      "nikkei": 59349.17,
       "usdjpy": 159.68,
-      "brent": 94.54,
-      "copper": 6.047,
-      "jgb10y": 4.25,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
       "cnyJpy": 23.387,
-      "steel": 202.26,
+      "steel": 208.06,
       "lumber": 762.7
     },
     {
@@ -320,34 +309,45 @@
     {
       "date": "2026-04-17",
       "nikkei": 58475.898,
-      "usdjpy": 158.797,
+      "usdjpy": 159.38,
       "brent": 90.38,
       "copper": 6.103,
       "jgb10y": 4.246,
-      "cnyJpy": 23.262,
+      "cnyJpy": 23.341,
       "steel": 195.87,
       "lumber": 762.7
     },
     {
       "date": "2026-04-19",
-      "nikkei": 58824.89,
+      "nikkei": 59349.17,
       "usdjpy": 159.161,
-      "brent": 94.54,
-      "copper": 6.047,
-      "jgb10y": 4.25,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
       "cnyJpy": 23.343,
-      "steel": 202.26,
+      "steel": 208.06,
       "lumber": 762.7
     },
     {
       "date": "2026-04-20",
-      "nikkei": 58824.89,
-      "usdjpy": 158.797,
-      "brent": 94.54,
-      "copper": 6.047,
+      "nikkei": 58824.891,
+      "usdjpy": 158.844,
+      "brent": 95.48,
+      "copper": 6.036,
       "jgb10y": 4.25,
-      "cnyJpy": 23.262,
+      "cnyJpy": 23.299,
       "steel": 202.26,
+      "lumber": 762.7
+    },
+    {
+      "date": "2026-04-21",
+      "nikkei": 59349.17,
+      "usdjpy": 159.38,
+      "brent": 93.64,
+      "copper": 6.016,
+      "jgb10y": 4.292,
+      "cnyJpy": 23.341,
+      "steel": 208.06,
       "lumber": 762.7
     }
   ],
