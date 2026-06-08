@@ -107,6 +107,34 @@ a{color:inherit;text-decoration:none;}
 </style>
 </head>
 <body>
+<div id="pwgate" style="position:fixed;inset:0;z-index:99999;background:#F5F2EC;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans JP',sans-serif">
+<div style="text-align:center;max-width:330px;width:88%;padding:30px">
+<div style="font-family:'Fraunces',Georgia,serif;font-size:13px;letter-spacing:5px;color:#8A7C68;margin-bottom:14px">PRIVATE</div>
+<div style="font-family:'Noto Serif JP',serif;font-size:19px;color:#1A1815;margin-bottom:12px">準備中につき非公開</div>
+<div style="font-size:12.5px;color:#6F6A61;line-height:1.95;margin-bottom:22px">資料を準備中です。ご覧になるにはパスワードを入力してください。</div>
+<input id="pwin" type="password" placeholder="Password" autocomplete="off" style="width:100%;padding:12px 14px;border:1px solid #E4DED3;background:#fff;font-size:15px;text-align:center;margin-bottom:10px;box-sizing:border-box">
+<button id="pwbtn" style="width:100%;padding:13px;background:#1A1815;color:#fff;border:none;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Enter</button>
+<div id="pwerr" style="font-size:12px;color:#9b4a3a;min-height:18px;margin-top:10px"></div>
+</div>
+</div>
+<script>
+(function(){
+var HASH='dd53f3751ad97273ecc60c88704d5e691e21cbd009d917c38d4b88d7ce111d00';
+var gate=document.getElementById('pwgate');
+try{if(sessionStorage.getItem('tamj_listings_unlock')==='1'){gate.style.display='none';return;}}catch(e){}
+function unlock(){gate.style.display='none';try{sessionStorage.setItem('tamj_listings_unlock','1');}catch(e){}}
+function check(){
+  var v=document.getElementById('pwin').value||'';
+  crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)).then(function(buf){
+    var hex=Array.prototype.map.call(new Uint8Array(buf),function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(hex===HASH){unlock();}else{document.getElementById('pwerr').textContent='パスワードが違います';}
+  });
+}
+document.getElementById('pwbtn').addEventListener('click',check);
+document.getElementById('pwin').addEventListener('keydown',function(e){if(e.key==='Enter'){check();}});
+})();
+</script>
+
 
 <nav class="nav" id="nav">
   <div class="inner">
