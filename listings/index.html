@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAPPORO｜開発用地 SELECT DEVELOPMENT LAND, SAPPORO, JAPAN</title>
+<meta name="description" content="札幌の選ばれた開発用地。あいの里教育大駅前（北区・約579坪・容積300%）／八軒6条東5丁目（西区・約535坪・容積200%・環状通沿い）。医療・福祉、商業、住宅、投資用地に。Development land for sale in Sapporo, Japan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--paper:#FFFFFF;--bone:#F5F2EC;--bone2:#ECE7DD;
+--ink:#1A1815;--ink2:#2B2823;--stone:#8A7C68;--stone-d:#6E6354;
+--g6:#6F6A61;--g5:#938D82;--line:#E4DED3;
+--fr:'Fraunces',Georgia,serif;--sj:'Noto Serif JP',serif;
+--jp:'Noto Sans JP',sans-serif;--es:'Inter',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--jp);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.85;font-size:15px;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+@media(max-width:640px){.wrap{padding:0 22px;}}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;mix-blend-mode:difference;}
+.nav .inner{max-width:1280px;margin:0 auto;padding:26px 40px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:var(--fr);font-size:21px;font-weight:500;letter-spacing:3px;color:#fff;}
+.brand small{display:block;font-family:var(--es);font-size:8.5px;letter-spacing:3px;font-weight:600;color:#fff;opacity:.8;margin-top:1px;}
+.nav .menu{display:flex;gap:30px;align-items:center;}
+.nav .menu a{font-family:var(--es);font-size:11.5px;font-weight:600;letter-spacing:1.5px;color:#fff;text-transform:uppercase;}
+@media(max-width:680px){.nav .menu a.hidem{display:none;}.nav .inner{padding:20px 22px;}}
+
+.hero{position:relative;height:100vh;min-height:620px;display:flex;align-items:flex-end;color:#fff;overflow:hidden;}
+.hero .bg{position:absolute;inset:0;background:url('hachiken/render-hero.png') center/cover no-repeat;animation:slowzoom 18s ease-out forwards;}
+@keyframes slowzoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,24,21,.34) 0%,rgba(26,24,21,.05) 30%,rgba(26,24,21,.66) 100%);}
+.hero .inner{position:relative;width:100%;max-width:1280px;margin:0 auto;padding:0 40px 88px;}
+.hero .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;opacity:.92;margin-bottom:22px;display:flex;align-items:center;gap:14px;}
+.hero .ey:before{content:"";width:40px;height:1px;background:rgba(255,255,255,.7);}
+.hero h1{font-family:var(--sj);font-size:54px;font-weight:500;line-height:1.36;letter-spacing:2px;margin-bottom:18px;}
+.hero .en{font-family:var(--fr);font-style:italic;font-size:23px;font-weight:400;opacity:.9;letter-spacing:.5px;margin-bottom:28px;}
+.hero .cta{display:inline-flex;align-items:center;gap:12px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:6px;transition:.25s;}
+.hero .cta:hover{gap:20px;}
+.hero .imgnote{position:absolute;right:40px;bottom:20px;font-size:10px;color:rgba(255,255,255,.6);letter-spacing:.5px;}
+@media(max-width:760px){.hero h1{font-size:32px;}.hero .en{font-size:18px;}.hero .inner{padding:0 22px 64px;}.hero .imgnote{right:22px;}}
+
+.intro{padding:104px 0 84px;text-align:center;}
+.intro .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:22px;}
+.intro h2{font-family:var(--sj);font-size:30px;font-weight:500;line-height:1.7;letter-spacing:1px;margin-bottom:24px;}
+.intro p{max-width:640px;margin:0 auto;font-size:14.5px;color:var(--g6);line-height:2.1;font-weight:300;}
+
+.props{padding:30px 0 110px;}
+.phead{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:50px;}
+.phead h3{font-family:var(--fr);font-size:26px;font-weight:500;letter-spacing:1px;}
+.phead span{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:2px;color:var(--stone);text-transform:uppercase;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;gap:56px;}}
+.card{display:block;color:inherit;}
+.card .imgw{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bone2);}
+.card .imgw img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1);}
+.card:hover .imgw img{transform:scale(1.05);}
+.card .num{position:absolute;top:20px;left:20px;font-family:var(--fr);font-size:13px;font-weight:600;letter-spacing:2px;color:#fff;mix-blend-mode:difference;}
+.card .loc{position:absolute;top:20px;right:20px;font-family:var(--es);font-size:10.5px;font-weight:600;letter-spacing:1.5px;color:#fff;background:rgba(26,24,21,.5);backdrop-filter:blur(4px);padding:5px 11px;text-transform:uppercase;}
+.card .cg{position:absolute;bottom:12px;right:12px;font-size:9.5px;color:#fff;background:rgba(26,24,21,.45);padding:3px 8px;letter-spacing:.5px;}
+.card .body{padding-top:24px;}
+.card .nm{font-family:var(--sj);font-size:23px;font-weight:500;letter-spacing:.5px;margin-bottom:5px;}
+.card .en{font-family:var(--fr);font-style:italic;font-size:14px;color:var(--stone);margin-bottom:18px;}
+.card .specs{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:16px;}
+.card .specs div{flex:1;padding:15px 4px;border-right:1px solid var(--line);}
+.card .specs div:last-child{border-right:none;}
+.card .specs .v{font-family:var(--fr);font-size:25px;font-weight:500;line-height:1;}
+.card .specs .v.jp{font-family:var(--sj);font-size:18px;font-weight:700;}
+.card .specs .v .u{font-size:12px;font-weight:600;color:var(--stone);margin-left:2px;font-family:var(--jp);}
+.card .specs .l{font-size:10.5px;color:var(--g6);margin-top:7px;letter-spacing:.3px;}
+.card .price{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+.card .price .pl{font-size:11px;color:var(--g6);letter-spacing:1px;}
+.card .price .pv{font-family:var(--fr);font-size:26px;font-weight:600;letter-spacing:.5px;}
+.card .price .pv .u{font-family:var(--jp);font-size:13px;font-weight:600;}
+.card .desc{font-size:13px;color:var(--g6);line-height:1.95;margin-bottom:20px;font-weight:300;}
+.card .more{display:inline-flex;align-items:center;gap:10px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:.25s;}
+.card:hover .more{gap:18px;color:var(--stone-d);}
+
+.strip{background:var(--ink);color:#fff;padding:96px 0;}
+.strip .grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;}
+@media(max-width:860px){.strip .grid2{grid-template-columns:1fr;gap:34px;}}
+.strip .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:18px;}
+.strip h3{font-family:var(--sj);font-size:27px;font-weight:500;line-height:1.6;margin-bottom:22px;}
+.strip p{font-size:14px;color:rgba(255,255,255,.72);line-height:2.05;font-weight:300;}
+.strip p.en{font-family:var(--fr);font-style:italic;font-size:15px;color:rgba(255,255,255,.6);margin-top:18px;}
+.contact-card{border:1px solid rgba(255,255,255,.14);padding:34px 36px;}
+.contact-card .lbl{font-family:var(--es);font-size:10px;font-weight:600;letter-spacing:2px;color:var(--stone);text-transform:uppercase;margin-bottom:18px;}
+.contact-card table{width:100%;border-collapse:collapse;font-size:13px;}
+.contact-card th,.contact-card td{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12);text-align:left;vertical-align:top;}
+.contact-card th{color:rgba(255,255,255,.5);font-weight:400;width:84px;white-space:nowrap;}
+.contact-card td{color:#fff;font-weight:300;}
+.contact-card td a{color:#fff;border-bottom:1px solid var(--stone);}
+.contact-card tr:last-child th,.contact-card tr:last-child td{border-bottom:none;}
+.contact-card .mail{display:inline-block;margin-top:22px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.4);padding:13px 26px;transition:.2s;}
+.contact-card .mail:hover{background:#fff;color:var(--ink);}
+
+.footer{background:var(--bone);padding:46px 40px;text-align:center;color:var(--g6);}
+.footer .links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-family:var(--es);font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;}
+.footer .links a{color:var(--ink);}
+.footer .i{font-size:11.5px;line-height:1.95;}
+.footer .i a{color:var(--ink);border-bottom:1px solid var(--line);}
+.footer .note{max-width:920px;margin:14px auto 0;font-size:10px;color:var(--g5);line-height:1.8;}
+.footer .cp{font-family:var(--fr);font-size:12px;color:var(--ink);margin-top:18px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="inner">
+    <a href="#top" class="brand">SAPPORO<small>DEVELOPMENT LAND</small></a>
+    <div class="menu">
+      <a href="../" class="hidem">不動産開発TOP</a>
+      <a href="../#develop" class="hidem">開発を設計する</a>
+      <a href="#properties" class="hidem">Properties</a>
+      <a href="mailto:info@tamjump.com">Inquire</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="bg"></div>
+  <div class="ov"></div>
+  <div class="inner">
+    <div class="ey">Select Development Land · Sapporo, Japan</div>
+    <h1>札幌の、<br>選ばれた開発用地。</h1>
+    <div class="en">Land for what you envision.</div>
+    <a href="#properties" class="cta">View Properties →</a>
+  </div>
+  <div class="imgnote">Artist's impression（完成予想イメージ・CG）</div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <div class="ey">Sapporo, Hokkaido</div>
+    <h2>構想を、そのまま<br>形にできる土地を。</h2>
+    <p>医療・福祉、商業、住宅、投資——札幌市内の、用途自由度が高いまとまった開発用地を厳選してご紹介します。Curated development land in Sapporo, Japan — for owner-development, leasing, subdivision or fund-led projects.</p>
+  </div>
+</section>
+
+<section class="props" id="properties">
+  <div class="wrap">
+    <div class="phead">
+      <h3>Properties</h3>
+      <span>2 Sites · Sapporo</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="kyoikudai/">
+        <div class="imgw">
+          <img src="render-interior2.png?v2" alt="あいの里教育大駅前 開発用地">
+          <span class="num">01</span>
+          <span class="loc">Kita-ku · Ainosato</span>
+          <span class="cg">完成予想イメージ（CG）</span>
+        </div>
+        <div class="body">
+          <div class="nm">あいの里教育大駅前 開発用地</div>
+          <div class="en">Ainosato-Kyoikudai Station Front</div>
+          <div class="specs">
+            <div><div class="v">2<span class="u">分</span></div><div class="l">JR駅 徒歩（約）</div></div>
+            <div><div class="v">300<span class="u">%</span></div><div class="l">容積率</div></div>
+            <div><div class="v">579<span class="u">坪</span></div><div class="l">敷地（約）</div></div>
+          </div>
+          <div class="price"><span class="pl">販売価格 / Price</span><span class="pv">¥130,000,000</span></div>
+          <div class="desc">JR「あいの里教育大」駅 南口至近。所有権・更地・約579坪。介護／医療、商業、住宅、投資まで対応できる駅前のまとまった用地です。</div>
+          <span class="more">View Property →</span>
+        </div>
+      </a>
+
+      <a class="card" href="hachiken/">
+        <div class="imgw">
+          <img src="hachiken/render-building.png" alt="八軒6条東5丁目 開発用地">
+          <span class="num">02</span>
+          <span class="loc">Nishi-ku · Hachiken</span>
+          <span class="cg">完成予想イメージ（CG）</span>
+        </div>
+        <div class="body">
+          <div class="nm">八軒6条東5丁目 開発用地</div>
+          <div class="en">Hachiken · Kanjo-dori Frontage</div>
+          <div class="specs">
+            <div><div class="v jp">環状通</div><div class="l">幹線接道</div></div>
+            <div><div class="v">200<span class="u">%</span></div><div class="l">容積率</div></div>
+            <div><div class="v">535<span class="u">坪</span></div><div class="l">敷地（約・4筆）</div></div>
+          </div>
+          <div class="price"><span class="pl">販売価格 / Price</span><span class="pv">応談<span class="u"> / On request</span></span></div>
+          <div class="desc">環状通（道道下手稲札幌線）に接道する近隣商業・約535坪の一団地。医療・福祉、店舗・商業、住宅・複合開発に。JR「八軒」駅 徒歩圏。</div>
+          <span class="more">View Property →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="strip" id="contact">
+  <div class="wrap">
+    <div class="grid2">
+      <div>
+        <div class="ey">For Developers, Operators &amp; Investors</div>
+        <h3>札幌のまちに、<br>次の使い道を。</h3>
+        <p>用途地域・規模・接道といった土地のポテンシャルを整理し、事業者・デベロッパー・投資家の構想に合わせてご提案します。物件のご相談・現地のご案内、海外からのお問い合わせも承ります。</p>
+        <p class="en">We welcome inquiries from overseas investors and funds.</p>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Inquiries · お問い合わせ</div>
+        <table>
+          <tr><th>Email</th><td><a href="mailto:info@tamjump.com">info@tamjump.com</a></td></tr>
+          <tr><th>担当</th><td>大下 甚 / Jin Oshita</td></tr>
+          <tr><th>取扱</th><td>株式会社ウェルト（<a href="http://www.welt2015.co.jp" target="_blank" rel="noopener">welt2015.co.jp</a>）</td></tr>
+          <tr><th>免許</th><td>宅地建物取引業 北海道知事 石狩(3)第8339号</td></tr>
+          <tr><th>取引態様</th><td>媒介 / Brokerage</td></tr>
+        </table>
+        <a class="mail" href="mailto:info@tamjump.com">Send Inquiry →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="links">
+    <a href="kyoikudai/">あいの里教育大駅前</a>
+    <a href="hachiken/">八軒6条東5丁目</a>
+    <a href="mailto:info@tamjump.com">Contact</a>
+  </div>
+  <div class="i">
+    取扱不動産会社：株式会社ウェルト ／ 札幌市中央区南1条西11丁目1 みたか南一ビル ／ <a href="http://www.welt2015.co.jp" target="_blank" rel="noopener">welt2015.co.jp</a><br>
+    宅地建物取引業 北海道知事 石狩(3)第8339号 ／ 取引態様：媒介
+  </div>
+  <p class="note">※ 掲載の画像は完成予想イメージ（CG）を含みます。建物の形状・規模・配置、土地の区画、前面道路、周辺の建物・街並み等は実際とは異なり、現況に存しないものを含みます。価格・面積・法令上の制限等は現時点の情報・計画上の想定に基づくもので、最新・正確な内容は各物件ページおよび取扱会社にてご確認ください。</p>
+  <div class="cp">Sapporo Development Land · 2026</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',function(){
+  var n=document.getElementById('nav');
+  n.style.mixBlendMode = window.scrollY>window.innerHeight-120 ? 'normal' : 'difference';
+});
+</script>
+</body>
+</html>
