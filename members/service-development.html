@@ -1544,5 +1544,30 @@
     <script src="../js/plan-gate.js"></script>
 <script>requireAuth();handlePaymentSuccess();</script>
 <script>document.addEventListener('DOMContentLoaded',function(){var tid='service-development';if(!hasValidTicket(tid)){document.getElementById('payGate').classList.add('show')}document.getElementById('btnPay').addEventListener('click',function(){startPayment(tid)})});</script>
+<script>
+/* listing prefill (additive, non-invasive): reads ?pref=&landMode=&land_price= or sessionStorage,
+   sets matching fields and calls recalcAll(). No params -> unchanged behavior. */
+(function(){
+  try{
+    var KEY='devsim_prefill';
+    var p=new URLSearchParams(location.search), data={};
+    ['pref','landMode','land_price'].forEach(function(k){ var v=p.get(k); if(v) data[k]=v; });
+    if(Object.keys(data).length){ try{ sessionStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
+    else { try{ data=JSON.parse(sessionStorage.getItem(KEY)||'{}')||{}; }catch(e){ data={}; } }
+    if(!data || !Object.keys(data).length) return;
+    function setSelect(id,val){ var el=document.getElementById(id); if(el&&el.options&&[].some.call(el.options,function(o){return o.value===val;})){ el.value=val; el.dispatchEvent(new Event('change',{bubbles:true})); } }
+    function setText(id,val){ var el=document.getElementById(id); if(el){ el.value=val; el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); } }
+    function apply(){ try{
+      if(data.pref) setSelect('pref', data.pref);
+      if(data.landMode) setSelect('landMode', data.landMode);
+      if(data.land_price) setText('land_price', data.land_price);
+      if(typeof recalcAll==='function') recalcAll();
+      try{ sessionStorage.removeItem(KEY); }catch(e){}
+    }catch(e){} }
+    if(document.readyState==='complete'){ setTimeout(apply,350); }
+    else { window.addEventListener('load', function(){ setTimeout(apply,350); }); }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
