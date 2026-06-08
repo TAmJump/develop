@@ -1,377 +1,400 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>不動産開発 | TAmJ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Sans+JP:wght@200;300;400;500;700&amp;family=Noto+Serif+JP:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/corporate.css">
-    <link rel="stylesheet" href="css/tools.css">
-    <style>
-        /* ── Hero: warm light overlay ── */
-        .idx-hero{background:var(--cream);color:var(--black);padding:11rem 2rem 5rem;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;border-bottom:3px solid var(--primary)}
-        .idx-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,244,241,.7) 0%,rgba(246,244,241,.85) 50%,rgba(246,244,241,.95) 100%),url('no-no3.png') center/cover;opacity:1}
-        .idx-hero>*{position:relative;z-index:1}
-        .idx-hero .label{font-family:var(--font-display);font-size:12px;letter-spacing:8px;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:24px}
-        .idx-hero h1{font-family:var(--font-serif);font-size:clamp(1.5rem,4vw,2.6rem);font-weight:500;letter-spacing:.08em;line-height:1.6;margin:0 0 20px;color:var(--black)}
-        .idx-hero .sub{font-size:14px;font-weight:400;color:var(--gray-700);line-height:2.2;margin:0 auto;max-width:560px}
-        .idx-hero .cta-row{display:flex;gap:12px;justify-content:center;margin-top:36px;flex-wrap:wrap}
-        .idx-hero .cta-btn{padding:12px 32px;font-size:13px;font-weight:700;letter-spacing:1px;border:none;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
-        .idx-hero .cta-btn.primary{background:var(--primary);color:#fff}
-        .idx-hero .cta-btn.primary:hover{background:var(--primary-dark)}
-        .idx-hero .cta-btn.ghost{background:transparent;border:1px solid var(--gray-300);color:var(--charcoal)}
-        .idx-hero .cta-btn.ghost:hover{border-color:var(--charcoal);color:var(--black)}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不動産開発｜土地を売る。出口まで、設計する。 — TAmJ Development</title>
+<meta name="description" content="札幌の開発用地の販売と、介護・医療事業のM&A・事業承継。さらに開発シミュレーション・財務設計・見積まで一気通貫。土地を売るだけでなく、建て方・持ち方・出口まで設計する不動産開発プラットフォーム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--paper:#FFFFFF;--bone:#F5F2EC;--bone2:#ECE7DD;
+--ink:#1A1815;--ink2:#2B2823;--stone:#8A7C68;--stone-d:#6E6354;
+--g6:#6F6A61;--g5:#938D82;--line:#E4DED3;
+--fr:'Fraunces',Georgia,serif;--sj:'Noto Serif JP',serif;
+--jp:'Noto Sans JP',sans-serif;--es:'Inter',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--jp);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.85;font-size:15px;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+@media(max-width:640px){.wrap{padding:0 22px;}}
 
-        /* ── Sections ── */
-        .idx-section{padding:5rem 2rem}
-        .idx-section .narrow{max-width:800px;margin:0 auto}
-        .idx-section .wide{max-width:1000px;margin:0 auto}
-        .idx-section .slabel{font-family:var(--font-display);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:8px}
-        .idx-section h2{font-family:var(--font-serif);font-size:clamp(1.2rem,3vw,1.7rem);font-weight:500;letter-spacing:.04em;margin:0 0 16px;color:var(--black)}
-        .idx-section .section-lead{font-size:14px;font-weight:400;line-height:2;color:var(--gray-700);margin:0 0 40px;max-width:600px}
-        .idx-section.cream{background:var(--cream);border-top:1px solid var(--gray-100)}
-        .idx-section.warm{background:var(--warm-white)}
+.corp-back{position:fixed;left:18px;bottom:16px;z-index:120;font-family:var(--es);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.78);backdrop-filter:blur(6px);border:1px solid var(--line);padding:7px 13px;transition:.2s;}
+.corp-back:hover{background:#fff;border-color:var(--stone);}
 
-        .idx-body{font-size:15px;font-weight:400;line-height:2.2;color:var(--charcoal);border-left:3px solid var(--primary);padding-left:24px;margin-bottom:0}
+/* Header */
+.hd{position:fixed;top:0;left:0;right:0;z-index:100;transition:.3s;}
+.hd .in{max-width:1280px;margin:0 auto;padding:24px 40px;display:flex;align-items:center;justify-content:space-between;}
+.hd.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.hd.scrolled .brand,.hd.scrolled .menu a{color:var(--ink);}
+.hd.scrolled .brand small{color:var(--stone);}
+.brand{font-family:var(--fr);font-size:20px;font-weight:500;letter-spacing:2px;color:#fff;line-height:1.1;}
+.brand small{display:block;font-family:var(--es);font-size:8.5px;letter-spacing:3px;font-weight:600;color:rgba(255,255,255,.85);margin-top:2px;}
+.menu{display:flex;gap:26px;align-items:center;}
+.menu a{font-family:var(--es);font-size:11.5px;font-weight:600;letter-spacing:1.3px;color:#fff;text-transform:uppercase;transition:.2s;}
+.menu a:hover{color:var(--stone);}
+.menu a.cta{border:1px solid rgba(255,255,255,.55);padding:9px 18px;}
+.hd.scrolled .menu a.cta{border-color:var(--ink);}
+.menu a.cta:hover{background:rgba(255,255,255,.12);color:#fff;}
+.hd.scrolled .menu a.cta:hover{background:var(--ink);color:#fff;}
+.burger{display:none;background:none;border:none;cursor:pointer;width:28px;height:20px;position:relative;z-index:101;padding:0;}
+.burger span{display:block;position:absolute;left:0;right:0;height:2px;background:#fff;transition:.25s;}
+.burger span:nth-child(1){top:1px;}.burger span:nth-child(2){top:9px;}.burger span:nth-child(3){top:17px;}
+.hd.scrolled .burger span{background:var(--ink);}
+body.mnav-open .burger span{background:var(--ink);}
+body.mnav-open .burger span:nth-child(1){top:9px;transform:rotate(45deg);}
+body.mnav-open .burger span:nth-child(2){opacity:0;}
+body.mnav-open .burger span:nth-child(3){top:9px;transform:rotate(-45deg);}
+body.mnav-open .hd{background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+body.mnav-open .hd .brand{color:var(--ink);}
+body.mnav-open .hd .brand small{color:var(--stone);}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:99;background:var(--paper);border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform .3s ease;padding:74px 22px 22px;display:flex;flex-direction:column;}
+.mnav.open{transform:translateY(0);}
+.mnav a{font-family:var(--jp);font-size:15px;font-weight:500;color:var(--ink);padding:15px 4px;border-bottom:1px solid var(--line);}
+.mnav a:last-child{border-bottom:none;}
+@media(max-width:820px){.menu a.hidem{display:none;}.hd .in{padding:18px 22px;}.menu{display:none;}.burger{display:block;}}
+@media(min-width:821px){.mnav{display:none;}}
 
-        /* ── Preview ── */
-        .preview-block{margin-top:48px;position:relative}
-        .preview-caption{font-size:12px;color:var(--gray-500);text-align:center;margin-top:16px;font-weight:400;font-style:italic}
+/* Hero */
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:flex-end;color:#fff;overflow:hidden;}
+.hero .bg{position:absolute;inset:0;background:url('listings/hachiken/render-aerial.png') center/cover no-repeat;animation:sz 18s ease-out forwards;}
+@keyframes sz{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,24,21,.40) 0%,rgba(26,24,21,.10) 34%,rgba(26,24,21,.72) 100%);}
+.hero .in{position:relative;width:100%;max-width:1280px;margin:0 auto;padding:0 40px 92px;}
+.hero .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;opacity:.92;margin-bottom:22px;display:flex;align-items:center;gap:14px;}
+.hero .ey:before{content:"";width:42px;height:1px;background:rgba(255,255,255,.7);}
+.hero h1{font-family:var(--sj);font-size:52px;font-weight:500;line-height:1.4;letter-spacing:2px;margin-bottom:18px;}
+.hero .en{font-family:var(--fr);font-style:italic;font-size:22px;font-weight:400;opacity:.9;letter-spacing:.5px;margin-bottom:30px;}
+.hero .cta{display:inline-flex;align-items:center;gap:12px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:6px;transition:.25s;}
+.hero .cta:hover{gap:20px;}
+.hero .imgnote{position:absolute;right:40px;bottom:22px;font-size:10px;color:rgba(255,255,255,.6);letter-spacing:.5px;}
+@media(max-width:760px){.hero h1{font-size:31px;}.hero .en{font-size:17px;}.hero .in{padding:0 22px 64px;}.hero .imgnote{right:22px;}}
 
-        /* ── Feature Rows (alternating) ── */
-        .feat-rows{max-width:960px;margin:0 auto}
-        .feat-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:56px 0;border-bottom:1px solid var(--gray-100)}
-        .feat-row:last-child{border-bottom:none}
-        .feat-row.reverse .feat-text{order:1}
-        .feat-row.reverse .feat-img{order:2}
-        @media(max-width:768px){.feat-row{grid-template-columns:1fr;gap:24px;padding:32px 0}.feat-row.reverse .feat-text,.feat-row.reverse .feat-img{order:unset}}
-        .feat-text .feat-num{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:3px;color:var(--primary);margin-bottom:8px}
-        .feat-text h3{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--black);letter-spacing:.03em;margin:0 0 12px}
-        .feat-text p{font-size:14px;font-weight:400;line-height:2;color:var(--gray-700);margin:0 0 16px}
-        .feat-text .feat-tags{display:flex;gap:6px;flex-wrap:wrap}
-        .feat-text .feat-tag{font-size:10px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border:1px solid var(--gray-300);color:var(--gray-700)}
-        .feat-text .feat-tag.pro{border-color:var(--primary);color:var(--primary);background:var(--primary-pale)}
-        .feat-img{background:#fff;border:1px solid var(--gray-200);border-radius:6px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
-        .feat-img img{width:100%;display:block}
+/* Intro */
+.intro{padding:104px 0 78px;text-align:center;}
+.intro .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:22px;}
+.intro h2{font-family:var(--sj);font-size:30px;font-weight:500;line-height:1.66;letter-spacing:1px;margin-bottom:24px;}
+.intro p{max-width:660px;margin:0 auto;font-size:14.5px;color:var(--g6);line-height:2.1;font-weight:300;}
 
+/* Properties */
+.props{padding:24px 0 40px;}
+.phead{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:46px;gap:16px;}
+.phead h3{font-family:var(--fr);font-size:25px;font-weight:500;letter-spacing:1px;}
+.phead h3 .jp{font-family:var(--sj);font-size:15px;font-weight:500;color:var(--stone-d);margin-left:14px;letter-spacing:.5px;}
+.phead span{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:2px;color:var(--stone);text-transform:uppercase;white-space:nowrap;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;gap:54px;}}
+.card{display:block;color:inherit;}
+.card .imgw{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bone2);}
+.card .imgw img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1);}
+.card:hover .imgw img{transform:scale(1.05);}
+.card .num{position:absolute;top:20px;left:20px;font-family:var(--fr);font-size:13px;font-weight:600;letter-spacing:2px;color:#fff;mix-blend-mode:difference;}
+.card .loc{position:absolute;top:20px;right:20px;font-family:var(--es);font-size:10.5px;font-weight:600;letter-spacing:1.5px;color:#fff;background:rgba(26,24,21,.5);backdrop-filter:blur(4px);padding:5px 11px;text-transform:uppercase;}
+.card .cg{position:absolute;bottom:12px;right:12px;font-size:9.5px;color:#fff;background:rgba(26,24,21,.45);padding:3px 8px;letter-spacing:.5px;}
+.card .body{padding-top:24px;}
+.card .nm{font-family:var(--sj);font-size:23px;font-weight:500;letter-spacing:.5px;margin-bottom:5px;}
+.card .ten{font-family:var(--fr);font-style:italic;font-size:14px;color:var(--stone);margin-bottom:18px;}
+.card .specs{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:16px;}
+.card .specs div{flex:1;padding:15px 4px;border-right:1px solid var(--line);}
+.card .specs div:last-child{border-right:none;}
+.card .specs .v{font-family:var(--fr);font-size:25px;font-weight:500;line-height:1;}
+.card .specs .v.jp{font-family:var(--sj);font-size:18px;font-weight:700;}
+.card .specs .v .u{font-size:12px;font-weight:600;color:var(--stone);margin-left:2px;font-family:var(--jp);}
+.card .specs .l{font-size:10.5px;color:var(--g6);margin-top:7px;letter-spacing:.3px;}
+.card .price{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+.card .price .pl{font-size:11px;color:var(--g6);letter-spacing:1px;}
+.card .price .pv{font-family:var(--fr);font-size:26px;font-weight:600;letter-spacing:.5px;}
+.card .price .pv .u{font-family:var(--jp);font-size:13px;font-weight:600;}
+.card .desc{font-size:13px;color:var(--g6);line-height:1.95;margin-bottom:20px;font-weight:300;}
+.card .more{display:inline-flex;align-items:center;gap:10px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:.25s;}
+.card:hover .more{gap:18px;color:var(--stone-d);}
 
-        /* ── Steps ── */
-        .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:40px}
-        .step{text-align:center;padding:0 8px}
-        .step-num{font-family:var(--font-display);font-size:48px;font-weight:700;color:var(--gray-200);line-height:1;margin-bottom:12px}
-        .step h4{font-size:15px;font-weight:700;color:var(--black);margin:0 0 8px}
-        .step p{font-size:13px;font-weight:400;line-height:1.8;color:var(--gray-700);margin:0}
+/* M&A panel */
+.mna{padding:30px 0 96px;}
+.mna-box{background:var(--bone);border:1px solid var(--line);padding:54px 56px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;}
+@media(max-width:820px){.mna-box{grid-template-columns:1fr;gap:30px;padding:38px 26px;}}
+.mna-box h4{font-family:var(--sj);font-size:23px;font-weight:500;line-height:1.6;letter-spacing:.5px;margin-bottom:16px;}
+.mna-box p{font-size:13.5px;color:var(--g6);line-height:2.05;font-weight:300;margin-bottom:22px;}
+.mna-box .more{display:inline-flex;align-items:center;gap:10px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:5px;transition:.25s;}
+.mna-box .more:hover{gap:18px;color:var(--stone-d);border-color:var(--stone);}
+.mna-tags{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line);}
+.mna-tags div{display:flex;align-items:baseline;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink2);}
+.mna-tags div .k{font-family:var(--es);font-size:10px;font-weight:600;letter-spacing:1px;color:var(--stone);text-transform:uppercase;width:62px;flex-shrink:0;}
 
-        /* ── Pricing ── */
-        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:720px;margin:40px auto 0}
-        .pr-card{background:#fff;border:2px solid var(--gray-200);padding:36px 32px;text-align:center;transition:all .3s;position:relative}
-        .pr-card.featured{border-color:var(--primary);box-shadow:0 8px 40px rgba(200,22,29,.08)}
-        .pr-card .badge-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 14px;text-transform:uppercase}
-        .pr-card .plan-name{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--charcoal)}
-        .pr-card .price{font-family:var(--font-display);font-size:44px;font-weight:600;color:var(--black);line-height:1;margin:16px 0 4px}
-        .pr-card .price small{font-size:16px;font-weight:400}
-        .pr-card .price-unit{font-size:13px;color:var(--gray-700);font-weight:400;margin-bottom:4px}
-        .pr-card .price-annual{font-size:12px;color:var(--primary);font-weight:500;margin-bottom:20px;min-height:18px}
-        .pr-card ul{text-align:left;padding:0;list-style:none;margin:0 0 24px}
-        .pr-card li{font-size:13px;color:var(--gray-700);font-weight:400;padding:8px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:8px;line-height:1.6}
-        .pr-card li::before{content:'✓';font-size:11px;color:var(--primary);font-weight:700;margin-top:2px}
-        .pr-card li.disabled{color:var(--gray-300)}
-        .pr-card li.disabled::before{content:'—';color:var(--gray-300)}
-        .pr-card .btn-plan{display:block;width:100%;padding:14px;font-size:13px;font-weight:700;letter-spacing:1px;border:2px solid var(--charcoal);background:transparent;color:var(--charcoal);cursor:pointer;transition:all .3s;text-decoration:none;text-align:center}
-        .pr-card .btn-plan:hover{background:var(--charcoal);color:#fff}
-        .pr-card.featured .btn-plan{background:var(--primary);color:#fff;border-color:var(--primary)}
-        .pr-card.featured .btn-plan:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
+/* Develop / funnel */
+.dev{background:var(--bone);border-top:1px solid var(--line);padding:96px 0;}
+.dev .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:16px;text-align:center;}
+.dev h2{font-family:var(--sj);font-size:30px;font-weight:500;line-height:1.6;letter-spacing:1px;text-align:center;margin-bottom:18px;}
+.dev .lead{max-width:680px;margin:0 auto 56px;text-align:center;font-size:14.5px;color:var(--g6);line-height:2.1;font-weight:300;}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:1040px;margin:0 auto;border:1px solid var(--line);background:var(--paper);}
+@media(max-width:820px){.flow{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.flow{grid-template-columns:1fr;}}
+.step{padding:34px 26px;border-right:1px solid var(--line);position:relative;}
+.step:last-child{border-right:none;}
+@media(max-width:820px){.step:nth-child(2n){border-right:none;}.step{border-bottom:1px solid var(--line);}.step:nth-last-child(-n+2){border-bottom:none;}}
+@media(max-width:480px){.step{border-right:none;border-bottom:1px solid var(--line);}.step:last-child{border-bottom:none;}}
+.step .n{font-family:var(--fr);font-size:13px;font-weight:600;letter-spacing:2px;color:var(--stone);margin-bottom:14px;}
+.step h4{font-family:var(--sj);font-size:18px;font-weight:500;letter-spacing:.5px;margin-bottom:10px;}
+.step p{font-size:12.5px;color:var(--g6);line-height:1.9;font-weight:300;}
+.step .pill{display:inline-block;margin-top:12px;font-family:var(--es);font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border:1px solid var(--line);color:var(--stone-d);}
+.step .pill.gate{border-color:var(--stone);color:var(--stone-d);}
+.step{transition:background .2s;}
+.step:hover{background:var(--bone);}
+.step:hover h4{color:var(--stone-d);}
+.dev .cta-row{display:flex;gap:14px;justify-content:center;margin-top:48px;flex-wrap:wrap;}
+.btn{font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:15px 32px;transition:.25s;display:inline-flex;align-items:center;gap:10px;}
+.btn.fill{background:var(--ink);color:#fff;}
+.btn.fill:hover{background:var(--ink2);gap:16px;}
+.btn.line{border:1px solid var(--ink);color:var(--ink);}
+.btn.line:hover{background:var(--ink);color:#fff;}
 
-        /* ── FAQ ── */
-        .faq-list{max-width:640px;margin:40px auto 0}
-        .faq-item{border-bottom:1px solid var(--gray-200);padding:16px 0}
-        .faq-item dt{font-size:14px;font-weight:600;color:var(--black);margin-bottom:6px}
-        .faq-item dd{font-size:13px;font-weight:400;color:var(--gray-700);line-height:1.9;margin:0}
+/* Contact strip */
+.strip{background:var(--ink);color:#fff;padding:92px 0;}
+.strip .grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;}
+@media(max-width:860px){.strip .grid2{grid-template-columns:1fr;gap:34px;}}
+.strip .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:18px;}
+.strip h3{font-family:var(--sj);font-size:27px;font-weight:500;line-height:1.6;margin-bottom:22px;}
+.strip p{font-size:14px;color:rgba(255,255,255,.72);line-height:2.05;font-weight:300;}
+.contact-card{border:1px solid rgba(255,255,255,.14);padding:34px 36px;}
+.contact-card .lbl{font-family:var(--es);font-size:10px;font-weight:600;letter-spacing:2px;color:var(--stone);text-transform:uppercase;margin-bottom:18px;}
+.contact-card table{width:100%;border-collapse:collapse;font-size:13px;}
+.contact-card th,.contact-card td{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12);text-align:left;vertical-align:top;}
+.contact-card th{color:rgba(255,255,255,.5);font-weight:400;width:96px;white-space:nowrap;}
+.contact-card td{color:#fff;font-weight:300;}
+.contact-card td a{color:#fff;border-bottom:1px solid var(--stone);}
+.contact-card tr:last-child th,.contact-card tr:last-child td{border-bottom:none;}
+.contact-card .mail{display:inline-block;margin-top:22px;font-family:var(--es);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.4);padding:13px 26px;transition:.2s;}
+.contact-card .mail:hover{background:#fff;color:var(--ink);}
 
-        /* ── CTA Band ── */
-        .cta-band{padding:56px 2rem;text-align:center;background:var(--cream);border-top:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100)}
-        .cta-band p{font-size:16px;font-weight:400;color:var(--charcoal);margin:0 0 20px}
-        .cta-band .cta-btn{padding:14px 40px;font-size:14px;font-weight:700;letter-spacing:1px;border:none;background:var(--primary);color:#fff;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
-        .cta-band .cta-btn:hover{background:var(--primary-dark)}
-
-        .light-band{padding:48px 2rem;text-align:center}
-        .light-band p{font-size:15px;font-weight:400;color:var(--gray-700);margin:0 0 16px}
-        .light-band .text-link{font-size:14px;font-weight:600;color:var(--charcoal);letter-spacing:1px;padding-bottom:2px;border-bottom:1.5px solid var(--charcoal);transition:all .3s;text-decoration:none}
-        .light-band .text-link:hover{color:var(--primary);border-bottom-color:var(--primary)}
-    </style>
+/* Footer */
+.footer{background:var(--bone);padding:46px 40px;text-align:center;color:var(--g6);}
+.footer .links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-family:var(--es);font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;}
+.footer .links a{color:var(--ink);}
+.footer .i{font-size:11.5px;line-height:1.95;}
+.footer .i a{color:var(--ink);border-bottom:1px solid var(--line);}
+.footer .note{max-width:960px;margin:14px auto 0;font-size:10px;color:var(--g5);line-height:1.8;}
+.footer .cp{font-family:var(--fr);font-size:12px;color:var(--ink);margin-top:18px;letter-spacing:1px;}
+</style>
 </head>
 <body>
-<a class="corp-back" href="https://tamjump.github.io/TAmj/index.html"><span class="arr">&larr;</span> TAmJ.Corp</a>
 
-    <header id="siteHeader">
-        <a href="index.html" class="header-logo"><img src="logo.png" alt="TAmJ"></a>
-        <nav class="header-nav">
-            <a href="index.html">Top</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="login.html" data-auth="logged-out">Login</a>
-            <a href="members/index.html" data-auth="logged-in" style="display:none">MyPage</a>
-            <a href="https://tamjump.github.io/TAmj/contact.html" class="nav-cta">Contact</a>
-        </nav>
-    </header>
+<a class="corp-back" href="https://tamjump.github.io/TAmj/index.html">&larr; TAmJ.Corp</a>
 
-    <!-- ══ Hero ══ -->
-    <section class="idx-hero">
-        <span class="label">Development × Financial Design</span>
-        <h1>開発のすべてを、設計する。</h1>
-        <p class="sub">建設見積ではなく「開発×財務設計」の統合提案。<br>建物の持ち方まで設計できる、唯一のプラットフォーム。</p>
-        <div class="cta-row">
-            <a href="register.html" class="cta-btn primary">無料で始める</a>
-            <a href="#features" class="cta-btn ghost">できることを見る ↓</a>
+<header class="hd" id="siteHeader">
+  <div class="in">
+    <a href="index.html" class="brand">不動産開発<small>TAMJ DEVELOPMENT</small></a>
+    <nav class="menu">
+      <a href="#properties" class="hidem">取扱案件</a>
+      <a href="#develop" class="hidem">開発を設計する</a>
+      <a href="pricing.html" class="hidem">料金</a>
+      <a href="login.html" data-auth="logged-out">Login</a>
+      <a href="members/index.html" data-auth="logged-in" style="display:none">MyPage</a>
+      <a href="contact/" class="cta">相談する</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="メニュー" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mnav" id="mnav">
+  <a href="#properties">取扱案件</a>
+  <a href="#develop">開発を設計する</a>
+  <a href="listings/">開発用地一覧</a>
+  <a href="hearing/">ヒアリング</a>
+  <a href="pricing.html">料金</a>
+  <a href="contact/">相談する</a>
+  <a href="login.html" data-auth="logged-out">ログイン</a>
+  <a href="members/index.html" data-auth="logged-in" style="display:none">マイページ</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="bg"></div>
+  <div class="ov"></div>
+  <div class="in">
+    <div class="ey">Development Land &amp; M&amp;A · Sapporo, Japan</div>
+    <h1>土地を売る。<br>出口まで、設計する。</h1>
+    <div class="en">Land — designed all the way to the exit.</div>
+    <a href="#properties" class="cta">取扱案件を見る &darr;</a>
+  </div>
+  <div class="imgnote">Artist's impression（完成予想イメージ・CG）</div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <div class="ey">Land × Financial Design</div>
+    <h2>構想から、建て方・持ち方、<br>出口まで一気通貫で。</h2>
+    <p>開発用地の売買と、介護・医療事業のM&amp;A・事業承継。さらにその土地・事業を「どう建て、どう持ち、どう出口を取るか」まで、シミュレーションと財務設計で一気通貫に支えます。土地を渡して終わりにしない——それが私たちの設計です。</p>
+  </div>
+</section>
+
+<section class="props" id="properties">
+  <div class="wrap">
+    <div class="phead">
+      <h3>Development Land<span class="jp">開発用地・売買</span></h3>
+      <span>2 Sites · Sapporo</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="listings/kyoikudai/">
+        <div class="imgw">
+          <img src="listings/render-interior2.png?v2" alt="あいの里教育大駅前 開発用地">
+          <span class="num">01</span>
+          <span class="loc">Kita-ku · Ainosato</span>
+          <span class="cg">完成予想イメージ（CG）</span>
         </div>
-    </section>
-
-    <!-- ══ Introduction ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <p class="idx-body reveal">医療・介護施設の開発に必要なすべてのプロセスを支援します。土地取得から建築費概算、什器備品の選定、リース設計、そしてBS影響やリース会計基準に基づく仕訳シートの出力まで。開発に必要な意思決定を、データで裏付けます。</p>
+        <div class="body">
+          <div class="nm">あいの里教育大駅前 開発用地</div>
+          <div class="ten">Ainosato-Kyoikudai Station Front</div>
+          <div class="specs">
+            <div><div class="v">2<span class="u">分</span></div><div class="l">駅 徒歩（約）</div></div>
+            <div><div class="v">300<span class="u">%</span></div><div class="l">容積率</div></div>
+            <div><div class="v">579<span class="u">坪</span></div><div class="l">敷地（約）</div></div>
+          </div>
+          <div class="price"><span class="pl">販売価格 / Price</span><span class="pv">¥130,000,000</span></div>
+          <div class="desc">JR「あいの里教育大」駅 至近。所有権・更地・約579坪。介護／医療、商業、住宅、投資まで対応できる駅前のまとまった用地です。</div>
+          <span class="more">View Property &rarr;</span>
         </div>
-    </section>
+      </a>
 
-    <!-- ══ Preview: MCI ══ -->
-    <section class="idx-section cream" id="features">
-        <div class="narrow">
-            <div class="reveal">
-                <span class="slabel">Live Market Data</span>
-                <h2>建築コスト指数をリアルタイムで追跡</h2>
-                <p class="section-lead">為替・資源・株価・金利の8指標を加重平均し、2022年基準の建築コスト倍率を日次で自動更新。構造別の差も一目で確認できます。</p>
-            </div>
-            <div class="preview-block reveal">
-                <img src="img/feat-mci.png" alt="MCI — Macro Construction Index" style="width:100%;display:block;border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.08);border:1px solid var(--gray-200)">
-                <p class="preview-caption" style="margin-top:20px">MCI（Macro Construction Index）— TAmJが独自に開発・算出するマクロ建設コスト指数</p>
-            </div>
+      <a class="card" href="listings/hachiken/">
+        <div class="imgw">
+          <img src="listings/hachiken/render-building.png" alt="八軒6条東5丁目 開発用地">
+          <span class="num">02</span>
+          <span class="loc">Nishi-ku · Hachiken</span>
+          <span class="cg">完成予想イメージ（CG）</span>
         </div>
-    </section>
-
-    <!-- ══ Features ══ -->
-    <section class="idx-section" style="padding-bottom:2rem">
-        <div class="feat-rows">
-            <div style="text-align:center;margin-bottom:24px" class="reveal">
-                <span class="slabel">Tools</span>
-                <h2 style="font-family:var(--font-serif);font-size:clamp(1.2rem,3vw,1.7rem);font-weight:500;letter-spacing:.04em;margin:0 0 8px;color:var(--black)">開発支援ツール</h2>
-                <p style="font-size:14px;color:var(--gray-700);margin:0">Freeプランでも月3回まで利用可能。</p>
-            </div>
-
-            <!-- 01 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-01.png" alt="開発費シミュレーター" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">01 — SIMULATOR</div>
-                    <h3>開発費シミュレーター</h3>
-                    <p>施設種別＋入居者数から面積→建築費→投資額を自動概算。47都道府県の建築単価に対応し、MCI（マクロ建設指数）で日次補正。構造・階数・用途係数を反映した実勢ベースの概算を瞬時に算出します。</p>
-                    <div class="feat-tags"><span class="feat-tag">47都道府県</span><span class="feat-tag">4構造対応</span><span class="feat-tag">MCI連動</span></div>
-                </div>
-            </div>
-
-            <!-- 02 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">02 — EQUIPMENT</div>
-                    <h3>什器備品＋リース設計</h3>
-                    <p>施設に必要な什器備品を統合マスタから一括選定。入居者数に応じて数量を自動算出し、購入・リースの比較やカテゴリ別の費用概算を瞬時に表示します。エントリー／ミドル／ハイエンドの3グレード対応。</p>
-                    <div class="feat-tags"><span class="feat-tag">統合マスタ</span><span class="feat-tag">リース比較</span><span class="feat-tag">3グレード</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-02.png" alt="什器備品選定" style="width:100%;display:block"></div>
-            </div>
-
-            <!-- 03 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-03.png" alt="オーナー収支計算" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">03 — INCOME</div>
-                    <h3>オーナー収支計算</h3>
-                    <p>NOI利回り・表面利回り・返済後CF・CCR（自己資金利回り）を自動算出。融資条件（LTV・金利・期間）を変えて収支への影響を瞬時にシミュレーション。投資判断に必要な指標を一画面で確認できます。</p>
-                    <div class="feat-tags"><span class="feat-tag">NOI/CCR</span><span class="feat-tag">融資条件可変</span></div>
-                </div>
-            </div>
-
-            <!-- 04 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">04 — EXPORT</div>
-                    <h3>見積PDF出力</h3>
-                    <p>概算サマリー・設備明細・収支計算をPDF/CSVで出力。そのまま社内稟議や金融機関への概算資料として活用できます。フェーズ別の内訳、構造別比較表も含む詳細見積形式。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">PDF/CSV</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-04.png" alt="見積PDF出力" style="width:100%;display:block"></div>
-            </div>
-
-            <!-- 05 -->
-            <div class="feat-row reveal">
-                <div class="feat-img"><img src="img/feat-05.png" alt="財務設計資料" style="width:100%;display:block"></div>
-                <div class="feat-text">
-                    <div class="feat-num">05 — FINANCIAL</div>
-                    <h3>財務設計資料</h3>
-                    <p>BS影響概算表・リース会計設計（IFRS16/ASC842対応）を自動生成。オンバランス（自社保有）・オフバランス（リース）・SPC分離の3パターンを比較し、財務インパクトを可視化します。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">IFRS16</span><span class="feat-tag">BS影響概算</span></div>
-                </div>
-            </div>
-
-            <!-- 06 -->
-            <div class="feat-row reverse reveal">
-                <div class="feat-text">
-                    <div class="feat-num">06 — SCHEME</div>
-                    <h3>スキーム構造設計</h3>
-                    <p>三層構造（資産保有SPC＋運営会社＋投資ファンド）による可変型スキーム。保有形態の違いによる税務・会計・ガバナンスへの影響を比較し、最適なストラクチャーを設計します。</p>
-                    <div class="feat-tags"><span class="feat-tag pro">Pro</span><span class="feat-tag">SPC</span><span class="feat-tag">全パターン対応</span></div>
-                </div>
-                <div class="feat-img"><img src="img/feat-06.png" alt="スキーム構造設計" style="width:100%;display:block"></div>
-            </div>
+        <div class="body">
+          <div class="nm">八軒6条東5丁目 開発用地</div>
+          <div class="ten">Hachiken · Kanjo-dori Frontage</div>
+          <div class="specs">
+            <div><div class="v jp">環状通</div><div class="l">幹線接道</div></div>
+            <div><div class="v">200<span class="u">%</span></div><div class="l">容積率</div></div>
+            <div><div class="v">535<span class="u">坪</span></div><div class="l">敷地（約・4筆）</div></div>
+          </div>
+          <div class="price"><span class="pl">販売価格 / Price</span><span class="pv">応談<span class="u"> / On request</span></span></div>
+          <div class="desc">環状通（道道下手稲札幌線）に接道する近隣商業・約535坪の一団地。医療・福祉、店舗・商業、住宅・複合開発に。JR「八軒」駅 徒歩圏。</div>
+          <span class="more">View Property &rarr;</span>
         </div>
-    </section>
+      </a>
 
-    <!-- ══ How it works ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">How it works</span>
-                <h2>3ステップで始められます</h2>
-            </div>
-            <div class="steps reveal">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h4>無料で会員登録</h4>
-                    <p>Googleアカウントまたはメールアドレスで30秒で登録完了。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h4>条件を入力</h4>
-                    <p>施設種別と入居者数を入力。面積・建築費・投資額が自動で算出されます。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h4>結果を活用</h4>
-                    <p>概算結果をPDF出力し、社内稟議や金融機関への提出にそのまま活用。</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- ══ Pricing ══ -->
-    <section class="idx-section cream" id="pricing">
-        <div class="wide">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">Pricing</span>
-                <h2>料金プラン</h2>
-                <p class="section-lead" style="margin:0 auto;">まずは無料で始めて、必要に応じてProへ。</p>
-            </div>
-            <div class="pricing-grid reveal">
-                <div class="pr-card">
-                    <div class="plan-name">Free</div>
-                    <div class="price">¥0</div>
-                    <div class="price-unit">ずっと無料</div>
-                    <div class="price-annual">&nbsp;</div>
-                    <ul>
-                        <li>シミュレーション 月3回まで</li>
-                        <li>MCI指数の閲覧</li>
-                        <li>オーナー収支計算</li>
-                        <li>設備明細の閲覧</li>
-                        <li>データ保存 1件まで</li>
-                        <li class="disabled">見積PDF/CSV出力</li>
-                        <li class="disabled">財務設計資料</li>
-                        <li class="disabled">スキーム構造設計</li>
-                    </ul>
-                    <a href="register.html" class="btn-plan">無料で登録する</a>
-                </div>
-                <div class="pr-card featured">
-                    <span class="badge-pop">おすすめ</span>
-                    <div class="plan-name">Pro</div>
-                    <div class="price">¥300<small>/月</small></div>
-                    <div class="price-unit">税抜</div>
-                    <div class="price-annual">Square決済・クレジットカード不要</div>
-                    <ul>
-                        <li>シミュレーション 無制限</li>
-                        <li>MCI指数の閲覧</li>
-                        <li>オーナー収支計算</li>
-                        <li>設備明細の編集・出力</li>
-                        <li>データ保存 無制限</li>
-                        <li>見積PDF/CSV出力</li>
-                        <li>財務設計資料（IFRS16対応）</li>
-                        <li>スキーム構造設計</li>
-                    </ul>
-                    <a href="https://square.link/u/w9nRYlU1" class="btn-plan" id="idxProBtn" target="_blank">Proで始める</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="mna">
+  <div class="wrap">
+    <div class="phead">
+      <h3>Business Succession &amp; M&amp;A<span class="jp">介護・医療｜事業承継・M&amp;A</span></h3>
+      <span>Confidential · 個別相談</span>
+    </div>
+    <div class="mna-box">
+      <div>
+        <h4>事業を、次の運営へ。<br>承継・譲渡の設計まで。</h4>
+        <p>介護・医療分野の事業譲渡／株式譲渡を、財務分析・スキーム設計・バリュエーションまで一貫してお手伝いします。具体案件は守秘のうえ個別にご紹介。譲りたい方・引き受けたい方、どちらのご相談も承ります。</p>
+        <a class="more" href="contact/">M&amp;A・承継を相談する &rarr;</a>
+      </div>
+      <div class="mna-tags">
+        <div><span class="k">領域</span>有料老人ホーム・住宅型・サ高住</div>
+        <div><span class="k">領域</span>訪問・通所など介護事業所</div>
+        <div><span class="k">領域</span>医療法人・クリニックの承継</div>
+        <div><span class="k">設計</span>事業譲渡／株式譲渡の比較・試算</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ══ FAQ ══ -->
-    <section class="idx-section">
-        <div class="narrow">
-            <div class="reveal" style="text-align:center;">
-                <span class="slabel">FAQ</span>
-                <h2>よくあるご質問</h2>
-            </div>
-            <dl class="faq-list reveal">
-                <div class="faq-item">
-                    <dt>Freeプランに期間制限はありますか？</dt>
-                    <dd>ありません。月3回までのシミュレーションはずっと無料でお使いいただけます。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>Proプランはいつでも解約できますか？</dt>
-                    <dd>はい。月額プランはいつでも解約可能で、解約後は次の更新日からFreeプランに戻ります。解約後は翌月からFreeプランに戻ります。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>決済方法は？</dt>
-                    <dd>クレジットカード（Visa, Mastercard, AMEX, JCB）に対応しています。Square（スクエア）によるセキュアな決済処理を行います。</dd>
-                </div>
-                <div class="faq-item">
-                    <dt>FreeからProへのアップグレードは簡単にできますか？</dt>
-                    <dd>はい。会員ページからワンクリックでアップグレード可能です。Freeプランで保存したデータはそのまま引き継がれます。</dd>
-                </div>
-            </dl>
-        </div>
-    </section>
+<section class="dev" id="develop">
+  <div class="wrap">
+    <div class="ey">The Process</div>
+    <h2>開発を、設計する。</h2>
+    <p class="lead">物件で掴み、その土地・事業を「どう建て、どう持つか」まで試算する。土地を売るだけの仲介ではなく、開発シミュレーションと財務設計まで地続きでつなぐ——ここが私たちの差です。</p>
+    <div class="flow">
+      <a class="step" href="#properties">
+        <div class="n">01</div>
+        <h4>物件・案件</h4>
+        <p>開発用地、または介護・医療のM&amp;A案件を選ぶ。すべての起点。</p>
+        <span class="pill">公開</span>
+      </a>
+      <a class="step" href="register.html">
+        <div class="n">02</div>
+        <h4>開発シミュレーション</h4>
+        <p>用途地域・容積から事業規模・概算事業費・収支を試算。簡易はどなたでも。</p>
+        <span class="pill">簡易は無料</span>
+      </a>
+      <a class="step" href="hearing/">
+        <div class="n">03</div>
+        <h4>ヒアリング</h4>
+        <p>規模・要件・資金計画など条件を整理し、計画の精度を上げる。</p>
+        <span class="pill">相談</span>
+      </a>
+      <a class="step" href="register.html">
+        <div class="n">04</div>
+        <h4>見積・財務設計</h4>
+        <p>事業費見積に加え、BS影響・リース仕訳まで。持ち方の出口を設計。</p>
+        <span class="pill gate">会員</span>
+      </a>
+    </div>
+    <div class="cta-row">
+      <a href="register.html" class="btn fill">開発シミュレーションを試す &rarr;</a>
+      <a href="pricing.html" class="btn line">料金を見る</a>
+    </div>
+  </div>
+</section>
 
-    <!-- ══ CTA ══ -->
-    <section class="cta-band reveal">
-        <p>まずは無料で、開発シミュレーションを体験してみませんか。</p>
-        <a href="register.html" class="cta-btn">無料で会員登録 →</a>
-    </section>
+<section class="strip" id="contact">
+  <div class="wrap">
+    <div class="grid2">
+      <div>
+        <div class="ey">For Developers, Operators &amp; Investors</div>
+        <h3>札幌のまちに、<br>次の使い道を。</h3>
+        <p>開発用地の売買、介護・医療事業のM&amp;A・事業承継、開発の事業性検討まで。物件のご相談・現地のご案内、海外の事業者・ファンドからのお問い合わせも承ります。</p>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Inquiries · お問い合わせ</div>
+        <table>
+          <tr><th>Email</th><td><a href="mailto:info@tamjump.com">info@tamjump.com</a></td></tr>
+          <tr><th>担当</th><td>大下 甚 / Jin Oshita</td></tr>
+          <tr><th>用地取扱</th><td>株式会社ウェルト（<a href="http://www.welt2015.co.jp" target="_blank" rel="noopener">welt2015.co.jp</a>）</td></tr>
+          <tr><th>免許</th><td>宅地建物取引業 北海道知事 石狩(3)第8339号</td></tr>
+          <tr><th>取引態様</th><td>媒介 / Brokerage</td></tr>
+          <tr><th>M&amp;A・承継</th><td>株式会社メディパス（TAmJ.Corp）</td></tr>
+        </table>
+        <a class="mail" href="mailto:info@tamjump.com">Send Inquiry &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section class="light-band reveal">
-        <p>ご相談・お問合せはお気軽にどうぞ。</p>
-        <a href="https://tamjump.github.io/TAmj/contact.html" class="text-link">お問合せ →</a>
-    </section>
+<footer class="footer">
+  <div class="links">
+    <a href="#properties">取扱案件</a>
+    <a href="listings/">開発用地一覧</a>
+    <a href="#develop">開発を設計する</a>
+    <a href="pricing.html">料金</a>
+    <a href="contact/">相談する</a>
+  </div>
+  <div class="i">
+    用地取扱不動産会社：株式会社ウェルト ／ 札幌市中央区南1条西11丁目1 みたか南一ビル ／ <a href="http://www.welt2015.co.jp" target="_blank" rel="noopener">welt2015.co.jp</a><br>
+    宅地建物取引業 北海道知事 石狩(3)第8339号 ／ 取引態様：媒介
+  </div>
+  <p class="note">※ 掲載の画像は完成予想イメージ（CG）を含みます。建物の形状・規模・配置、土地の区画、前面道路、周辺の建物・街並み等は実際とは異なり、現況に存しないものを含みます。価格・面積・法令上の制限等は現時点の情報・計画上の想定に基づくもので、最新・正確な内容は各物件ページおよび取扱会社にてご確認ください。M&amp;A・事業承継案件は守秘のうえ個別にご案内します。</p>
+  <div class="cp">TAmJ Development · Sapporo · 2026</div>
+</footer>
 
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
-            <div class="footer-links">
-                <div class="footer-col"><h4>Service</h4><a href="pricing.html">料金プラン</a></div>
-                <div class="footer-col"><h4>Account</h4><a href="register.html">会員登録</a><a href="login.html">ログイン</a><a href="members/index.html">会員ページ</a></div>
-                <div class="footer-col"><h4>Support</h4><a href="https://tamjump.github.io/TAmj/contact.html">お問合せ</a></div>
-                <div class="footer-col"><h4>Legal</h4><a href="https://tamjump.github.io/TAmj/privacy.html">Privacy Policy</a><a href="https://tamjump.github.io/TAmj/terms.html">Terms</a><a href="https://tamjump.github.io/TAmj/commerce.html">特定商取引法</a></div>
-            </div>
-        </div>
-        <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
-    </footer>
-    <script src="js/auth.js"></script>
-    <script>
-        const h=document.getElementById('siteHeader');
-        if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
-        const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-        document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-        onAuthReady(user=>updateAuthUI(user));
-        document.querySelectorAll('a[href^="#"]').forEach(a=>{
-            a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
-        });
-            // Square決済リンク（準備でき次第ここに設定）
-        const SQUARE_URL = 'https://square.link/u/w9nRYlU1';
-        const idxProBtn = document.getElementById('idxProBtn');
-        if(idxProBtn){
-            idxProBtn.href = SQUARE_URL;
-            idxProBtn.addEventListener('click', e => {
-                if(SQUARE_URL === '#'){ e.preventDefault(); alert('決済リンクは準備中です。'); }
-            });
-        }
-        </script>
+<script src="js/auth.js"></script>
+<script>
+  const h=document.getElementById('siteHeader');
+  if(h){const onScroll=()=>h.classList.toggle('scrolled',window.scrollY>window.innerHeight-120);window.addEventListener('scroll',onScroll);onScroll();}
+  if(typeof onAuthReady==='function'){onAuthReady(function(user){if(typeof updateAuthUI==='function')updateAuthUI(user);});}
+  var burger=document.getElementById('burger'), mnav=document.getElementById('mnav');
+  if(burger&&mnav){
+    burger.addEventListener('click',function(){var o=mnav.classList.toggle('open');document.body.classList.toggle('mnav-open',o);burger.setAttribute('aria-expanded',o?'true':'false');});
+    mnav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mnav.classList.remove('open');document.body.classList.remove('mnav-open');burger.setAttribute('aria-expanded','false');});});
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});
+  });
+</script>
 </body>
 </html>
