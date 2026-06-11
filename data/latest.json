@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-06-10",
-  "fetchTime": "2026-06-10T22:36:57.618Z",
+  "fetchDate": "2026-06-11",
+  "fetchTime": "2026-06-11T22:35:40.418Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,47 +10,36 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 64179.27,
-    "usdjpy": 160.523,
-    "brent": 95.26,
-    "copper": 6.182,
-    "jgb10y": 4.542,
-    "cnyJpy": 23.671,
-    "steel": 250.49,
+    "nikkei": 64217.27,
+    "usdjpy": 160.046,
+    "brent": 88.32,
+    "copper": 6.392,
+    "jgb10y": 4.463,
+    "cnyJpy": 23.567,
+    "steel": 260.9,
     "lumber": 762.7
   },
   "history30d": [
     {
-      "date": "2026-05-07",
-      "nikkei": 62833.84,
-      "usdjpy": 156.829,
-      "brent": 100.06,
-      "copper": 6.128,
-      "jgb10y": 4.392,
-      "cnyJpy": 23.057,
-      "steel": 226.7,
-      "lumber": 762.7
-    },
-    {
       "date": "2026-05-08",
       "nikkei": 62713.648,
-      "usdjpy": 160.523,
+      "usdjpy": 160.046,
       "brent": 101.29,
       "copper": 6.249,
       "jgb10y": 4.364,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.567,
       "steel": 227.5,
       "lumber": 762.7
     },
     {
       "date": "2026-05-10",
-      "nikkei": 64179.27,
+      "nikkei": 64217.27,
       "usdjpy": 156.858,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.066,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
@@ -100,23 +89,23 @@
     {
       "date": "2026-05-15",
       "nikkei": 61409.289,
-      "usdjpy": 160.523,
+      "usdjpy": 160.046,
       "brent": 109.26,
       "copper": 6.252,
       "jgb10y": 4.595,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.567,
       "steel": 227.02,
       "lumber": 762.7
     },
     {
       "date": "2026-05-17",
-      "nikkei": 64179.27,
+      "nikkei": 64217.27,
       "usdjpy": 158.844,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.324,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
@@ -166,34 +155,34 @@
     {
       "date": "2026-05-22",
       "nikkei": 63339.07,
-      "usdjpy": 160.523,
+      "usdjpy": 160.046,
       "brent": 103.54,
       "copper": 6.342,
       "jgb10y": 4.558,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.567,
       "steel": 232,
       "lumber": 762.7
     },
     {
       "date": "2026-05-24",
-      "nikkei": 64179.27,
+      "nikkei": 64217.27,
       "usdjpy": 158.946,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.393,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
       "date": "2026-05-25",
       "nikkei": 65158.191,
       "usdjpy": 158.954,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.392,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
@@ -232,23 +221,23 @@
     {
       "date": "2026-05-29",
       "nikkei": 66329.5,
-      "usdjpy": 160.523,
+      "usdjpy": 160.046,
       "brent": 92.05,
       "copper": 6.359,
       "jgb10y": 4.453,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.567,
       "steel": 250,
       "lumber": 762.7
     },
     {
       "date": "2026-05-31",
-      "nikkei": 64179.27,
+      "nikkei": 64217.27,
       "usdjpy": 159.353,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.552,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
@@ -298,23 +287,23 @@
     {
       "date": "2026-06-05",
       "nikkei": 66588.117,
-      "usdjpy": 160.523,
+      "usdjpy": 160.046,
       "brent": 93.09,
       "copper": 6.264,
       "jgb10y": 4.536,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.567,
       "steel": 254.39,
       "lumber": 762.7
     },
     {
       "date": "2026-06-07",
-      "nikkei": 64179.27,
+      "nikkei": 64217.27,
       "usdjpy": 160.327,
-      "brent": 95.26,
-      "copper": 6.182,
-      "jgb10y": 4.542,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
       "cnyJpy": 23.699,
-      "steel": 250.49,
+      "steel": 260.9,
       "lumber": 762.7
     },
     {
@@ -342,12 +331,23 @@
     {
       "date": "2026-06-10",
       "nikkei": 64179.27,
-      "usdjpy": 160.523,
-      "brent": 95.26,
-      "copper": 6.182,
+      "usdjpy": 160.527,
+      "brent": 93.1,
+      "copper": 6.249,
       "jgb10y": 4.542,
-      "cnyJpy": 23.671,
+      "cnyJpy": 23.704,
       "steel": 250.49,
+      "lumber": 762.7
+    },
+    {
+      "date": "2026-06-11",
+      "nikkei": 64217.27,
+      "usdjpy": 160.046,
+      "brent": 88.32,
+      "copper": 6.392,
+      "jgb10y": 4.463,
+      "cnyJpy": 23.567,
+      "steel": 260.9,
       "lumber": 762.7
     }
   ],
