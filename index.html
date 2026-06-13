@@ -177,6 +177,30 @@ body.mnav-open .hd .brand small{color:var(--stone);}
 .footer .i a{color:var(--ink);border-bottom:1px solid var(--line);}
 .footer .note{max-width:960px;margin:14px auto 0;font-size:10px;color:var(--g5);line-height:1.8;}
 .footer .cp{font-family:var(--fr);font-size:12px;color:var(--ink);margin-top:18px;letter-spacing:1px;}
+.mci{padding:96px 0;border-top:1px solid var(--line);}
+.mci .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:16px;text-align:center;}
+.mci h2{font-family:var(--sj);font-size:30px;font-weight:500;line-height:1.6;letter-spacing:1px;text-align:center;margin-bottom:18px;}
+.mci .lead{max-width:680px;margin:0 auto 44px;text-align:center;font-size:14.5px;color:var(--g6);line-height:2.1;font-weight:300;}
+.mci .shot{max-width:920px;margin:0 auto;border:1px solid var(--line);box-shadow:0 8px 40px rgba(26,24,21,.07);}
+.mci .shot img{width:100%;display:block;}
+.mci .cap{text-align:center;font-family:var(--fr);font-style:italic;font-size:13px;color:var(--stone-d);margin-top:20px;}
+.tools{padding:0 0 96px;}
+.tools .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone);margin-bottom:16px;text-align:center;}
+.tools h2{font-family:var(--sj);font-size:28px;font-weight:500;letter-spacing:1px;text-align:center;margin-bottom:14px;}
+.tools .lead{max-width:640px;margin:0 auto 44px;text-align:center;font-size:14px;color:var(--g6);line-height:2;font-weight:300;}
+.tgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;}
+@media(max-width:900px){.tgrid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.tgrid{grid-template-columns:1fr;}}
+.tcard{border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;}
+.tcard .timg{aspect-ratio:16/10;overflow:hidden;background:var(--bone2);border-bottom:1px solid var(--line);}
+.tcard .timg img{width:100%;height:100%;object-fit:cover;}
+.tcard .tbody{padding:22px 22px 24px;}
+.tcard .tnum{font-family:var(--fr);font-size:10.5px;font-weight:600;letter-spacing:2px;color:var(--stone);margin-bottom:8px;}
+.tcard h4{font-family:var(--sj);font-size:17px;font-weight:500;letter-spacing:.5px;margin-bottom:10px;}
+.tcard p{font-size:12.5px;color:var(--g6);line-height:1.9;font-weight:300;margin-bottom:14px;}
+.tcard .ttags{display:flex;gap:6px;flex-wrap:wrap;}
+.tcard .ttag{font-family:var(--es);font-size:9.5px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border:1px solid var(--line);color:var(--stone-d);}
+.tcard .ttag.pro{border-color:var(--stone);color:var(--stone-d);background:var(--bone);}
 </style>
 </head>
 <body>
@@ -347,6 +371,32 @@ body.mnav-open .hd .brand small{color:var(--stone);}
     <div class="cta-row">
       <a href="service.html" class="btn fill">開発サービス・MCIを見る &rarr;</a>
       <a href="pricing.html" class="btn line">料金を見る</a>
+    </div>
+  </div>
+</section>
+
+<section class="mci">
+  <div class="wrap">
+    <div class="ey">Live Market Data</div>
+    <h2>建築コスト指数を、リアルタイムで追跡</h2>
+    <p class="lead">為替・資源・株価・金利の8指標を加重平均し、2022年基準の建築コスト倍率を日次で自動更新。構造別の差も一目で確認できます。</p>
+    <div class="shot"><img src="img/feat-mci.png" alt="MCI — Macro Construction Index"></div>
+    <p class="cap">MCI（Macro Construction Index）— TAmJが独自に開発・算出するマクロ建設コスト指数</p>
+  </div>
+</section>
+
+<section class="tools">
+  <div class="wrap">
+    <div class="ey">Tools</div>
+    <h2>開発支援ツール</h2>
+    <p class="lead">土地取得から建築費概算、什器・リース設計、収支、財務・スキーム設計まで。開発の意思決定をデータで裏付けます。</p>
+    <div class="tgrid">
+      <div class="tcard"><div class="timg"><img src="img/feat-01.png" alt="開発費シミュレーター"></div><div class="tbody"><div class="tnum">01 — Simulator</div><h4>開発費シミュレーター</h4><p>施設種別＋入居者数から面積→建築費→投資額を自動概算。47都道府県の建築単価に対応し、MCIで日次補正。構造・階数・用途係数を反映した実勢ベースの概算を瞬時に。</p><div class="ttags"><span class="ttag">47都道府県</span><span class="ttag">4構造対応</span><span class="ttag">MCI連動</span></div></div></div>
+      <div class="tcard"><div class="timg"><img src="img/feat-02.png" alt="什器備品＋リース設計"></div><div class="tbody"><div class="tnum">02 — Equipment</div><h4>什器備品＋リース設計</h4><p>必要な什器備品を統合マスタから一括選定。入居者数に応じて数量を自動算出し、購入・リースの比較やカテゴリ別の費用概算を表示。3グレード対応。</p><div class="ttags"><span class="ttag">統合マスタ</span><span class="ttag">リース比較</span><span class="ttag">3グレード</span></div></div></div>
+      <div class="tcard"><div class="timg"><img src="img/feat-03.png" alt="オーナー収支計算"></div><div class="tbody"><div class="tnum">03 — Income</div><h4>オーナー収支計算</h4><p>NOI利回り・表面利回り・返済後CF・CCR（自己資金利回り）を自動算出。融資条件（LTV・金利・期間）を変えて収支への影響を瞬時にシミュレーション。</p><div class="ttags"><span class="ttag">NOI/CCR</span><span class="ttag">融資条件可変</span></div></div></div>
+      <div class="tcard"><div class="timg"><img src="img/feat-04.png" alt="見積PDF出力"></div><div class="tbody"><div class="tnum">04 — Export</div><h4>見積PDF出力</h4><p>概算サマリー・設備明細・収支計算をPDF/CSVで出力。社内稟議や金融機関への概算資料にそのまま活用。フェーズ別・構造別比較表も含む詳細形式。</p><div class="ttags"><span class="ttag pro">Pro</span><span class="ttag">PDF/CSV</span></div></div></div>
+      <div class="tcard"><div class="timg"><img src="img/feat-05.png" alt="財務設計資料"></div><div class="tbody"><div class="tnum">05 — Financial</div><h4>財務設計資料</h4><p>BS影響概算表・リース会計設計（IFRS16/ASC842対応）を自動生成。オンバランス・オフバランス・SPC分離の3パターンを比較し財務インパクトを可視化。</p><div class="ttags"><span class="ttag pro">Pro</span><span class="ttag">IFRS16</span><span class="ttag">BS影響概算</span></div></div></div>
+      <div class="tcard"><div class="timg"><img src="img/feat-06.png" alt="スキーム構造設計"></div><div class="tbody"><div class="tnum">06 — Scheme</div><h4>スキーム構造設計</h4><p>三層構造（資産保有SPC＋運営会社＋投資ファンド）による可変型スキーム。保有形態の違いによる税務・会計・ガバナンスへの影響を比較し最適化。</p><div class="ttags"><span class="ttag pro">Pro</span><span class="ttag">SPC</span><span class="ttag">全パターン対応</span></div></div></div>
     </div>
   </div>
 </section>
