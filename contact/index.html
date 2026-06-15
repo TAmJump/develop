@@ -112,13 +112,13 @@ a{color:inherit;text-decoration:none;}
   <div class="wrap">
     <div class="layout">
 
-      <div class="form-card">
+      <div class="form-card" id="formInner">
         <div class="field">
           <label>ご相談の種別<span class="req">*</span></label>
           <div class="seg" id="segKind">
             <button type="button" data-k="開発用地（売買）" class="on">開発用地（売買）</button>
-            <button type="button" data-k="M&amp;A・事業承継">M&amp;A・事業承継</button>
             <button type="button" data-k="開発相談（シミュ・見積）">開発相談</button>
+            <button type="button" data-k="その他">その他</button>
           </div>
         </div>
         <div class="field">
@@ -149,8 +149,10 @@ a{color:inherit;text-decoration:none;}
           <label>ご相談内容<span class="req">*</span></label>
           <textarea id="fMsg" placeholder="ご検討の背景・ご希望条件・ご質問など、わかる範囲でお書きください。"></textarea>
         </div>
-        <button type="button" class="submit" id="btnSend">メールを作成して送信 &rarr;</button>
-        <p class="formnote">「送信」を押すと、入力内容を反映したメールがご利用のメールソフトで開きます。送信先：info@tamjump.com。うまく開かない場合は、お手数ですが直接 info@tamjump.com 宛にお送りください。</p>
+        <input type="text" id="fHp" name="company_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <button type="button" class="submit" id="btnSend">送信する &rarr;</button>
+        <div id="formMsg" style="display:none"></div>
+        <p class="formnote">ご入力内容はそのままこのサイトから送信され、折り返し担当よりご連絡します。受付確認の自動返信メールをお送りします。お送りいただいた個人情報は、ご相談対応の目的にのみ使用します。</p>
       </div>
 
       <aside class="aside">
@@ -198,7 +200,7 @@ a{color:inherit;text-decoration:none;}
     info@tamjump.com ／ 各物件の宅地建物取引業免許・取引態様は各物件ページに記載
   </div>
   <p class="note">※ M&amp;A・事業承継案件は守秘のうえ個別にご案内します。お送りいただいた個人情報は、ご相談対応の目的にのみ使用します。</p>
-  <div class="cp">TAmJ Development · Sapporo · 2026</div>
+  <div class="cp">TAmJ Development · 2026</div>
 </footer>
 
 <script src="../js/auth.js"></script>
@@ -212,24 +214,30 @@ a{color:inherit;text-decoration:none;}
     b.classList.add('on'); kind=b.getAttribute('data-k').replace('&amp;','&');
   });
   function val(id){return (document.getElementById(id).value||'').trim();}
-  document.getElementById('btnSend').addEventListener('click',function(){
+  var API='https://develop-api.tamjump.com/api/inquiry';
+  var btn=document.getElementById('btnSend'), fmsg=document.getElementById('formMsg');
+  function setMsg(tx,ok){fmsg.textContent=tx;fmsg.style.cssText='display:block;margin-top:12px;font-size:13px;padding:11px 14px;border-radius:4px;line-height:1.7;'+(ok?'background:#eef5ee;color:#2f6b3a;border:1px solid #cfe3cf':'background:#fbeeea;color:#9b4a3a;border:1px solid #f0d7cf');}
+  btn.addEventListener('click',async function(){
     var name=val('fName'), email=val('fEmail'), msg=val('fMsg');
-    if(!name||!email||!msg){alert('お名前・メール・ご相談内容は必須です。');return;}
+    if(!name||!email||!msg){setMsg('お名前・メール・ご相談内容は必須です。',false);return;}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){setMsg('メールアドレスをご確認ください。',false);return;}
     var subj=val('fSubject');
-    var subject='【'+kind+'】'+(subj?subj+' / ':'')+'お問い合わせ';
-    var lines=[
-      '種別：'+kind,
-      subj?'物件・案件名：'+subj:'',
-      'お名前：'+name,
-      val('fCompany')?'会社・団体名：'+val('fCompany'):'',
-      'メール：'+email,
-      val('fTel')?'電話：'+val('fTel'):'',
-      '',
-      'ご相談内容：',
-      msg
-    ].filter(function(x){return x!==''||x==='';});
-    var body=lines.join('\n');
-    window.location.href='mailto:info@tamjump.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    var message=(subj?'【'+subj+'】\n':'')+msg;
+    btn.disabled=true; var old=btn.textContent; btn.textContent='送信中…'; fmsg.style.display='none';
+    try{
+      var r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        name:name, email:email, phone:val('fTel'), company:val('fCompany'), kind:kind, message:message, hp:val('fHp')
+      })});
+      var j={}; try{ j=await r.json(); }catch(_){}
+      if(r.ok && j.ok){
+        document.getElementById('formInner').innerHTML='<div style="text-align:center;padding:40px 10px"><div style="width:54px;height:54px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 20px">&#10003;</div><h3 style="font-family:var(--sj);font-size:21px;font-weight:500;margin-bottom:14px">お問い合わせを受け付けました</h3><p style="font-size:14px;color:var(--g6);line-height:2">受付番号：<b style="color:var(--ink)">'+(j.id||'')+'</b><br>ご入力のメールアドレス宛に受付確認の自動返信をお送りしました。<br>担当より追ってご連絡いたします。</p></div>';
+        window.scrollTo({top:document.getElementById('formInner').getBoundingClientRect().top+window.scrollY-120,behavior:'smooth'});
+      }else{
+        setMsg('送信に失敗しました。お手数ですが info@tamjump.com 宛にお送りください。',false); btn.disabled=false; btn.textContent=old;
+      }
+    }catch(e){
+      setMsg('送信に失敗しました。通信環境をご確認のうえ再度お試しいただくか、info@tamjump.com 宛にお送りください。',false); btn.disabled=false; btn.textContent=old;
+    }
   });
 </script>
 </body>
