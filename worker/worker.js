@@ -105,7 +105,7 @@ async function handleInquiry(req,env){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({error:"invalid_email"},422,req);
   if(name.length>120||email.length>200||message.length>5000) return json({error:"too_long"},422,req);
 
-  const kind=KINDS.includes(b.kind)?b.kind:"その他";
+  const kind=String(b.kind||"その他").trim().slice(0,60);
   const now=new Date().toISOString();
   const row={
     id:genId(), name, email,
