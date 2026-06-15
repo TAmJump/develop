@@ -66,12 +66,60 @@ async function sendMail(env,o){
   if(!env.RESEND_API_KEY) return false;
   try{
     const body={from:env.FROM_EMAIL||"TAmJ不動産開発 <noreply@tamjump.com>",to:o.to,subject:o.subject,text:o.text};
+    if(o.html) body.html=o.html;
     if(o.reply_to) body.reply_to=o.reply_to;
     const r=await fetch("https://api.resend.com/emails",{method:"POST",
       headers:{"Authorization":`Bearer ${env.RESEND_API_KEY}`,"Content-Type":"application/json"},
       body:JSON.stringify(body)});
     return r.ok;
   }catch{ return false; }
+}
+
+/* ===================== メールテンプレート ===================== */
+function escH(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function mRow(k,v){return `<tr><td style="padding:6px 0;color:#8A7C68;font-size:13px;width:108px;vertical-align:top">${k}</td><td style="padding:6px 0;color:#1A1815;font-size:14px">${escH(v)}</td></tr>`;}
+function autoReplyHtml(r){
+  const meta=[["受付番号",r.id],["ご相談種別",r.kind]];
+  if(r.region)meta.push(["エリア",r.region]);
+  if(r.budget)meta.push(["予算・規模",r.budget]);
+  return `<!doctype html><html><body style="margin:0;background:#F5F2EC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans JP',sans-serif;color:#1A1815">
+<div style="max-width:560px;margin:0 auto;padding:30px 18px">
+<div style="background:#fff;border:1px solid #E4DED3">
+<div style="padding:26px 30px;border-bottom:1px solid #E4DED3">
+<div style="font-size:11px;letter-spacing:3px;color:#8A7C68;text-transform:uppercase">TAmJ Development</div>
+<div style="font-size:17px;font-weight:600;margin-top:6px">不動産開発｜お問い合わせを受け付けました</div>
+</div>
+<div style="padding:28px 30px;line-height:1.95;font-size:14px">
+<p style="margin:0 0 16px">${escH(r.name)} 様</p>
+<p style="margin:0 0 20px">このたびはお問い合わせをいただき、誠にありがとうございます。<br>下記の内容で確かに受け付けいたしました。内容を確認のうえ、担当より追ってご連絡いたします。</p>
+<table style="width:100%;border-collapse:collapse;margin:0 0 18px;border-top:1px solid #ECE7DD;border-bottom:1px solid #ECE7DD">${meta.map(x=>mRow(x[0],x[1])).join("")}</table>
+<div style="color:#8A7C68;font-size:13px;margin-bottom:7px">ご相談内容</div>
+<div style="white-space:pre-wrap;font-size:14px;color:#2B2823;background:#F5F2EC;border:1px solid #ECE7DD;padding:14px 16px">${escH(r.message)}</div>
+<p style="margin:22px 0 0;font-size:13px;color:#6E6354">※ ご返信は本メールにそのままご返信ください（info@tamjump.com 宛に届きます）。</p>
+</div>
+<div style="padding:20px 30px;border-top:1px solid #E4DED3;font-size:12px;color:#938D82;line-height:1.9">
+土地の売却・取得から、開発費の概算、出口の設計まで。<br>
+タムジ株式会社 ／ 不動産開発　<a href="https://develop.tamjump.com" style="color:#6E6354;text-decoration:none">develop.tamjump.com</a> ／ info@tamjump.com
+</div>
+</div></div></body></html>`;
+}
+function notifyHtml(r){
+  const rows=[["お名前",r.name],["メール",r.email],["電話",r.phone||"-"],["会社名",r.company||"-"],["種別",r.kind],["エリア",r.region||"-"],["予算・規模",r.budget||"-"]];
+  return `<!doctype html><html><body style="margin:0;background:#F5F2EC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans JP',sans-serif;color:#1A1815">
+<div style="max-width:560px;margin:0 auto;padding:30px 18px">
+<div style="background:#fff;border:1px solid #E4DED3">
+<div style="padding:22px 28px;border-bottom:1px solid #E4DED3">
+<div style="font-size:11px;letter-spacing:2px;color:#8A7C68;text-transform:uppercase">New Inquiry · ${escH(r.id)}</div>
+<div style="font-size:16px;font-weight:600;margin-top:5px">新規お問い合わせ（${escH(r.kind)}）</div>
+</div>
+<div style="padding:22px 28px">
+<table style="width:100%;border-collapse:collapse">${rows.map(x=>mRow(x[0],x[1])).join("")}</table>
+<div style="color:#8A7C68;font-size:13px;margin:18px 0 7px">ご相談内容</div>
+<div style="white-space:pre-wrap;font-size:14px;color:#2B2823;background:#F5F2EC;border:1px solid #ECE7DD;padding:14px 16px">${escH(r.message)}</div>
+<p style="margin:20px 0 0"><a href="${SELF}/admin" style="display:inline-block;background:#1A1815;color:#fff;text-decoration:none;font-size:13px;padding:11px 20px;border-radius:3px">管理画面で開く &rarr;</a></p>
+<p style="margin:12px 0 0;font-size:12px;color:#938D82">受付：${escH(r.created_at)}</p>
+</div>
+</div></div></body></html>`;
 }
 
 export default {
@@ -129,66 +177,26 @@ async function handleInquiry(req,env){
     }catch(_){}
   }
 
-  // 管理者通知（自社の受信箱なので内容を含める）
+  // 管理者通知（自社の受信箱・内容入り）
   let notified=false;
   if(env.NOTIFY_TO){
     notified=await sendMail(env,{
       to:env.NOTIFY_TO,
       reply_to:email,
       subject:`[TAmJ開発用地] 新規お問い合わせ ${row.id}（${kind}）`,
-      text:
-`新しいお問い合わせを受け付けました。
-
-受付番号：${row.id}
-受付日時：${row.created_at}
-ご相談種別：${kind}
-
-お名前：${name}
-メール：${email}
-電話：${row.phone||"-"}
-会社名：${row.company||"-"}
-エリア：${row.region||"-"}
-予算・規模：${row.budget||"-"}
-
-ご相談内容：
-${message}
-
-──────────
-管理画面：${SELF}/admin`,
+      html:notifyHtml(row),
+      text:`新規お問い合わせ ${row.id}（${kind}）\nお名前：${name}\nメール：${email}\n電話：${row.phone||"-"}\n会社名：${row.company||"-"}\nエリア：${row.region||"-"}\n予算・規模：${row.budget||"-"}\n\n${message}\n\n管理画面：${SELF}/admin`,
     });
   }
 
-  // 自動返信（お問い合わせ者へ・返信先 info）
+  // 自動返信（お問い合わせ者へ・返信先 info・個人名なし）
   if(env.RESEND_API_KEY){
     await sendMail(env,{
       to:email,
       reply_to: env.REPLY_TO || env.NOTIFY_TO || "info@tamjump.com",
       subject:"【TAmJ｜不動産開発】お問い合わせを受け付けました",
-      text:
-`${name} 様
-
-このたびはお問い合わせをいただき、誠にありがとうございます。
-タムジ株式会社 不動産開発 担当の大下と申します。
-
-下記の内容で、確かに受け付けいたしました。
-内容を確認のうえ、担当より追ってご連絡いたします。
-
-──────────
-受付番号：${row.id}
-ご相談種別：${kind}
-${row.region?`エリア：${row.region}\n`:""}${row.budget?`予算・規模：${row.budget}\n`:""}
-ご相談内容：
-${message}
-──────────
-
-※本メールは送信専用です。ご返信いただく場合は、このメールにそのままご返信ください（info@tamjump.com 宛に届きます）。
-
-土地の売却・取得から、開発費の概算、出口の設計まで。
-ご構想に合わせて、最適なご提案をさせていただきます。
-
-大下 甚（おおした じん）
-タムジ株式会社 ／ 不動産開発
-${SITE}`,
+      html:autoReplyHtml(row),
+      text:`${name} 様\n\nこのたびはお問い合わせをいただき、誠にありがとうございます。\n下記の内容で確かに受け付けいたしました。内容を確認のうえ、担当より追ってご連絡いたします。\n\n受付番号：${row.id}\nご相談種別：${kind}\n${row.region?`エリア：${row.region}\n`:""}${row.budget?`予算・規模：${row.budget}\n`:""}\nご相談内容：\n${message}\n\n※ご返信は本メールにそのままご返信ください（info@tamjump.com 宛）。\n\nタムジ株式会社 ／ 不動産開発\n${SITE}`,
     });
   }
 
