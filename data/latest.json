@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-08-15",
-  "fetchTime": "2026-08-15T22:15:23.477Z",
+  "fetchDate": "2026-08-16",
+  "fetchTime": "2026-08-16T22:15:06.163Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -11,11 +11,11 @@
   },
   "currentValues": {
     "nikkei": 68713.8,
-    "usdjpy": 159.305,
+    "usdjpy": 159.376,
     "brent": 88.52,
     "copper": 6.613,
     "jgb10y": 4.696,
-    "cnyJpy": 23.595,
+    "cnyJpy": 23.591,
     "steel": 268.91,
     "lumber": 762.7
   },
@@ -67,11 +67,11 @@
     {
       "date": "2026-07-17",
       "nikkei": 64141.121,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 88.1,
       "copper": 6.22,
       "jgb10y": 4.696,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 236.61,
       "lumber": 762.7
     },
@@ -133,11 +133,11 @@
     {
       "date": "2026-07-24",
       "nikkei": 64611.148,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 96.78,
       "copper": 6.32,
       "jgb10y": 4.679,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 247.56,
       "lumber": 762.7
     },
@@ -199,11 +199,11 @@
     {
       "date": "2026-07-31",
       "nikkei": 68713.8,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 90.12,
       "copper": 6.436,
       "jgb10y": 4.696,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 257.29,
       "lumber": 762.7
     },
@@ -265,11 +265,11 @@
     {
       "date": "2026-08-07",
       "nikkei": 65606.711,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 83.55,
       "copper": 6.57,
       "jgb10y": 4.66,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 272.63,
       "lumber": 762.7
     },
@@ -324,29 +324,29 @@
       "brent": 87.07,
       "copper": 6.593,
       "jgb10y": 4.641,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 272.29,
       "lumber": 762.7
     },
     {
       "date": "2026-08-14",
       "nikkei": 68713.797,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 88.52,
       "copper": 6.6,
       "jgb10y": 4.696,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 268.91,
       "lumber": 762.7
     },
     {
-      "date": "2026-08-15",
+      "date": "2026-08-16",
       "nikkei": 68713.8,
-      "usdjpy": 159.305,
+      "usdjpy": 159.376,
       "brent": 88.52,
       "copper": 6.613,
       "jgb10y": 4.696,
-      "cnyJpy": 23.595,
+      "cnyJpy": 23.591,
       "steel": 268.91,
       "lumber": 762.7
     }
