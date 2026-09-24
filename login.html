@@ -101,6 +101,8 @@
             }
         });
 
+        if(new URLSearchParams(location.search).get('admin')==='ng'){const e=document.getElementById('loginError');e.textContent='IDまたはパスワードが違います。';e.classList.add('show');}
+
         document.getElementById('btnLogin').addEventListener('click', async()=>{
             const btn=document.getElementById('btnLogin');
             const err=document.getElementById('loginError');
@@ -111,6 +113,14 @@
             err.classList.remove('show');
             resendBox.classList.remove('show');
             if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
+
+            // 管理者IDは管理画面へ
+            if(email.toLowerCase()==='info@tamjump.com'){
+                btn.disabled=true;btn.textContent='ログイン中…';
+                const f=document.createElement('form');f.method='POST';f.action='https://develop-api.tamjump.com/admin/login';
+                [['user',email],['password',pw]].forEach(([k,v])=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=v;f.appendChild(i);});
+                document.body.appendChild(f);f.submit();return;
+            }
 
             btn.disabled=true;btn.textContent='ログイン中…';
             const result=await loginUser(email,pw);

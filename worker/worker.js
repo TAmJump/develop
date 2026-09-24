@@ -216,12 +216,21 @@ async function handleInquiry(req,env){
 
 /* ===================== 管理 ===================== */
 async function adminLogin(req,env){
-  let b; try{ b=await req.json(); }catch{ return json({error:"invalid_json"},400,req); }
+  // サイトの login.html からのフォーム送信（画面遷移）にも対応
+  const isForm=(req.headers.get("Content-Type")||"").includes("application/x-www-form-urlencoded");
+  const site=env.SITE_URL||"https://develop.tamjump.com";
+  let b;
+  if(isForm){ const f=await req.formData(); b={user:String(f.get("user")||"").trim(),password:String(f.get("password")||"")}; }
+  else { try{ b=await req.json(); }catch{ return json({error:"invalid_json"},400,req); } }
   if(!env.ADMIN_PASSWORD||!env.SESSION_SECRET) return json({error:"not_configured"},500,req);
-  const okUser = !env.ADMIN_USER || eqStr(b.user, env.ADMIN_USER);
+  const okUser = !env.ADMIN_USER || eqStr(String(b.user||"").trim().toLowerCase(), String(env.ADMIN_USER).trim().toLowerCase());
   const okPw   = eqStr(b.password, env.ADMIN_PASSWORD);
-  if(!okUser||!okPw) return json({error:"unauthorized"},401,req);
+  if(!okUser||!okPw){
+    if(isForm) return new Response(null,{status:303,headers:{Location:site+"/login.html?admin=ng"}});
+    return json({error:"unauthorized"},401,req);
+  }
   const s=await makeSession(env);
+  if(isForm) return new Response(null,{status:303,headers:{Location:"/admin","Set-Cookie":`dv_admin=${s}; HttpOnly; Secure; SameSite=Lax; Path=/admin; Max-Age=43200`}});
   return new Response(JSON.stringify({ok:true}),{status:200,headers:{
     "Content-Type":"application/json",
     "Set-Cookie":`dv_admin=${s}; HttpOnly; Secure; SameSite=Lax; Path=/admin; Max-Age=43200`,
