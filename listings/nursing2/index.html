@@ -123,7 +123,7 @@ try{localStorage.removeItem('tamj_nda_ok');}catch(_){}
 function ok(){var g=document.getElementById('gate');if(g)g.remove();document.body.style.overflow='';}
 function fmt(iso){try{return new Date(iso).toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});}catch(_){return '';}}
 function lk(){return '<a href="../nda/?l='+L+'" style="color:inherit">解除キーを取得</a>・<a href="../nda/?l='+L+'#renew" style="color:inherit">解除キーを更新</a>';}
-function mark(st,msg){document.body.classList.toggle('nonname',!st);var b=document.getElementById('nn-msg');var f=document.getElementById('nn-form');if(!b)return;
+function mark(st,msg){document.body.classList.toggle('nonname',!st);document.body.classList.toggle('show',!!st);var b=document.getElementById('nn-msg');var f=document.getElementById('nn-form');if(!b)return;
  if(st&&st.level==='master'){b.innerHTML='最高権限キーで全項目を表示中。';}
  else if(st){b.innerHTML='秘密保持の締結済み'+(st.company?'（'+st.company+'）':'')+'。所在地・名称を表示中。解除キーの有効期限 '+fmt(st.expires_at)+'。';}
  else{b.innerHTML=(msg?msg+' ':'')+'秘密保持の締結前のため、所在地・名称・企業名・地図・図面を伏せています。解除キーを入力すると表示します。'+lk();}
