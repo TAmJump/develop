@@ -28,6 +28,9 @@
     "#nda-gate button{width:100%;margin-top:10px;padding:10px;border:1px solid #9b6339;background:#9b6339;color:#fff;border-radius:6px;cursor:pointer;font-size:14px}" +
     "#nda-gate .er{color:#b52d2d;font-size:12px;height:16px;margin:8px 0 0}" +
     "#nda-gate .ft{font-size:11px;color:#8a7c68;margin:12px 0 0}" +
+    ".nda-bar .nda-cta{display:inline-block;margin:8px 12px 2px 0;padding:10px 20px;background:#D2553F;color:#fff!important;text-decoration:none!important;border-radius:6px;font-weight:700;font-size:14.5px;letter-spacing:.5px}" +
+    ".nda-bar .nda-cta:hover{background:#B8452F}" +
+    ".nda-bar .nda-sub{font-size:12.5px;margin-right:10px}" +
     ".nda-bar{position:sticky;top:0;z-index:9000;background:#f3e7dd;border-bottom:1px solid #c9bda8;padding:8px 20px;font:12.5px/1.6 -apple-system,BlinkMacSystemFont,'Noto Sans JP',sans-serif;color:#7e4e2d;display:flex;gap:10px;align-items:center;flex-wrap:wrap}" +
     ".nda-bar.ok{background:#e7efec;border-color:#9ec3bc;color:#2e7d78}" +
     ".nda-bar input{border:1px solid #c9bda8;border-radius:6px;padding:5px 9px;font-size:12.5px}" +
@@ -68,7 +71,7 @@
 
   // 状態バー
   var bar = document.createElement("div"); bar.className = "nda-bar";
-  function links() { return '<a href="../nda/?l=' + L + '">秘密保持契約を締結して閲覧</a>・<a href="../nda/?l=' + L + '#renew">解除キーを更新</a>'; }
+  function links() { return '<a class="nda-cta" href="../nda/?l=' + L + '">秘密保持契約を締結して詳細を見る &rarr;</a><a class="nda-sub" href="../nda/?l=' + L + '#renew">解除キーを更新</a>'; }
   function setBar(st, msg) {
     if (st) {
       bar.className = "nda-bar ok";
