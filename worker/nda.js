@@ -20,11 +20,24 @@
  */
 
 import { buildNdaPdf, toB64 } from "./pdf.js";
+import { ADMIN_NAV } from "./members.js";
 
 export const LISTINGS = {
   murakami: "村上3街区 複合ヘルスケア開発",
+  kyoikudai: "あいの里教育大駅前 開発用地",
+  hachiken: "八軒6条東5丁目 開発用地",
   nursing2: "医療対応型有料老人ホーム 2棟",
+  kaede: "サービス付き高齢者向け住宅 38室",
 };
+
+/* 完全版（full.enc）の復号鍵：CONTENT_SECRET と案件IDから導出 */
+async function contentKey(env, listing) {
+  if (!env.CONTENT_SECRET || !LISTINGS[listing]) return "";
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.CONTENT_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = new Uint8Array(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode("ck:" + listing)));
+  let bin = ""; for (const b of sig) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
 export const NDA_VERSION = "v1.1（2026-09-24）";
 
 const TAMJ = {
@@ -314,7 +327,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (env.MASTER_KEY && eqStr(key, env.MASTER_KEY)) {
       const exp = Date.now() + 30 * 86400 * 1000;
       await log(env, req, "unlock", { key_tail: "MSTR", listing, ok: true });
-      return json({ ok: true, level: "master", expires_at: new Date(exp).toISOString(), token: await makeToken(env, { lv: "m", exp }) }, 200, req);
+      return json({ ok: true, level: "master", expires_at: new Date(exp).toISOString(), ck: await contentKey(env, listing), token: await makeToken(env, { lv: "m", exp }) }, 200, req);
     }
     const row = await env.DB.prepare("SELECT k.*, n.company FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(await sha256hex(key)).first();
     const bad = (e) => log(env, req, "unlock", { key_tail: key.slice(-4), nda_id: row ? row.nda_id : "", listing, ok: false }).then(() => json({ error: e }, 400, req));
@@ -324,7 +337,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (row.listing !== listing) return bad("other_listing");
     await env.DB.prepare("UPDATE nda_keys SET last_used_at=? WHERE key_hash=?").bind(new Date().toISOString(), row.key_hash).run();
     await log(env, req, "unlock", { key_tail: row.key_tail, nda_id: row.nda_id, listing, ok: true });
-    return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at,
+    return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at, ck: await contentKey(env, listing),
       token: await makeToken(env, { lv: "n", kh: row.key_hash, l: listing, exp: new Date(row.expires_at).getTime() }) }, 200, req);
   }
 
@@ -334,14 +347,14 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const t = await readToken(env, body.token), listing = clip(body.listing, 40);
     if (!t) return json({ error: "invalid" }, 400, req);
     if (Date.now() > t.exp) return json({ error: "expired" }, 400, req);
-    if (t.lv === "m") return json({ ok: true, level: "master", expires_at: new Date(t.exp).toISOString() }, 200, req);
+    if (t.lv === "m") return json({ ok: true, level: "master", expires_at: new Date(t.exp).toISOString(), ck: await contentKey(env, listing) }, 200, req);
     if (t.l !== listing) return json({ error: "other_listing" }, 400, req);
     const row = await env.DB.prepare("SELECT k.*, n.company, n.status FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(t.kh).first();
     if (!row || row.revoked || row.status === "失効") return json({ error: "revoked" }, 400, req);
     if (new Date(row.expires_at) < new Date()) return json({ error: "expired" }, 400, req);
     await env.DB.prepare("UPDATE nda_keys SET last_used_at=? WHERE key_hash=?").bind(new Date().toISOString(), row.key_hash).run();
     await log(env, req, "view", { key_tail: row.key_tail, nda_id: row.nda_id, listing, ok: true });
-    return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at }, 200, req);
+    return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at, ck: await contentKey(env, listing) }, 200, req);
   }
 
   /* 更新：確認コード送信（登録有無にかかわらず同じ応答） */
@@ -439,7 +452,7 @@ button.p{background:#9b6339;color:#fff}
 .muted{color:#8a7c68}.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
 .scroll{overflow-x:auto}
 </style></head><body><div class="wrap">
-<h1>NDA 締結一覧</h1><p class="sub">締結・解除キー・閲覧記録。<a href="/admin">お問い合わせ管理へ</a></p>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #c9bda8;padding-bottom:14px;margin-bottom:18px"><div><h1>NDA 締結一覧</h1><p class="sub" style="margin:0">締結・解除キー・閲覧記録</p></div>${ADMIN_NAV("nda")}</div>
 <div id="need" style="display:none">管理ログインが必要です。<a href="/admin">ログイン</a></div>
 <div class="scroll"><table><thead><tr><th>文書番号</th><th>案件</th><th>会社／担当</th><th>メール</th><th>状況</th><th>締結日時</th><th>キー（末尾／期限）</th><th>閲覧</th><th></th></tr></thead><tbody id="list"></tbody></table></div>
 <div class="box"><b>解除キーの手動発行</b><div class="muted" style="font-size:12.5px;margin:4px 0 10px">書面でNDAを締結済みの先方に、フォームを経ずにキーを発行する。</div>
