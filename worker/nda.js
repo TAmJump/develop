@@ -25,7 +25,7 @@ export const LISTINGS = {
   murakami: "村上3街区 複合ヘルスケア開発",
   nursing2: "医療対応型有料老人ホーム 2棟",
 };
-export const NDA_VERSION = "v1.0（2026-09-24）";
+export const NDA_VERSION = "v1.1（2026-09-24）";
 
 const TAMJ = {
   company: "タムジ株式会社",
@@ -38,7 +38,7 @@ export function ndaText(p, ttlDays) {
   const company = p.company || "〔相手方会社名〕";
   return `秘密保持契約書
 
-${company}（以下「乙」という。）と${TAMJ.company}（以下「甲」という。）は、甲が紹介する開発案件への参画の検討に関し、次のとおり秘密保持契約（以下「本契約」という。）を締結する。
+${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」という。）は、甲が紹介する開発案件への参画の検討に関し、次のとおり秘密保持契約（以下「本契約」という。）を締結する。
 
 第1条（目的）
 本契約は、「${listing}」（以下「本件案件」という。）における運営事業者としての参画の検討（以下「本目的」という。）のために、甲乙が相互に開示する情報の取扱いを定める。
@@ -102,7 +102,6 @@ ${company}（以下「乙」という。）と${TAMJ.company}（以下「甲」�
 　　${TAMJ.company}　${TAMJ.rep}
 乙：${p.address || "〔所在地〕"}
 　　${company}　${p.rep_name || "〔代表者名〕"}
-　　担当：${p.person || "〔担当者〕"}${p.title ? "（" + p.title + "）" : ""}
 　　署名：${p.signer || "〔署名〕"}
 締結日時：${p.signed_at_jst || "〔締結時に自動付与〕"}
 文書番号：${p.doc_no || "〔締結時に自動付与〕"}

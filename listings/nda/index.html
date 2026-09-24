@@ -85,7 +85,7 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
 
   <!-- 3 -->
   <section class="card" id="s3" hidden>
-    <p style="margin:0 0 10px;font-size:14px">契約内容を最後までご確認ください。タムジ株式会社の記名・締結日時・文書番号は、締結時に自動で付与します。</p>
+    <p style="margin:0 0 10px;font-size:14px">契約内容を最後までご確認ください。締結日時・文書番号は締結時に自動で付与し、甲（タムジ株式会社）の記名押印と、乙の署名に基づく印影をPDFに付します。</p>
     <div class="doc" id="doc"></div>
     <label class="check"><input type="checkbox" id="agree" disabled><span id="agreeTxt">契約内容を最後までスクロールすると同意できます。</span></label>
     <div style="margin-top:12px;max-width:360px"><label for="signer">署名（ご担当者のお名前を入力）<i>必須</i></label><input type="text" id="signer"></div>
@@ -156,7 +156,7 @@ $("b2").onclick=async function(){
   var j=await post("/api/nda/verify",{id:st.id,code:$("code").value});busy(this,false,"確認する");
   if(!j.ok){$("e2").textContent=em(j.error);return;}
   var t=await fetch(API+"/api/nda/text?listing="+encodeURIComponent(st.b.listing)).then(function(r){return r.json();});
-  var txt=t.text.replace("〔相手方会社名〕",st.b.company).replace("〔相手方会社名〕",st.b.company).replace("〔所在地〕",st.b.address).replace("〔代表者名〕",st.b.rep_name).replace("〔担当者〕",st.b.person+(st.b.title?"（"+st.b.title+"）":""));
+  var txt=t.text.replace("〔相手方会社名〕",st.b.company).replace("〔相手方会社名〕",st.b.company).replace("〔所在地〕",st.b.address).replace("〔代表者名〕",st.b.rep_name);
   $("doc").textContent=txt;step(3);
 };
 $("doc").addEventListener("scroll",function(){var d=this;if(d.scrollTop+d.clientHeight>=d.scrollHeight-24){$("agree").disabled=false;$("agreeTxt").textContent="上記の秘密保持契約の内容に同意します。";}});
