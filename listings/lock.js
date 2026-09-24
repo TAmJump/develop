@@ -42,7 +42,9 @@
     "body.nonname .conf{background:#c9bda8;color:transparent!important;box-shadow:0 0 0 1px #b9aa94 inset}" +
     "body.show .conf{background:transparent!important;color:inherit!important;box-shadow:none!important}" +
     "#nda-loading{position:fixed;inset:0;z-index:9998;background:rgba(244,239,230,.92);display:flex;align-items:center;justify-content:center;font:14px -apple-system,'Noto Sans JP',sans-serif;color:#6e6354}" +
-    "@media print{body{display:none!important}}";
+    "@media print{body:not(.nda-print-ok){display:none!important}.nda-bar,#tamj-admin-bar,#nda-loading{display:none!important}.nda-wm{opacity:.07!important}}" +
+    ".nda-pm{display:none}" +
+    "@media print{.nda-pm{display:block;position:fixed;left:0;right:0;z-index:9500;font:9px/1.5 'Noto Sans JP',sans-serif;color:#7e4e2d;text-align:center;background:#fff;padding:3px 0}.nda-pm.t{top:0;border-bottom:1px solid #c9bda8}.nda-pm.b{bottom:0;border-top:1px solid #c9bda8}}";
   document.head.appendChild(css);
 
   function $(i) { return document.getElementById(i); }
@@ -66,7 +68,7 @@
   document.addEventListener("copy", function (e) { e.preventDefault(); });
   document.addEventListener("keydown", function (e) {
     var k = (e.key || "").toLowerCase();
-    if ((e.ctrlKey || e.metaKey) && ["p", "s", "c", "u", "x"].indexOf(k) >= 0) e.preventDefault();
+    if ((e.ctrlKey || e.metaKey) && (FULL ? ["s", "c", "u", "x"] : ["p", "s", "c", "u", "x"]).indexOf(k) >= 0) e.preventDefault();
   });
 
   // 状態バー
@@ -88,6 +90,29 @@
     }
   }
 
+  // 印刷：全ページの上下に会社名・文書番号・印刷日時・通し番号を印字し、印刷の記録をサーバーに送る
+  function printMarks(st) {
+    document.body.classList.add("nda-print-ok");
+    var who = st.level === "master" ? "タムジ株式会社（管理者）" : (st.company || "");
+    var t = document.createElement("div"); t.className = "nda-pm t";
+    var b = document.createElement("div"); b.className = "nda-pm b";
+    document.body.appendChild(t); document.body.appendChild(b);
+    var wmText = function (sn) { document.querySelectorAll(".nda-wm span").forEach(function (x) { x.textContent = "CONFIDENTIAL · " + who + " · " + sn; }); };
+    window.addEventListener("beforeprint", function () {
+      var d = new Date(), p2 = function (n) { return (n < 10 ? "0" : "") + n; };
+      var sn = "P" + d.getFullYear() + p2(d.getMonth() + 1) + p2(d.getDate()) + "-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+      var when = d.getFullYear() + "/" + p2(d.getMonth() + 1) + "/" + p2(d.getDate()) + " " + p2(d.getHours()) + ":" + p2(d.getMinutes());
+      var line = "秘密情報｜" + who + (st.doc_no ? "｜" + st.doc_no : "") + "｜印刷 " + when + "｜No. " + sn;
+      t.textContent = line + "｜秘密保持契約に基づく開示資料";
+      b.textContent = line + "｜無断での複製・転載・第三者への提供を禁じます｜タムジ株式会社";
+      wmText(sn);
+      var tok = ls(T) || ls("tamj_nda_tok_master");
+      var data = JSON.stringify({ token: tok, listing: L, serial: sn });
+      try { if (!(navigator.sendBeacon && navigator.sendBeacon(API + "/api/nda/print", new Blob([data], { type: "text/plain" })))) throw 0; }
+      catch (_) { try { fetch(API + "/api/nda/print", { method: "POST", body: data, keepalive: true, headers: { "Content-Type": "text/plain" } }); } catch (__) {} }
+    });
+  }
+
   // 完全版の復号・表示
   async function showFull(st) {
     if (!st.ck) { setBar(null, "表示の準備が完了していません。時間をおいて再度お試しください。"); return; }
@@ -100,7 +125,7 @@
       var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12));
       var ds = new Response(new Blob([plain]).stream().pipeThrough(new DecompressionStream("gzip")));
       var html = await ds.text();
-      var state = { level: st.level, company: st.company || "", expires_at: st.expires_at };
+      var state = { level: st.level, company: st.company || "", doc_no: st.doc_no || "", expires_at: st.expires_at };
       html = html.replace(/<head[^>]*>/i, function (m) { return m + "<script>window.__NDA_STATE=" + JSON.stringify(state) + "<\/script>"; });
       document.open(); document.write(html); document.close();
     } catch (e) {
@@ -158,6 +183,7 @@
     if (FULL) {
       document.body.classList.remove("nonname"); document.body.classList.add("show");
       setBar(window.__NDA_STATE);
+      printMarks(window.__NDA_STATE);
       return;
     }
     document.body.classList.add("nonname");

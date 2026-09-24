@@ -57,3 +57,6 @@ CREATE TABLE IF NOT EXISTS nda_access (
 
 -- 案件の掲載状況（掲載中／終了）
 CREATE TABLE IF NOT EXISTS listing_status (listing TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT);
+
+-- 印刷の記録（締結後の画面での印刷・PDF保存）
+CREATE TABLE IF NOT EXISTS nda_print (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, serial TEXT, nda_id TEXT, doc_no TEXT, company TEXT, listing TEXT, level TEXT, ip TEXT, ua TEXT);

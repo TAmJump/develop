@@ -2,3 +2,4 @@ CREATE TABLE IF NOT EXISTS nda_access (id INTEGER PRIMARY KEY AUTOINCREMENT, nda
 CREATE TABLE IF NOT EXISTS listing_status (listing TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT);
 CREATE INDEX IF NOT EXISTS idx_nda_keys_email ON nda_keys(email);
 CREATE INDEX IF NOT EXISTS idx_nda_email ON nda(email);
+CREATE TABLE IF NOT EXISTS nda_print (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, serial TEXT, nda_id TEXT, doc_no TEXT, company TEXT, listing TEXT, level TEXT, ip TEXT, ua TEXT);
