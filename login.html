@@ -37,6 +37,13 @@
         .resend-btn{margin-top:8px;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;border:1px solid #C4960E;background:transparent;color:#C4960E;cursor:pointer;transition:all .3s}
         .resend-btn:hover{background:#C4960E;color:#fff}
         .resend-btn:disabled{opacity:.5;cursor:not-allowed}
+
+        .auth-tabs{display:flex;border:1px solid #d8d2c8;margin:14px 0 22px}
+        .auth-tabs a{flex:1;text-align:center;padding:10px 6px;font-size:14px;text-decoration:none;color:#6e6354;background:#fff}
+        .auth-tabs a+a{border-left:1px solid #d8d2c8}
+        .auth-tabs a.on{color:#9b6339;font-weight:700;box-shadow:inset 0 -3px 0 #9b6339}
+        .auth-lead{font-size:13px;color:#6e6354;line-height:1.8;margin:0}
+        .auth-aside{margin-top:22px;padding-top:14px;border-top:1px solid #e4ded3;font-size:12.5px;color:#8a7c68;line-height:1.8}
     </style>
 </head>
 <body class="auth-page">
@@ -44,17 +51,22 @@
     <header id="siteHeader">
         <a href="index.html" class="header-logo"><img src="logo.png" alt="TAmJ"></a>
         <nav class="header-nav">
-            <a href="index.html">Top</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="register.html">Register</a>
-            <a href="https://tamjump.github.io/TAmj/contact.html" class="nav-cta">Contact</a>
+            <a href="index.html">トップ</a>
+            <a href="listings/">案件一覧</a>
+            <a href="members/index.html">ツール</a>
+            <a href="contact/" class="nav-cta">お問い合わせ</a>
         </nav>
     </header>
 
     <main class="auth-main">
         <div class="auth-card">
-            <span class="label">Login</span>
-            <h1>ログイン</h1>
+            <span class="label">Tools</span>
+            <h1>ツールのご利用</h1>
+            <p class="auth-lead">シミュレーション等のツールは会員登録（無料）のうえ、ログインしてご利用いただけます。</p>
+            <nav class="auth-tabs">
+                <a href="login.html" class="on" data-keep>ログイン</a>
+                <a href="register.html" class="" data-keep>新規登録（無料）</a>
+            </nav>
             <div class="auth-field">
                 <label>メールアドレス</label>
                 <input type="email" id="loginEmail" placeholder="info@example.com" autocomplete="email">
@@ -71,9 +83,7 @@
                 メールアドレスの確認が完了していません。<br>確認メールを再送しますか？
                 <br><button class="resend-btn" id="resendBtn" onclick="resendVerification()">確認メールを再送する</button>
             </div>
-            <div class="auth-link">
-                アカウントをお持ちでない方 <a href="register.html">会員登録（無料）</a>
-            </div>
+            <div class="auth-aside">案件資料の閲覧に会員登録は不要です。<a href="listings/">案件一覧</a>から各案件の秘密保持契約を締結してご覧ください。</div>
         </div>
     </main>
 
@@ -81,8 +91,8 @@
         <div class="footer-inner">
             <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
             <div class="footer-links">
-                <div class="footer-col"><h4>Account</h4><a href="register.html">会員登録</a><a href="login.html">ログイン</a></div>
-                <div class="footer-col"><h4>Support</h4><a href="https://tamjump.github.io/TAmj/contact.html">お問合せ</a></div>
+                <div class="footer-col"><h4>Tools</h4><a href="members/index.html">ツール</a><a href="register.html">会員登録（無料）</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="contact/">お問合せ</a></div>
                 <div class="footer-col"><h4>Legal</h4><a href="https://tamjump.github.io/TAmj/privacy.html">Privacy Policy</a><a href="https://tamjump.github.io/TAmj/terms.html">Terms</a><a href="https://tamjump.github.io/TAmj/commerce.html">特定商取引法</a></div>
             </div>
         </div>
@@ -92,6 +102,8 @@
     <script>
         const h=document.getElementById('siteHeader');
         if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+        // タブ切替・リンクで戻り先（?return=）を引き継ぐ
+        (function(){var q=location.search;if(!q)return;document.querySelectorAll('[data-keep]').forEach(function(a){a.href=a.getAttribute('href').split('?')[0]+q;});})();
 
         // 既にログイン済みならリダイレクト
         onAuthReady(user=>{

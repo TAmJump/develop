@@ -259,13 +259,9 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="in">
     <a href="index.html" class="brand">不動産開発<small>TAMJ DEVELOPMENT</small></a>
     <nav class="menu">
-      <a href="#menu">メニュー</a>
-<a href="#properties" class="hidem">取扱案件</a>
-      <a href="#develop" class="hidem">開発を設計する</a>
-      <a href="pricing.html" class="hidem">料金</a>
-      <a href="login.html" data-auth="logged-out">Login</a>
-      <a href="members/index.html" data-auth="logged-in" style="display:none">MyPage</a>
-      <a href="contact/" class="cta">相談する</a>
+      <a href="listings/">案件一覧</a>
+      <a href="members/index.html">ツール</a>
+      <a href="contact/" class="cta">お問い合わせ</a>
     </nav>
     <button class="burger" id="burger" aria-label="メニュー" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -273,12 +269,10 @@ document.addEventListener('DOMContentLoaded',function(){
 <nav class="mnav" id="mnav">
   <a href="#properties">取扱案件</a>
   <a href="#develop">開発を設計する</a>
-  <a href="listings/">開発用地一覧</a>
+  <a href="listings/">案件一覧</a>
   <a href="hearing/">ヒアリング</a>
-  <a href="pricing.html">料金</a>
-  <a href="contact/">相談する</a>
-  <a href="login.html" data-auth="logged-out">ログイン</a>
-  <a href="members/index.html" data-auth="logged-in" style="display:none">マイページ</a>
+  <a href="members/index.html">ツール</a>
+  <a href="contact/">お問い合わせ</a>
 </nav>
 
 <header class="hero" id="top">
@@ -351,15 +345,12 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="lc-grid lc-sm" data-g="svc">
       <a class="lc" href="members/service-development.html" data-g="svc"><em>Development</em><b>開発サービス</b><span>企画・設計・施工・運営までの一気通貫</span><i class="bdg">会員</i></a>
       <a class="lc" href="service.html" data-g="svc"><em>Overview</em><b>サービス紹介</b><span>TAmJ Developmentでできること</span></a>
-      <a class="lc" href="pricing.html" data-g="svc"><em>Pricing</em><b>料金</b><span>仲介手数料・各サービスの費用</span></a>
       <a class="lc" href="hearing/" data-g="svc"><em>Hearing</em><b>ヒアリングシート</b><span>土地・事業の条件を入力して相談</span></a>
     </div>
 
-    <div class="lc-head" data-g="acct">会員・お問い合わせ</div>
+    <div class="lc-head" data-g="acct">ツール・お問い合わせ</div>
     <div class="lc-grid lc-sm" data-g="acct">
-      <a class="lc" href="members/index.html" data-g="acct"><em>MyPage</em><b>マイページ</b><span>会員向け機能の入口</span><i class="bdg">会員</i></a>
-      <a class="lc" href="login.html" data-g="acct"><em>Login</em><b>ログイン</b><span>会員の方はこちら</span></a>
-      <a class="lc" href="register.html" data-g="acct"><em>Register</em><b>会員登録</b><span>無料。シミュレーションが使えます</span></a>
+      <a class="lc" href="members/index.html" data-g="acct"><em>Tools</em><b>ツール</b><span>会員登録（無料）でシミュレーション等の全機能を利用</span><i class="bdg">会員</i></a>
       <a class="lc" href="contact/" data-g="acct"><em>Contact</em><b>お問い合わせ</b><span>案件の相談・資料請求</span></a>
     </div>
   </div>
@@ -474,7 +465,7 @@ document.addEventListener('DOMContentLoaded',function(){
         <p>規模・要件・資金計画など条件を整理し、計画の精度を上げる。</p>
         <span class="pill">相談</span>
       </a>
-      <a class="step" href="register.html">
+      <a class="step" href="members/index.html">
         <div class="n">04</div>
         <h4>見積・財務設計</h4>
         <p>事業費見積に加え、BS影響・リース仕訳まで。持ち方の出口を設計。</p>
@@ -483,7 +474,6 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="cta-row">
       <a href="service.html" class="btn fill">開発サービス・MCIを見る &rarr;</a>
-      <a href="pricing.html" class="btn line">料金を見る</a>
     </div>
   </div>
 </section>
@@ -537,9 +527,8 @@ document.addEventListener('DOMContentLoaded',function(){
 <footer class="footer">
   <div class="links">
     <a href="#properties">取扱案件</a>
-    <a href="listings/">開発用地一覧</a>
+    <a href="listings/">案件一覧</a>
     <a href="#develop">開発を設計する</a>
-    <a href="pricing.html">料金</a>
     <a href="contact/">相談する</a>
   </div>
   <div class="i">

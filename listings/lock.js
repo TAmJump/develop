@@ -69,7 +69,7 @@
 
   // 状態バー
   var bar = document.createElement("div"); bar.className = "nda-bar";
-  function links() { return '<a href="../nda/?l=' + L + '">解除キーを取得</a>・<a href="../nda/?l=' + L + '#renew">解除キーを更新</a>'; }
+  function links() { return '<a href="../nda/?l=' + L + '">秘密保持契約を締結して閲覧</a>・<a href="../nda/?l=' + L + '#renew">解除キーを更新</a>'; }
   function setBar(st, msg) {
     if (st) {
       bar.className = "nda-bar ok";
@@ -78,7 +78,7 @@
     } else {
       bar.className = "nda-bar";
       bar.innerHTML = "<b>非公開資料</b><span>" + (msg ? msg + " " : "") +
-        "秘密保持の締結前のため、所在地・名称・図面・写真などを伏せた概要を表示しています。解除キーを入力すると全項目を表示します。" + links() +
+        "秘密保持の締結前のため、所在地・名称・図面・写真などを伏せた概要を表示しています。秘密保持契約の締結後、発行される解除キーを入力すると全項目を表示します。" + links() +
         '</span><span><input id="nda-key" type="password" placeholder="秘密保持の解除キー" autocomplete="off"> <button id="nda-btn">解除</button></span>';
       var go = function () { var v = $("nda-key").value.trim(); if (v) { $("nda-key").value = ""; unlock(v); } };
       $("nda-btn").onclick = go;
