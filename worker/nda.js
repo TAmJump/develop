@@ -195,6 +195,12 @@ async function issueKey(env, nda) {
   return { key, expires_at: exp.toISOString() };
 }
 
+// 管理者ログイン時に、全案件を表示できる最高権限トークンを発行（30日）
+export async function masterToken(env) {
+  const exp = Date.now() + 30 * 86400 * 1000;
+  return { token: await makeToken(env, { lv: "m", exp }), expires_at: new Date(exp).toISOString() };
+}
+
 async function makeToken(env, o) {
   const p = b64url(enc(JSON.stringify(o)));
   return p + "." + await hmac(env.SESSION_SECRET, "nda:" + p);

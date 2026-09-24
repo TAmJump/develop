@@ -22,7 +22,7 @@
  * 必須Binding: DB (D1 "develop")  /  変数: FROM_EMAIL, SITE_URL
  */
 
-import { handleNda, handleNdaAdmin, NDA_ADMIN_HTML } from "./nda.js";
+import { handleNda, handleNdaAdmin, NDA_ADMIN_HTML, masterToken } from "./nda.js";
 import { handleMembersAdmin, MEMBERS_HTML, ADMIN_NAV } from "./members.js";
 
 const SELF = "https://develop-api.tamjump.com";
@@ -131,6 +131,7 @@ function notifyHtml(r){
 export default {
   async fetch(req, env){
     const url=new URL(req.url), path=url.pathname, m=req.method;
+    if(path==="/api/admin/site-login") return siteAdminLogin(req,env,m);
     if(m==="OPTIONS") return new Response(null,{status:204,headers:cors(req)});
 
     if(m==="GET" && (path==="/"||path==="/health"))
@@ -145,6 +146,7 @@ export default {
     if(m==="GET" && path==="/admin/members") return page(MEMBERS_HTML());
     if(m==="POST" && path==="/admin/login") return adminLogin(req,env);
     if(m==="POST" && path==="/admin/logout") return adminLogout(req,env);
+    if(m==="GET" && path==="/admin/signout") return new Response(null,{status:303,headers:{Location:SITE+"/login.html?signout=1","Set-Cookie":"dv_admin=; HttpOnly; Secure; SameSite=Lax; Path=/admin; Max-Age=0"}});
     if(path.startsWith("/admin/api/")) return adminApi(req,env,path,m);
 
     return json({error:"not_found"},404,req);
@@ -215,6 +217,23 @@ async function handleInquiry(req,env){
 }
 
 /* ===================== 管理 ===================== */
+// サイト（develop.tamjump.com）のログイン画面から管理者としてログイン
+// 管理画面のCookie＋全案件の最高権限トークンを同時に発行
+async function siteAdminLogin(req,env,m){
+  const o=req.headers.get("Origin")||"";
+  const h={"Access-Control-Allow-Origin":SITE,"Access-Control-Allow-Credentials":"true","Access-Control-Allow-Methods":"POST, OPTIONS","Access-Control-Allow-Headers":"Content-Type","Vary":"Origin","Content-Type":"application/json; charset=utf-8"};
+  if(m==="OPTIONS") return new Response(null,{status:204,headers:h});
+  if(m!=="POST"||o!==SITE) return new Response(JSON.stringify({error:"forbidden"}),{status:403,headers:h});
+  let b; try{ b=await req.json(); }catch{ return new Response(JSON.stringify({error:"invalid_json"}),{status:400,headers:h}); }
+  if(!env.ADMIN_PASSWORD||!env.SESSION_SECRET) return new Response(JSON.stringify({error:"not_configured"}),{status:500,headers:h});
+  const okUser = !env.ADMIN_USER || eqStr(String(b.user||"").trim().toLowerCase(), String(env.ADMIN_USER).trim().toLowerCase());
+  const okPw   = eqStr(String(b.password||""), env.ADMIN_PASSWORD);
+  if(!okUser||!okPw) return new Response(JSON.stringify({error:"unauthorized"}),{status:401,headers:h});
+  const s=await makeSession(env);
+  const mt=await masterToken(env);
+  return new Response(JSON.stringify({ok:true,master_token:mt.token,expires_at:mt.expires_at}),{status:200,headers:{...h,
+    "Set-Cookie":`dv_admin=${s}; HttpOnly; Secure; SameSite=Lax; Path=/admin; Max-Age=43200`}});
+}
 async function adminLogin(req,env){
   // サイトの login.html からのフォーム送信（画面遷移）にも対応
   const isForm=(req.headers.get("Content-Type")||"").includes("application/x-www-form-urlencoded");
@@ -354,7 +373,7 @@ async function me(){var r=await fetch("/admin/api/me");return (await r.json()).a
 function show(v){el("login").style.display=v==="login"?"block":"none";el("app").style.display=v==="app"?"block":"none";el("logout").style.display=v==="app"?"inline-flex":"none";}
 async function boot(){ if(await me()){show("app");loadList();} else location.replace("https://develop.tamjump.com/login.html"); }
 el("loginForm").onsubmit=async function(e){e.preventDefault();el("loginErr").textContent="";var r=await fetch("/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user:el("uid").value,password:el("pw").value})});if(r.ok){show("app");loadList();}else{el("loginErr").textContent="IDまたはパスワードが違います。";}};
-el("logout").onclick=async function(){await fetch("/admin/logout",{method:"POST"});location.href="https://develop.tamjump.com/";};
+el("logout").onclick=async function(){await fetch("/admin/logout",{method:"POST"});location.href="https://develop.tamjump.com/login.html?signout=1";};
 async function loadList(){var r=await fetch("/admin/api/list");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}var j=await r.json();var t=el("list");t.innerHTML="";(j.items||[]).forEach(function(a){var tr=document.createElement("tr");tr.innerHTML="<td>"+fmt(a.created_at)+"</td><td>"+esc(a.name)+"</td><td>"+esc(a.kind||"-")+"</td><td>"+esc(a.region||"-")+"</td><td><span class='badge'>"+esc(a.status)+"</span></td>";tr.onclick=function(){openItem(a.id);};t.appendChild(tr);});if(!(j.items||[]).length)t.innerHTML="<tr><td colspan='5' class='muted'>まだお問い合わせはありません。</td></tr>";}
 function rowHtml(k,v){return "<div class='row'><span class='k'>"+k+"</span><span class='v'>"+v+"</span></div>";}
 async function openItem(id){var r=await fetch("/admin/api/item?id="+encodeURIComponent(id));if(!r.ok)return;var j=await r.json();var a=j.item;cur=id;el("empty").style.display="none";el("panel").style.display="block";

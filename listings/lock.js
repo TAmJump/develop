@@ -158,3 +158,6 @@
   }
   if (document.body) boot(); else document.addEventListener("DOMContentLoaded", boot);
 })();
+
+// 管理者バー（管理者でログイン中のみ表示）
+(function(){ var s = document.createElement("script"); s.src = "/js/admin-bar.js"; (document.head || document.documentElement).appendChild(s); })();

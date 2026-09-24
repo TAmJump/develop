@@ -91,7 +91,7 @@
         <div class="footer-inner">
             <div class="footer-brand"><img src="logo.png" alt="TAmJ"><p>Touch all minds, Jump</p></div>
             <div class="footer-links">
-                <div class="footer-col"><h4>Tools</h4><a href="members/index.html">ツール</a><a href="register.html">会員登録（無料）</a></div>
+                <div class="footer-col"><h4>Account</h4><a href="members/index.html">ツール</a><a href="register.html">会員登録（無料）</a></div>
                 <div class="footer-col"><h4>Support</h4><a href="contact/">お問合せ</a></div>
                 <div class="footer-col"><h4>Legal</h4><a href="https://tamjump.github.io/TAmj/privacy.html">Privacy Policy</a><a href="https://tamjump.github.io/TAmj/terms.html">Terms</a><a href="https://tamjump.github.io/TAmj/commerce.html">特定商取引法</a></div>
             </div>
@@ -99,6 +99,7 @@
         <div class="footer-bottom"><p class="footer-copy">&copy; 2025 TAmJ株式会社 All Rights Reserved.</p></div>
     </footer>
     <script src="js/auth.js"></script>
+    <script src="/js/admin-bar.js"></script>
     <script>
         const h=document.getElementById('siteHeader');
         if(h) window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
@@ -126,12 +127,25 @@
             resendBox.classList.remove('show');
             if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
 
-            // 管理者IDは管理画面へ
+            // 管理者（info@tamjump.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
             if(email.toLowerCase()==='info@tamjump.com'){
                 btn.disabled=true;btn.textContent='ログイン中…';
-                const f=document.createElement('form');f.method='POST';f.action='https://develop-api.tamjump.com/admin/login';
-                [['user',email],['password',pw]].forEach(([k,v])=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=v;f.appendChild(i);});
-                document.body.appendChild(f);f.submit();return;
+                try{
+                    const r=await fetch('https://develop-api.tamjump.com/api/admin/site-login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:email,password:pw})});
+                    const j=await r.json().catch(()=>({}));
+                    if(r.ok&&j.ok){
+                        localStorage.setItem('tamj_admin','1');
+                        localStorage.setItem('tamj_nda_tok_master',j.master_token);
+                        localStorage.setItem('tamj_gate_ok','1');
+                        try{sessionStorage.setItem('tamj_listings_unlock','1');}catch(_){}
+                        const params=new URLSearchParams(location.search);
+                        location.href=decodeURIComponent(params.get('return')||'index.html');
+                        return;
+                    }
+                    err.textContent='IDまたはパスワードが違います。';
+                }catch(_){ err.textContent='認証サーバーに接続できません。'; }
+                err.classList.add('show');btn.disabled=false;btn.textContent='ログイン';
+                return;
             }
 
             btn.disabled=true;btn.textContent='ログイン中…';

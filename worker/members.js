@@ -33,7 +33,7 @@ export const ADMIN_NAV = (cur) => `<div style="display:flex;gap:6px;flex-wrap:wr
 ${[["/admin", "お問い合わせ", "inq"], ["/admin/nda", "NDA", "nda"], ["/admin/members", "会員", "mem"]]
   .map(([h, t, k]) => `<a href="${h}" style="text-decoration:none;font-size:13px;padding:8px 14px;border:1px solid ${k === cur ? "#9b6339" : "#c9bda8"};border-radius:4px;background:${k === cur ? "#9b6339" : "#fff"};color:${k === cur ? "#fff" : "#6e6354"}">${t}</a>`).join("")}
 <a href="https://develop.tamjump.com/" style="text-decoration:none;font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354">サイトを見る</a>
-<button onclick="fetch('/admin/logout',{method:'POST'}).then(function(){location.href='https://develop.tamjump.com/'})" style="font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354;cursor:pointer">ログアウト</button></div>`;
+<button onclick="fetch('/admin/logout',{method:'POST'}).then(function(){location.href='https://develop.tamjump.com/login.html?signout=1'})" style="font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354;cursor:pointer">ログアウト</button></div>`;
 
 export const MEMBERS_HTML = () => `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>会員管理</title>
 <style>

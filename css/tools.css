@@ -193,7 +193,7 @@
 .section-badge{font-size:.55rem;background:var(--t-bg-alt);color:var(--gray-400);padding:.15rem .45rem;border-radius:var(--t-r);margin-left:.3rem;border:1px solid var(--t-border);letter-spacing:.04em}
 
 /* ── Corp Back Button ── */
-.corp-back{position:fixed;top:16px;right:16px;z-index:1100;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1px solid rgba(200,200,200,.5);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.5px;color:var(--gray-500);transition:all .25s}
+.corp-back{position:fixed;left:16px;bottom:16px;z-index:1100;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1px solid rgba(200,200,200,.5);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.5px;color:var(--gray-500);transition:all .25s}
 .corp-back:hover{border-color:var(--primary);color:var(--primary);background:rgba(200,22,29,.04)}
 .corp-back .arr{transition:transform .25s}
 .corp-back:hover .arr{transform:translateX(-3px)}
