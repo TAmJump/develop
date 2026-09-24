@@ -20,3 +20,9 @@ binding = "DB"
 database_name = "develop"
 database_id = "77a77eb2-6e96-412a-940d-221c56a4ab23"
 
+
+# 会員DB（tamjump-member-api と共用）── 統合管理画面の「会員」タブで参照
+[[d1_databases]]
+binding = "MEMBER_DB"
+database_name = "tamjump_member_db"
+database_id = "8c950709-4dbf-4591-84e8-d4d839f5dffb"

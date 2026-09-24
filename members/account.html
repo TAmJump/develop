@@ -83,10 +83,10 @@
             <div class="card-title">現在のプラン</div>
             <div class="plan-row">
                 <div>
-                    <span class="plan-badge" id="planBadge">Free</span>
+                    <span class="plan-badge" id="planBadge">会員（無料）</span>
                     <div class="plan-expires" id="planExpires" style="margin-top:6px;display:none"></div>
                 </div>
-                <a href="https://square.link/u/w9nRYlU1" class="btn-upgrade" id="upgradeBtn" target="_blank">Proにアップグレード</a>
+                <span class="plan-expires" style="display:block">すべてのツールを無料で利用可能</span>
             </div>
         </div>
 
@@ -178,9 +178,9 @@
             // プランバッジ
             const badge = document.getElementById('planBadge');
             const expires = document.getElementById('planExpires');
-            const upgradeBtn = document.getElementById('upgradeBtn');
+            const upgradeBtn = document.getElementById('upgradeBtn') || { style: {} };
             if (user.plan === 'paid') {
-                badge.textContent = 'Pro';
+                badge.textContent = '会員（無料）';
                 badge.className = 'plan-badge paid';
                 upgradeBtn.style.display = 'none';
                 if (user.proExpiresAt) {

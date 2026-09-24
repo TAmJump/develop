@@ -23,6 +23,7 @@
  */
 
 import { handleNda, handleNdaAdmin, NDA_ADMIN_HTML } from "./nda.js";
+import { handleMembersAdmin, MEMBERS_HTML, ADMIN_NAV } from "./members.js";
 
 const SELF = "https://develop-api.tamjump.com";
 const SITE = "https://develop.tamjump.com";
@@ -133,7 +134,7 @@ export default {
     if(m==="OPTIONS") return new Response(null,{status:204,headers:cors(req)});
 
     if(m==="GET" && (path==="/"||path==="/health"))
-      return json({ok:true,service:"develop-api",resend:!!env.RESEND_API_KEY,notify:!!env.NOTIFY_TO,d1:!!env.DB,admin:!!(env.ADMIN_PASSWORD&&env.SESSION_SECRET),master:!!env.MASTER_KEY,ts:new Date().toISOString()},200,req);
+      return json({ok:true,service:"develop-api",resend:!!env.RESEND_API_KEY,notify:!!env.NOTIFY_TO,d1:!!env.DB,admin:!!(env.ADMIN_PASSWORD&&env.SESSION_SECRET),master:!!env.MASTER_KEY,content:!!env.CONTENT_SECRET,members:!!env.MEMBER_DB,ts:new Date().toISOString()},200,req);
 
     if(m==="POST" && (path==="/api/inquiry"||path==="/inquiry")) return handleInquiry(req,env);
 
@@ -141,6 +142,7 @@ export default {
 
     if(m==="GET" && path==="/admin") return page(ADMIN_HTML);
     if(m==="GET" && path==="/admin/nda") return page(NDA_ADMIN_HTML(SITE));
+    if(m==="GET" && path==="/admin/members") return page(MEMBERS_HTML());
     if(m==="POST" && path==="/admin/login") return adminLogin(req,env);
     if(m==="POST" && path==="/admin/logout") return adminLogout(req,env);
     if(path.startsWith("/admin/api/")) return adminApi(req,env,path,m);
@@ -237,6 +239,7 @@ async function adminApi(req,env,path,m){
   if(!authed) return json({error:"unauthorized"},401,req);
   if(!env.DB) return json({error:"no_db"},500,req);
 
+  if(path.startsWith("/admin/api/members")){ const r=await handleMembersAdmin(req,env,path,m,json); if(r) return r; }
   if(path.startsWith("/admin/api/nda")){ const r=await handleNdaAdmin(req,env,path,m,json,sendMail); if(r) return r; }
 
   if(m==="GET" && path==="/admin/api/list"){
@@ -298,7 +301,7 @@ tbody tr{cursor:pointer}tbody tr:hover{background:#faf8f4}
 
 const ADMIN_HTML = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>不動産開発 お問い合わせ管理</title><style>${PAGE_CSS}</style></head><body>
 <div class="wrap">
-  <div class="top"><span class="brand">TAmJ<em>／</em>不動産開発 管理</span><div style="display:flex;gap:8px;align-items:center"><a class="btn ghost" href="/admin/nda" style="text-decoration:none">NDA管理</a><a class="btn ghost" href="${SITE}/" style="text-decoration:none">← サイトを見る</a><button class="btn ghost" id="logout" style="display:none">ログアウト</button></div></div>
+  <div class="top"><span class="brand">TAmJ<em>／</em>不動産開発 管理｜お問い合わせ</span>${ADMIN_NAV("inq")}<button id="logout" style="display:none"></button></div>
 
   <div id="login" style="display:none">
     <div class="center">
