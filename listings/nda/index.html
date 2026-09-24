@@ -45,6 +45,12 @@ dt{color:var(--faint)}dd{margin:0;word-break:break-all}
 .sep{margin:44px 0 16px;border-top:1px solid var(--line);padding-top:26px}
 h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-size:19px;margin:0 0 6px}
 [hidden]{display:none!important}
+.sealbox{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:16px;padding:16px 18px;border:1px solid var(--line2);background:#fff}
+.sealopt label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink);margin:0 0 6px}
+.sealopt input[type=radio]{accent-color:var(--acc);width:16px;height:16px}
+.sealopt input[type=text]{margin-top:4px;max-width:280px}
+.stamp{width:92px;height:92px;border:2px solid #c72424;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.stamp span{writing-mode:vertical-rl;color:#c72424;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;line-height:1.02;text-align:center}
 </style>
 </head>
 <body>
@@ -83,11 +89,20 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
 
   <!-- 3 -->
   <section class="card" id="s3" hidden>
-    <p style="margin:0 0 10px;font-size:14px">契約内容を最後までご確認ください。締結日時・文書番号は締結時に自動で付与し、甲（タムジ株式会社）の記名押印と、乙の署名に基づく印影をPDFに付します。</p>
+    <p style="margin:0 0 10px;font-size:14px">契約内容を最後までご確認ください。締結日時・文書番号は締結時に自動で付与し、甲（タムジ株式会社）の記名押印と、乙の署名・電子印影をPDFに付します。</p>
     <div class="doc" id="doc"></div>
     <label class="check"><input type="checkbox" id="agree" disabled><span id="agreeTxt">契約内容を最後までスクロールすると同意できます。</span></label>
-    <div style="margin-top:12px;max-width:360px"><label for="signer">署名（お名前を入力）<i>必須</i></label><input type="text" id="signer"></div>
-    <div class="note" style="margin-top:6px">入力したお名前が電子署名となり、同意日時・接続元とともに記録されます。</div>
+    <div style="margin-top:12px;max-width:360px"><label for="signer">署名<i>必須</i></label><input type="text" id="signer"></div>
+    <div class="note" style="margin-top:6px">代表者名を入れています。署名者が異なる場合のみ書き換えてください。入力したお名前が電子署名となり、同意日時・接続元とともに記録されます。</div>
+    <div class="sealbox">
+      <div class="sealopt">
+        <div class="note" style="margin-bottom:8px">契約書PDFの署名欄に押す印影（電子印影）</div>
+        <label><input type="radio" name="sealm" value="co" checked>会社名で押印（標準）</label>
+        <label><input type="radio" name="sealm" value="free">印影の文字を指定する</label>
+        <input type="text" id="sealtxt" maxlength="16" placeholder="例：代表取締役之印（16字まで）" hidden>
+      </div>
+      <div class="stamp" aria-label="印影の見本"><span id="stampv"></span></div>
+    </div>
     <div class="row"><button class="btn" id="b3" disabled>同意して締結する</button></div>
     <div class="err" id="e3"></div>
   </section>
@@ -155,14 +170,18 @@ $("b2").onclick=async function(){
   if(!j.ok){$("e2").textContent=em(j.error);return;}
   var t=await fetch(API+"/api/nda/text?listing="+encodeURIComponent(st.b.listing)).then(function(r){return r.json();});
   var txt=t.text.replace("〔相手方会社名〕",st.b.company).replace("〔相手方会社名〕",st.b.company).replace("〔所在地〕",st.b.address).replace("〔代表者名〕",st.b.rep_name);
-  $("doc").textContent=txt;step(3);
+  $("doc").textContent=txt;$("signer").value=st.b.rep_name;sealPrev();canSign();step(3);
 };
 $("doc").addEventListener("scroll",function(){var d=this;if(d.scrollTop+d.clientHeight>=d.scrollHeight-24){$("agree").disabled=false;$("agreeTxt").textContent="上記の秘密保持契約の内容に同意します。";}});
-function canSign(){$("b3").disabled=!($("agree").checked&&$("signer").value.trim());}
+function sealText(){var m=document.querySelector("input[name=sealm]:checked").value;return (m==="free"?$("sealtxt").value:(st.b?st.b.company:"")).replace(/[\s\u3000]/g,"").slice(0,16);}
+function sealPrev(){var t=Array.from(sealText()),n=Math.ceil(t.length/4)||1,per=Math.ceil(t.length/n)||1,cols=[];for(var i=0;i<t.length;i+=per)cols.push(t.slice(i,i+per).join(""));var v=$("stampv");v.textContent="";cols.forEach(function(c,i){if(i)v.appendChild(document.createElement("br"));v.appendChild(document.createTextNode(c));});var rows=Math.max.apply(null,cols.map(function(c){return Array.from(c).length;}).concat([1]));v.style.fontSize=Math.min(66/rows,58/cols.length||58)+"px";}
+document.querySelectorAll("input[name=sealm]").forEach(function(r){r.onchange=function(){$("sealtxt").hidden=(this.value!=="free");if(this.value==="free")$("sealtxt").focus();sealPrev();canSign();};});
+$("sealtxt").oninput=function(){sealPrev();canSign();};
+function canSign(){$("b3").disabled=!($("agree").checked&&$("signer").value.trim()&&sealText());}
 $("agree").onchange=canSign;$("signer").oninput=canSign;
 $("b3").onclick=async function(){
   $("e3").textContent="";busy(this,true,"締結処理中");
-  var j=await post("/api/nda/sign",{id:st.id,signer:$("signer").value,agree:$("agree").checked});busy(this,false,"同意して締結する");
+  var j=await post("/api/nda/sign",{id:st.id,signer:$("signer").value,seal:sealText(),agree:$("agree").checked});busy(this,false,"同意して締結する");
   if(!j.ok){$("e3").textContent=em(j.error);return;}
   $("rKey").textContent=j.key;$("rExp").textContent="有効期限 "+fmt(j.expires_at)+"（日本時間）";
   $("rDoc").textContent=j.doc_no;$("rAt").textContent=j.signed_at;$("rHash").textContent=j.doc_hash;

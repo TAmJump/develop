@@ -21,7 +21,7 @@ async function loadImg(env, name) {
 }
 async function loadFont(env) {
   if (FONT) return FONT;
-  const url = env.NDA_FONT_URL || (env.SITE_URL || "https://develop.tamjump.com") + "/assets/fonts/nda-mincho.ttf";
+  const url = env.NDA_FONT_URL || (env.SITE_URL || "https://develop.tamjump.com") + "/assets/fonts/nda-mincho.ttf?v=2";
   const cache = typeof caches !== "undefined" ? caches.default : null;
   let res = cache ? await cache.match(url) : null;
   if (!res) {
@@ -39,7 +39,7 @@ const ML = 22 * MM, MR = 22 * MM, MT = 24 * MM, MB = 22 * MM;
 const INK = rgb(0.1, 0.09, 0.08), FAINT = rgb(0.45, 0.42, 0.38), LINE = rgb(0.79, 0.74, 0.66);
 const NO_HEAD = "、。，．）」』】〕・ー！？：；％";
 
-const DASH = "‐‑‒–—―−ｰ-";
+const DASH = "‐‑‒–—―−ｰ-﹣﹘⁃";
 function fixGlyphs(font, text) {
   const set = new Set(font.getCharacterSet());
   let out = "";
@@ -67,16 +67,19 @@ function wrap(font, size, text, width) {
   return out;
 }
 
-// 乙の電子印影：署名者名（空白除く）を朱色の丸枠に縦書き。5字以上は2列
+// 乙の電子印影：指定文字（標準は会社名）を朱色の丸枠に縦書き。1列4字まで、最大16字（4列）
 function drawStamp(page, font, name, x, cy) {
   const RED = rgb(0.78, 0.14, 0.14);
-  const chars = [...String(name).replace(/[\s　]/g, "")].slice(0, 8);
+  const chars = [...String(name).replace(/[\s　]/g, "")].slice(0, 16);
   if (!chars.length) return;
-  const d = 15 * MM, r = d / 2, cx = x + r;
+  const ncol = Math.ceil(chars.length / 4);
+  const per = Math.ceil(chars.length / ncol);
+  const cols = [];
+  for (let i = 0; i < chars.length; i += per) cols.push(chars.slice(i, i + per));
+  const d = (ncol > 2 ? 18 : 15) * MM, r = d / 2, cx = x + r;
   page.drawCircle({ x: cx, y: cy, size: r, borderColor: RED, borderWidth: 1.4, opacity: 0, borderOpacity: 0.9 });
-  const cols = chars.length > 4 ? [chars.slice(0, Math.ceil(chars.length / 2)), chars.slice(Math.ceil(chars.length / 2))] : [chars];
   const rows = Math.max(...cols.map((c) => c.length));
-  const fs = Math.min((d * 0.72) / rows, (d * 0.62) / cols.length);
+  const fs = Math.min((d * 0.72) / rows, (d * 0.64) / cols.length);
   const colW = fs * 1.05;
   cols.forEach((col, ci) => {
     const colX = cx + ((cols.length - 1) / 2 - ci) * colW - fs / 2;      // 右の列から読む
@@ -166,7 +169,7 @@ export async function buildNdaPdf(env, o) {
     if (ln.includes("署名：")) { signLineEnd = ML + font.widthOfTextAtSize(ln, s2); signLineY = y - s2; }
     y -= l2;
   }
-  if (o.signer && signLineEnd) drawStamp(page, font, o.signer, signLineEnd + 2 * MM, signLineY + s2 / 2);
+  if ((o.seal || o.signer) && signLineEnd) drawStamp(page, font, o.seal || o.signer, signLineEnd + 2 * MM, signLineY + s2 / 2);
   y -= 4 * MM;
   page.drawLine({ start: { x: ML, y }, end: { x: W - MR, y }, thickness: 0.6, color: LINE });
   y -= 6 * MM;

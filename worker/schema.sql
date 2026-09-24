@@ -13,7 +13,7 @@ CREATE INDEX IF NOT EXISTS idx_inq_status ON inquiries(status);
 CREATE TABLE IF NOT EXISTS nda (
   id TEXT PRIMARY KEY,
   doc_no TEXT, listing TEXT,
-  company TEXT, address TEXT, rep_name TEXT, person TEXT, title TEXT, email TEXT, phone TEXT,
+  company TEXT, address TEXT, rep_name TEXT, person TEXT, title TEXT, email TEXT, phone TEXT, seal TEXT,
   status TEXT DEFAULT '申請',          -- 申請 / 確認済 / 締結 / 失効
   verified_at TEXT, signer TEXT, signed_at TEXT, doc_hash TEXT, pdf_hash TEXT, text_ver TEXT,
   created_at TEXT, updated_at TEXT, ip TEXT, ua TEXT

@@ -122,6 +122,8 @@ ${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」�
 }
 
 /* ---------- 共通 ---------- */
+// 住所：数字の後に続く長音・ダッシュ類を全角ハイフン「－」に揃える（例 １ー１、1−1）
+const fixAddr = (s) => String(s || "").replace(/([0-9０-９一二三四五六七八九十〇])[ー－ｰ\-‐‑‒–—―−﹣﹘⁃]/g, "$1－").replace(/([0-9０-９一二三四五六七八九十〇])[ー－ｰ\-‐‑‒–—―−﹣﹘⁃]/g, "$1－");
 const enc = (s) => new TextEncoder().encode(s);
 async function sha256hex(s) {
   const d = await crypto.subtle.digest("SHA-256", enc(s));
@@ -220,7 +222,7 @@ const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</
 async function makePdf(env, nda) {
   const signed = new Date(nda.signed_at);
   const text = ndaText({ ...nda, signed_at_jst: jst(signed) }, ttlDays(env));
-  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company, signer: nda.signer });
+  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company, signer: nda.signer, seal: nda.seal });
   const d = await crypto.subtle.digest("SHA-256", bytes);
   const pdf_hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
   return { bytes, pdf_hash };
@@ -242,7 +244,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
   if (m === "POST" && path === "/api/nda/request") {
     if (String(body.hp || "").trim()) return json({ ok: true, id: "NA-IGNORED" }, 200, req);
     const r = {
-      listing: clip(body.listing, 40), company: clip(body.company, 160), address: clip(body.address, 200),
+      listing: clip(body.listing, 40), company: clip(body.company, 160), address: fixAddr(clip(body.address, 200)),
       rep_name: clip(body.rep_name, 80), person: clip(body.person, 80), title: clip(body.title, 80),
       email: clip(body.email, 200).toLowerCase(), phone: clip(body.phone, 40),
     };
@@ -282,6 +284,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const id = clip(body.id, 20), signer = clip(body.signer, 80);
     if (!body.agree || !signer) return json({ error: "missing_fields" }, 422, req);
     const nda = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(id).first();
+    const seal = [...String(body.seal || (nda && nda.company) || "").replace(/[\s　]/g, "")].slice(0, 16).join("");
     if (!nda || nda.status !== "確認済") return json({ error: "not_verified" }, 400, req);
     if (Date.now() - new Date(nda.verified_at).getTime() > 3600 * 1000) return json({ error: "verify_expired" }, 400, req);
     const now = new Date();
@@ -291,14 +294,14 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const signed_at_jst = jst(now);
     const text = ndaText({ ...nda, signer, signed_at_jst, doc_no }, ttlDays(env));
     const doc_hash = await sha256hex(text);
-    await env.DB.prepare("UPDATE nda SET status='締結',signer=?,signed_at=?,doc_no=?,doc_hash=?,text_ver=?,updated_at=? WHERE id=?")
-      .bind(signer, now.toISOString(), doc_no, doc_hash, NDA_VERSION, now.toISOString(), id).run();
+    await env.DB.prepare("UPDATE nda SET status='締結',signer=?,seal=?,signed_at=?,doc_no=?,doc_hash=?,text_ver=?,updated_at=? WHERE id=?")
+      .bind(signer, seal, now.toISOString(), doc_no, doc_hash, NDA_VERSION, now.toISOString(), id).run();
     const k = await issueKey(env, nda);
     await log(env, req, "sign", { nda_id: id, listing: nda.listing, key_tail: k.key.slice(-4), ok: true });
     // PDF（失敗しても締結自体は成立させ、メール本文の記録で代替）
     let att = [], pdf_hash = "";
     try {
-      const signedRow = { ...nda, signer, signed_at: now.toISOString(), doc_no, doc_hash };
+      const signedRow = { ...nda, signer, seal, signed_at: now.toISOString(), doc_no, doc_hash };
       const pdf = await makePdf(env, signedRow);
       pdf_hash = pdf.pdf_hash;
       try { await env.DB.prepare("UPDATE nda SET pdf_hash=? WHERE id=?").bind(pdf_hash, id).run(); } catch (_) {}
