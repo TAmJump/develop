@@ -227,6 +227,9 @@ body.mnav-open .hd .brand small{color:var(--stone);}
 .lc-sm span{margin-top:5px}
 .lc-sm .bdg{display:inline-block;margin-top:9px;font:9px/1 'Inter',monospace;letter-spacing:.12em;border:1px solid #a4863f;color:#856a2c;background:#f5efe1;border-radius:2px;padding:4px 7px}
 .lc.hide{display:none}
+.lc-head{font-family:'Noto Serif JP',serif;font-size:14px;margin:26px 0 12px;padding-bottom:7px;border-bottom:1px solid #E4DED3;color:#1A1815}
+.lc-head:first-of-type{margin-top:0}
+.lc-head.hide,.lc-grid.hide{display:none}
 @media(max-width:640px){.launcher{padding:56px 0 20px}.launcher h2{font-size:20px}.lc-grid{grid-template-columns:1fr 1fr;gap:11px}.lc-grid.lc-sm{grid-template-columns:1fr 1fr;gap:11px}.lc b{font-size:12.5px}.lc span{font-size:11px}.lc .tx{padding:11px 11px 13px}.lc-sm .lc{padding:13px}}
 </style>
 <script>
@@ -235,7 +238,7 @@ document.addEventListener('DOMContentLoaded',function(){
  tabs.forEach(function(t){t.onclick=function(){
   tabs.forEach(function(x){x.classList.remove('on')});t.classList.add('on');
   var f=t.dataset.f;
-  document.querySelectorAll('.lc').forEach(function(c){c.classList.toggle('hide',!(f==='all'||c.dataset.g===f))});
+  document.querySelectorAll('.lc,.lc-head,.lc-grid').forEach(function(c){c.classList.toggle('hide',!(f==='all'||c.dataset.g===f))});
  };});
 });
 </script>
@@ -311,7 +314,8 @@ document.addEventListener('DOMContentLoaded',function(){
       <button class="lc-tab" data-f="acct">会員・問合せ</button>
     </div>
 
-    <div class="lc-grid" id="lc-case">
+    <div class="lc-head" data-g="case">案件</div>
+    <div class="lc-grid" data-g="case">
       <a class="lc lc-img" href="listings/murakami/" data-g="case">
         <div class="ph"><img src="listings/murakami/aerial.jpg" alt="村上3街区 複合ヘルスケア開発"><span class="ph-t">PASSWORD</span></div>
         <div class="tx"><b>村上3街区 複合ヘルスケア開発</b><i>Murakami Block 3 · Chiba Yachiyo</i><span>敷地12,429㎡／介護2棟・GH・デイ・クリニック・商業／運営事業者募集</span></div>
@@ -328,27 +332,33 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="ph"><img src="listings/hachiken/render-building.png" alt="八軒6条東5丁目 開発用地"><span class="ph-t">FOR SALE</span></div>
         <div class="tx"><b>八軒6条東5丁目 開発用地</b><i>Hachiken · Sapporo</i><span>約535坪・環状通接道・近隣商業／価格応談</span></div>
       </a>
-      <a class="lc lc-img" href="listings/" data-g="case">
-        <div class="ph"><img src="listings/render-aerial.png" alt="開発用地一覧"><span class="ph-t">INDEX</span></div>
-        <div class="tx"><b>開発用地・案件一覧</b><i>All Listings</i><span>売買・開発・M&amp;Aの募集中案件</span></div>
-      </a>
     </div>
 
-    <div class="lc-grid lc-sm" id="lc-rest">
-      <a class="lc" href="members/estimate-development.html" data-g="tool"><em>01</em><b>開発費シミュレーター</b><span>施設種別と入居者数から面積・建築費・投資額を概算</span><i class="bdg">会員</i></a>
-      <a class="lc" href="members/service-equipment.html" data-g="tool"><em>02</em><b>什器備品＋リース設計</b><span>数量の自動算出、購入とリースの比較</span><i class="bdg">会員</i></a>
-      <a class="lc" href="members/estimate-development.html#income" data-g="tool"><em>03</em><b>オーナー収支計算</b><span>NOI・返済後CF・CCRを融資条件を変えて試算</span><i class="bdg">会員</i></a>
-      <a class="lc" href="members/scheme-structure.html" data-g="tool"><em>04</em><b>スキーム構造設計</b><span>SPC・運営会社・ファンドの三層構造を比較</span><i class="bdg">Pro</i></a>
-      <a class="lc" href="lp-mci.html" data-g="tool"><em>05</em><b>MCI 建築コスト指数</b><span>8指標を加重平均した建築コスト倍率を日次更新</span></a>
-      <a class="lc" href="members/service-development.html" data-g="svc"><em>06</em><b>開発サービス</b><span>企画・設計・施工・運営までの一気通貫</span><i class="bdg">会員</i></a>
-      <a class="lc" href="service.html" data-g="svc"><em>07</em><b>サービス紹介</b><span>TAmJ Developmentでできること</span></a>
-      <a class="lc" href="https://rebridge.tamjump.com/" target="_blank" rel="noopener" data-g="svc"><em>08</em><b>Re-Bridge（承継再生型M&amp;A）</b><span>介護・医療の事業譲渡／株式譲渡</span></a>
-      <a class="lc" href="pricing.html" data-g="svc"><em>09</em><b>料金</b><span>仲介手数料・各サービスの費用</span></a>
-      <a class="lc" href="hearing/" data-g="acct"><em>10</em><b>ヒアリングシート</b><span>土地・事業の条件を入力して相談</span></a>
-      <a class="lc" href="contact/" data-g="acct"><em>11</em><b>お問い合わせ</b><span>案件の相談・資料請求</span></a>
-      <a class="lc" href="members/index.html" data-g="acct"><em>12</em><b>マイページ</b><span>会員向け機能の入口</span><i class="bdg">会員</i></a>
-      <a class="lc" href="login.html" data-g="acct"><em>13</em><b>ログイン</b><span>会員の方はこちら</span></a>
-      <a class="lc" href="register.html" data-g="acct"><em>14</em><b>会員登録</b><span>無料。シミュレーションが使えます</span></a>
+    <div class="lc-head" data-g="tool">ツール</div>
+    <div class="lc-grid lc-sm" data-g="tool">
+      <a class="lc" href="members/estimate-development.html" data-g="tool"><em>01 — Simulator</em><b>開発費シミュレーター</b><span>施設種別と入居者数から面積・建築費・投資額を概算</span><i class="bdg">会員</i></a>
+      <a class="lc" href="members/service-equipment.html" data-g="tool"><em>02 — Equipment</em><b>什器備品＋リース設計</b><span>数量の自動算出、購入とリースの比較</span><i class="bdg">会員</i></a>
+      <a class="lc" href="members/estimate-development.html#income" data-g="tool"><em>03 — Income</em><b>オーナー収支計算</b><span>NOI・返済後CF・CCRを融資条件を変えて試算</span><i class="bdg">会員</i></a>
+      <a class="lc" href="members/estimate-development.html#export" data-g="tool"><em>04 — Export</em><b>見積PDF出力</b><span>概算サマリー・設備明細・収支をPDF／CSVで出力</span><i class="bdg">Pro</i></a>
+      <a class="lc" href="members/scheme-structure.html#financial" data-g="tool"><em>05 — Financial</em><b>財務設計資料</b><span>BS影響概算・リース会計（IFRS16／ASC842）</span><i class="bdg">Pro</i></a>
+      <a class="lc" href="members/scheme-structure.html" data-g="tool"><em>06 — Scheme</em><b>スキーム構造設計</b><span>SPC・運営会社・ファンドの三層構造を比較</span><i class="bdg">Pro</i></a>
+      <a class="lc" href="lp-mci.html" data-g="tool"><em>07 — Market</em><b>MCI 建築コスト指数</b><span>8指標を加重平均した建築コスト倍率を日次更新</span></a>
+    </div>
+
+    <div class="lc-head" data-g="svc">サービス</div>
+    <div class="lc-grid lc-sm" data-g="svc">
+      <a class="lc" href="members/service-development.html" data-g="svc"><em>Development</em><b>開発サービス</b><span>企画・設計・施工・運営までの一気通貫</span><i class="bdg">会員</i></a>
+      <a class="lc" href="service.html" data-g="svc"><em>Overview</em><b>サービス紹介</b><span>TAmJ Developmentでできること</span></a>
+      <a class="lc" href="pricing.html" data-g="svc"><em>Pricing</em><b>料金</b><span>仲介手数料・各サービスの費用</span></a>
+      <a class="lc" href="hearing/" data-g="svc"><em>Hearing</em><b>ヒアリングシート</b><span>土地・事業の条件を入力して相談</span></a>
+    </div>
+
+    <div class="lc-head" data-g="acct">会員・お問い合わせ</div>
+    <div class="lc-grid lc-sm" data-g="acct">
+      <a class="lc" href="members/index.html" data-g="acct"><em>MyPage</em><b>マイページ</b><span>会員向け機能の入口</span><i class="bdg">会員</i></a>
+      <a class="lc" href="login.html" data-g="acct"><em>Login</em><b>ログイン</b><span>会員の方はこちら</span></a>
+      <a class="lc" href="register.html" data-g="acct"><em>Register</em><b>会員登録</b><span>無料。シミュレーションが使えます</span></a>
+      <a class="lc" href="contact/" data-g="acct"><em>Contact</em><b>お問い合わせ</b><span>案件の相談・資料請求</span></a>
     </div>
   </div>
 </section>
