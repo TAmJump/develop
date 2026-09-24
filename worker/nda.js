@@ -208,7 +208,7 @@ const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</
 async function makePdf(env, nda) {
   const signed = new Date(nda.signed_at);
   const text = ndaText({ ...nda, signed_at_jst: jst(signed) }, ttlDays(env));
-  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company });
+  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company, signer: nda.signer });
   const d = await crypto.subtle.digest("SHA-256", bytes);
   const pdf_hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
   return { bytes, pdf_hash };
