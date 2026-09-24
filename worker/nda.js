@@ -295,12 +295,13 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const pageUrl = `${SITE}/listings/${nda.listing}/`;
     const mailBody = `${nda.company} ${nda.person} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
     await sendMail(env, {
-      to: nda.email, reply_to: env.REPLY_TO || env.NOTIFY_TO || "info@tamjump.com",
+      to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "info@tamjump.com",
       subject: `【タムジ株式会社】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
       html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
     });
-    if (env.NOTIFY_TO) await sendMail(env, {
-      to: env.NOTIFY_TO, subject: `[NDA締結] ${doc_no} ${nda.company}（${LISTINGS[nda.listing]}）`, attachments: att,
+    const tamjTo = env.NDA_NOTIFY_TO || env.NOTIFY_TO;
+    if (tamjTo) await sendMail(env, {
+      to: tamjTo, subject: `[NDA締結] ${doc_no} ${nda.company}（${LISTINGS[nda.listing]}）`, attachments: att,
       text: `NDA締結\n文書番号：${doc_no}\n会社：${nda.company}\n代表者：${nda.rep_name}\n担当：${nda.person} ${nda.title || ""}\nメール：${nda.email}\n電話：${nda.phone || "-"}\n案件：${LISTINGS[nda.listing]}\n締結：${signed_at_jst}\n署名：${signer}\nハッシュ：${doc_hash}\nPDFハッシュ：${pdf_hash || "（PDF生成失敗・管理画面から再生成可）"}\nキー末尾：${k.key.slice(-4)}／期限 ${jstDate(k.expires_at)}\n\n管理画面：https://develop-api.tamjump.com/admin/nda\n\n${text}`,
     });
     return json({ ok: true, doc_no, signed_at: signed_at_jst, doc_hash, pdf_hash, key: k.key, expires_at: k.expires_at }, 200, req);
