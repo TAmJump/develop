@@ -19,6 +19,8 @@
  * 変数  : KEY_TTL_DAYS（解除キーの有効日数。既定 7）
  */
 
+import { buildNdaPdf, toB64 } from "./pdf.js";
+
 export const LISTINGS = {
   murakami: "村上3街区 複合ヘルスケア開発",
   nursing2: "医療対応型有料老人ホーム 2棟",
@@ -201,6 +203,21 @@ function mailWrap(title, body) {
 }
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+
+/* ---------- PDF ---------- */
+async function makePdf(env, nda) {
+  const signed = new Date(nda.signed_at);
+  const text = ndaText({ ...nda, signed_at_jst: jst(signed) }, ttlDays(env));
+  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company });
+  const d = await crypto.subtle.digest("SHA-256", bytes);
+  const pdf_hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return { bytes, pdf_hash };
+}
+async function storePdf(env, nda, bytes) {
+  if (!env.NDA_BUCKET) return false;
+  try { await env.NDA_BUCKET.put(`nda/${nda.doc_no}.pdf`, bytes, { httpMetadata: { contentType: "application/pdf" }, customMetadata: { nda_id: nda.id, company: encodeURIComponent(nda.company || "") } }); return true; } catch { return false; }
+}
+
 /* ---------- ハンドラ ---------- */
 export async function handleNda(req, env, path, m, json, sendMail) {
   if (!env.DB) return json({ error: "no_db" }, 500, req);
@@ -270,18 +287,28 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       .bind(signer, now.toISOString(), doc_no, doc_hash, NDA_VERSION, now.toISOString(), id).run();
     const k = await issueKey(env, nda);
     await log(env, req, "sign", { nda_id: id, listing: nda.listing, key_tail: k.key.slice(-4), ok: true });
+    // PDF（失敗しても締結自体は成立させ、メール本文の記録で代替）
+    let att = [], pdf_hash = "";
+    try {
+      const signedRow = { ...nda, signer, signed_at: now.toISOString(), doc_no, doc_hash };
+      const pdf = await makePdf(env, signedRow);
+      pdf_hash = pdf.pdf_hash;
+      await storePdf(env, signedRow, pdf.bytes);
+      try { await env.DB.prepare("UPDATE nda SET pdf_hash=? WHERE id=?").bind(pdf_hash, id).run(); } catch (_) {}
+      att = [{ filename: `${doc_no}_秘密保持契約書.pdf`, content: toB64(pdf.bytes) }];
+    } catch (e) { await log(env, req, "pdf_error:" + String(e && e.message || e).slice(0, 60), { nda_id: id, ok: false }); }
     const pageUrl = `${SITE}/listings/${nda.listing}/`;
     const mailBody = `${nda.company} ${nda.person} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
     await sendMail(env, {
       to: nda.email, reply_to: env.REPLY_TO || env.NOTIFY_TO || "info@tamjump.com",
-      subject: `【タムジ株式会社】秘密保持契約の締結完了（${doc_no}）`, text: mailBody,
+      subject: `【タムジ株式会社】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
       html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
     });
     if (env.NOTIFY_TO) await sendMail(env, {
-      to: env.NOTIFY_TO, subject: `[NDA締結] ${doc_no} ${nda.company}（${LISTINGS[nda.listing]}）`,
-      text: `NDA締結\n文書番号：${doc_no}\n会社：${nda.company}\n代表者：${nda.rep_name}\n担当：${nda.person} ${nda.title || ""}\nメール：${nda.email}\n電話：${nda.phone || "-"}\n案件：${LISTINGS[nda.listing]}\n締結：${signed_at_jst}\n署名：${signer}\nハッシュ：${doc_hash}\nキー末尾：${k.key.slice(-4)}／期限 ${jstDate(k.expires_at)}\n\n管理画面：https://develop-api.tamjump.com/admin/nda\n\n${text}`,
+      to: env.NOTIFY_TO, subject: `[NDA締結] ${doc_no} ${nda.company}（${LISTINGS[nda.listing]}）`, attachments: att,
+      text: `NDA締結\n文書番号：${doc_no}\n会社：${nda.company}\n代表者：${nda.rep_name}\n担当：${nda.person} ${nda.title || ""}\nメール：${nda.email}\n電話：${nda.phone || "-"}\n案件：${LISTINGS[nda.listing]}\n締結：${signed_at_jst}\n署名：${signer}\nハッシュ：${doc_hash}\nPDFハッシュ：${pdf_hash || "（PDF生成失敗・管理画面から再生成可）"}\nキー末尾：${k.key.slice(-4)}／期限 ${jstDate(k.expires_at)}\n\n管理画面：https://develop-api.tamjump.com/admin/nda\n\n${text}`,
     });
-    return json({ ok: true, doc_no, signed_at: signed_at_jst, doc_hash, key: k.key, expires_at: k.expires_at }, 200, req);
+    return json({ ok: true, doc_no, signed_at: signed_at_jst, doc_hash, pdf_hash, key: k.key, expires_at: k.expires_at }, 200, req);
   }
 
   /* 解除キー → 閲覧トークン */
@@ -360,13 +387,22 @@ export async function handleNda(req, env, path, m, json, sendMail) {
 /* ---------- 管理 ---------- */
 export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
   if (m === "GET" && path === "/admin/api/nda") {
-    const r = await env.DB.prepare(`SELECT n.id,n.doc_no,n.listing,n.company,n.rep_name,n.person,n.title,n.email,n.phone,n.status,n.signer,n.signed_at,n.doc_hash,n.created_at,
+    const r = await env.DB.prepare(`SELECT n.id,n.doc_no,n.listing,n.company,n.rep_name,n.person,n.title,n.email,n.phone,n.status,n.signer,n.signed_at,n.doc_hash,n.pdf_hash,n.created_at,
       (SELECT key_tail FROM nda_keys k WHERE k.nda_id=n.id AND k.revoked=0 ORDER BY issued_at DESC LIMIT 1) AS key_tail,
       (SELECT expires_at FROM nda_keys k WHERE k.nda_id=n.id AND k.revoked=0 ORDER BY issued_at DESC LIMIT 1) AS key_exp,
       (SELECT MAX(at) FROM nda_log l WHERE l.nda_id=n.id AND l.ok=1 AND l.kind IN ('unlock','view')) AS last_view,
       (SELECT COUNT(*) FROM nda_log l WHERE l.nda_id=n.id AND l.ok=1 AND l.kind IN ('unlock','view')) AS views
       FROM nda n ORDER BY n.created_at DESC LIMIT 500`).all();
     return json({ ok: true, items: r.results || [], listings: LISTINGS }, 200, req);
+  }
+  if (m === "GET" && path === "/admin/api/nda/pdf") {
+    const id = new URL(req.url).searchParams.get("id") || "";
+    const nda = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(id).first();
+    if (!nda || !nda.doc_hash) return json({ error: "not_found" }, 404, req);
+    let bytes = null;
+    if (env.NDA_BUCKET) { const o = await env.NDA_BUCKET.get(`nda/${nda.doc_no}.pdf`); if (o) bytes = new Uint8Array(await o.arrayBuffer()); }
+    if (!bytes) { const p = await makePdf(env, nda); bytes = p.bytes; await storePdf(env, nda, bytes); }
+    return new Response(bytes, { headers: { "Content-Type": "application/pdf", "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(nda.doc_no + "_秘密保持契約書.pdf")}` } });
   }
   if (m === "POST" && path === "/admin/api/nda/revoke") {
     const b = await req.json().catch(() => ({}));

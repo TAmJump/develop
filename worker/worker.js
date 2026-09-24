@@ -72,6 +72,7 @@ async function sendMail(env,o){
     const body={from:env.FROM_EMAIL||"TAmJ不動産開発 <noreply@tamjump.com>",to:o.to,subject:o.subject,text:o.text};
     if(o.html) body.html=o.html;
     if(o.reply_to) body.reply_to=o.reply_to;
+    if(o.attachments&&o.attachments.length) body.attachments=o.attachments;
     const r=await fetch("https://api.resend.com/emails",{method:"POST",
       headers:{"Authorization":`Bearer ${env.RESEND_API_KEY}`,"Content-Type":"application/json"},
       body:JSON.stringify(body)});
