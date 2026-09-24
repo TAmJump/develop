@@ -110,6 +110,13 @@ def check_leaks(public_html, terms, extra):
     return leaks
 
 
+def lockver(html):
+    """lock.js の読み込みに内容ハッシュを付け、更新時にブラウザの古い読み込みが残らないようにする"""
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "listings", "lock.js")
+    v = hashlib.sha256(open(root, "rb").read()).hexdigest()[:8]
+    return re.sub(r'src="\.\./lock\.js(\?v=[0-9a-f]+)?"', 'src="../lock.js?v=' + v + '"', html)
+
+
 def build(src_dir, only):
     ids = sorted({f.split(".")[0] for f in os.listdir(src_dir) if f.endswith(".html")})
     for L in ids:
@@ -129,6 +136,7 @@ def build(src_dir, only):
             sys.exit(f"[{L}] 公開版に伏せるべき語句が残っている: {leaks[:10]}")
         out = os.path.join(ROOT, "listings", L)
         os.makedirs(out, exist_ok=True)
+        public, full = lockver(public), lockver(full)
         open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(public)
         open(os.path.join(out, "full.enc"), "wb").write(encrypt(L, full))
         print(f"[{L}] 公開版 {len(public):,} bytes / 完全版 {len(full):,} bytes → 暗号化済み（伏せ語句 {len(terms)+len(extra)} 件を検査）")
