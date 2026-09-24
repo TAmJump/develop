@@ -65,8 +65,6 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
       <div class="full"><label for="company">会社名<i>必須</i></label><input type="text" id="company" autocomplete="organization"></div>
       <div class="full"><label for="address">本店所在地<i>必須</i></label><input type="text" id="address" autocomplete="street-address"></div>
       <div><label for="rep_name">代表者名<i>必須</i></label><input type="text" id="rep_name" placeholder="代表取締役 〇〇 〇〇"></div>
-      <div><label for="person">ご担当者名<i>必須</i></label><input type="text" id="person" autocomplete="name"></div>
-      <div><label for="title">部署・役職</label><input type="text" id="title" autocomplete="organization-title"></div>
       <div><label for="phone">電話番号</label><input type="tel" id="phone" autocomplete="tel"></div>
       <div class="full"><label for="email">メールアドレス<i>必須</i></label><input type="email" id="email" autocomplete="email"><div class="note">確認コードと解除キーの送付先。個人ではなく業務用のアドレスをご利用ください。</div></div>
       <input type="text" id="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
@@ -88,7 +86,7 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
     <p style="margin:0 0 10px;font-size:14px">契約内容を最後までご確認ください。締結日時・文書番号は締結時に自動で付与し、甲（タムジ株式会社）の記名押印と、乙の署名に基づく印影をPDFに付します。</p>
     <div class="doc" id="doc"></div>
     <label class="check"><input type="checkbox" id="agree" disabled><span id="agreeTxt">契約内容を最後までスクロールすると同意できます。</span></label>
-    <div style="margin-top:12px;max-width:360px"><label for="signer">署名（ご担当者のお名前を入力）<i>必須</i></label><input type="text" id="signer"></div>
+    <div style="margin-top:12px;max-width:360px"><label for="signer">署名（お名前を入力）<i>必須</i></label><input type="text" id="signer"></div>
     <div class="note" style="margin-top:6px">入力したお名前が電子署名となり、同意日時・接続元とともに記録されます。</div>
     <div class="row"><button class="btn" id="b3" disabled>同意して締結する</button></div>
     <div class="err" id="e3"></div>
@@ -144,7 +142,7 @@ function busy(b,on,t){b.disabled=on;if(t)b.textContent=t;}
 function fmt(iso){var d=new Date(iso);return d.toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});}
 
 $("b1").onclick=async function(){
-  var b={listing:$("listing").value,company:$("company").value,address:$("address").value,rep_name:$("rep_name").value,person:$("person").value,title:$("title").value,phone:$("phone").value,email:$("email").value,hp:$("hp").value};
+  var b={listing:$("listing").value,company:$("company").value,address:$("address").value,rep_name:$("rep_name").value,phone:$("phone").value,email:$("email").value,hp:$("hp").value};
   $("e1").textContent="";busy(this,true,"送信中");
   var j=await post("/api/nda/request",b);busy(this,false,"確認コードを送信");
   if(!j.ok){$("e1").textContent=em(j.error);return;}

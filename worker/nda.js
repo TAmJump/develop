@@ -247,7 +247,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       email: clip(body.email, 200).toLowerCase(), phone: clip(body.phone, 40),
     };
     if (!LISTINGS[r.listing]) return json({ error: "bad_listing" }, 422, req);
-    if (!r.company || !r.address || !r.rep_name || !r.person || !r.email) return json({ error: "missing_fields" }, 422, req);
+    if (!r.company || !r.address || !r.rep_name || !r.email) return json({ error: "missing_fields" }, 422, req);
     if (!okEmail(r.email)) return json({ error: "invalid_email" }, 422, req);
     const id = "NA-" + rand(8, "ABCDEFGHJKLMNPQRSTUVWXYZ23456789");
     const now = new Date().toISOString();
@@ -257,8 +257,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const c = await newCode(env, id, "sign");
     const sent = await sendMail(env, {
       to: r.email, subject: `【タムジ株式会社】秘密保持契約の確認コード ${c}`,
-      text: `${r.company} ${r.person} 様\n\n秘密保持契約の締結手続きの確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[r.listing]}\nお心当たりのない場合は、このメールを破棄してください。\n\nタムジ株式会社`,
-      html: mailWrap("秘密保持契約の確認コード", `${esc(r.company)} ${esc(r.person)} 様<br><br>締結手続きの確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[r.listing])}<br><br><span style="color:#8a7c68;font-size:12px">お心当たりのない場合は、このメールを破棄してください。</span>`),
+      text: `${r.company} ${r.person || r.rep_name} 様\n\n秘密保持契約の締結手続きの確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[r.listing]}\nお心当たりのない場合は、このメールを破棄してください。\n\nタムジ株式会社`,
+      html: mailWrap("秘密保持契約の確認コード", `${esc(r.company)} ${esc(r.person || r.rep_name)} 様<br><br>締結手続きの確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[r.listing])}<br><br><span style="color:#8a7c68;font-size:12px">お心当たりのない場合は、このメールを破棄してください。</span>`),
     });
     if (!sent) return json({ error: "mail_failed" }, 502, req);
     return json({ ok: true, id }, 200, req);
@@ -305,11 +305,11 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       att = [{ filename: `${doc_no}_秘密保持契約書.pdf`, content: toB64(pdf.bytes) }];
     } catch (e) { await log(env, req, "pdf_error:" + String(e && e.message || e).slice(0, 60), { nda_id: id, ok: false }); }
     const pageUrl = `${SITE}/listings/${nda.listing}/`;
-    const mailBody = `${nda.company} ${nda.person} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
+    const mailBody = `${nda.company} ${nda.person || nda.rep_name} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
     await sendMail(env, {
       to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "info@tamjump.com",
       subject: `【タムジ株式会社】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
-      html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
+      html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person || nda.rep_name)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
     });
     const tamjTo = env.NDA_NOTIFY_TO || env.NOTIFY_TO;
     if (tamjTo) await sendMail(env, {
@@ -365,8 +365,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       const c = await newCode(env, nda.id, "renew");
       await sendMail(env, {
         to: email, subject: `【タムジ株式会社】解除キー更新の確認コード ${c}`,
-        text: `${nda.company} ${nda.person} 様\n\n解除キー更新の確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[listing]}\n文書番号：${nda.doc_no}\n\nタムジ株式会社`,
-        html: mailWrap("解除キー更新の確認コード", `${esc(nda.company)} ${esc(nda.person)} 様<br><br>解除キー更新の確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[listing])}<br>文書番号：${esc(nda.doc_no)}`),
+        text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キー更新の確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[listing]}\n文書番号：${nda.doc_no}\n\nタムジ株式会社`,
+        html: mailWrap("解除キー更新の確認コード", `${esc(nda.company)} ${esc(nda.person || nda.rep_name)} 様<br><br>解除キー更新の確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[listing])}<br>文書番号：${esc(nda.doc_no)}`),
       });
     }
     return json({ ok: true }, 200, req);
@@ -384,7 +384,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const k = await issueKey(env, nda);
     await sendMail(env, {
       to: email, subject: `【タムジ株式会社】解除キーを更新しました（${nda.doc_no}）`,
-      text: `${nda.company} ${nda.person} 様\n\n解除キーを更新しました。以前の解除キーは失効しています。\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${SITE}/listings/${listing}/\n\nタムジ株式会社`,
+      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キーを更新しました。以前の解除キーは失効しています。\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${SITE}/listings/${listing}/\n\nタムジ株式会社`,
     });
     return json({ ok: true, key: k.key, expires_at: k.expires_at }, 200, req);
   }
