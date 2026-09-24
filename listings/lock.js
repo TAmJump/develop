@@ -108,28 +108,28 @@
   }
 
   async function check() {
-    var t = ls(T) || ls("tamj_nda_tok_master"); if (!t) { setBar(null); return; }
+    var t = ls(T) || ls("tamj_nda_tok_master");
+    if (!t) { var sk = ls("tamj_nda_key"); if (sk) { await unlock(sk); return; } setBar(null); return; }
     try {
       var j = await call("/api/nda/check", { token: t, listing: L });
       if (j.ok) { showFull(j); return; }
-      ls(T, null); if (["other_listing","need_request","requested","not_allowed","individual"].indexOf(j.error) < 0) ls("tamj_nda_tok_master", null);
-      setBar(null, j.error === "expired" ? "解除キーの有効期限切れ。更新手続きで新しいキーを取得してください。" : j.error === "revoked" ? "この解除キーは失効しています。" : "");
+      ls(T, null); if (["other_listing","need_request","requested","not_allowed","individual","not_signed","closed","stopped"].indexOf(j.error) < 0) ls("tamj_nda_tok_master", null);
+      if (j.error === "not_signed" && ls("tamj_nda_key")) { await unlock(ls("tamj_nda_key")); return; }
+      setBar(null, j.error === "expired" ? "解除キーの有効期限切れ。更新手続きで新しいキーを取得してください。" : j.error === "revoked" ? "この解除キーは失効しています。" : j.error === "closed" ? "この案件は掲載を終了しました。" : "");
     } catch (_) { setBar(null, "認証サーバーに接続できません。"); }
   }
   async function unlock(key) {
     var j = await call("/api/nda/unlock", { key: key, listing: L });
+    if (j.ok && j.level !== "master") ls("tamj_nda_key", key);
+    if (!j.ok && ["invalid", "revoked", "expired"].indexOf(j.error) >= 0 && ls("tamj_nda_key") === key) ls("tamj_nda_key", null);
     if (j.ok) { ls(j.level === "master" ? "tamj_nda_tok_master" : T, j.token); try { sessionStorage.setItem(S, "1"); } catch (_) {} ls(S, "1"); showFull(j); return j; }
     var E = { expired: "この解除キーは有効期限切れ。", revoked: "この解除キーは失効しています。", other_listing: "別の案件の解除キーです。", too_many: "試行回数が多いため、しばらく時間をおいてください。",
       requested: "この案件の閲覧を申請済み。承認後、メールでお知らせします。", not_allowed: "この案件は閲覧の対象外です。お問い合わせください。",
-      individual: "この案件は個別の秘密保持契約が必要です。下の「秘密保持契約を締結して閲覧」からお手続きください。" };
-    if (j.error === "need_request") {
-      setBar(null, "秘密保持契約の締結済み" + (j.company ? "（" + j.company + "）" : "") + "。この案件を閲覧するには申請が必要です。 <button id=\"nda-req\">この案件の閲覧を申請</button>");
+      individual: "この案件は個別の秘密保持契約が必要です。下の「秘密保持契約を締結して閲覧」からお手続きください。", closed: "この案件は掲載を終了しました。", stopped: "この案件の閲覧は停止されています。お問い合わせください。" };
+    if (j.error === "not_signed") {
+      setBar(null, "この案件の秘密保持契約は未締結" + (j.company ? "（締結済みの会社：" + j.company + "）" : "") + "。お手持ちの解除キーのまま、入力なしで追加の締結ができます。 <button id=\"nda-req\">この案件の秘密保持契約を締結</button>");
       var rb = $("nda-req");
-      if (rb) rb.onclick = async function () {
-        rb.disabled = true;
-        var r = await call("/api/nda/access/request", { key: key, listing: L });
-        setBar(null, r.ok ? "閲覧を申請しました。承認後、メールでお知らせします。承認後は同じ解除キーで閲覧できます。" : "申請できませんでした。時間をおいて再度お試しください。");
-      };
+      if (rb) rb.onclick = function () { try { sessionStorage.setItem("tamj_nda_quick", key); } catch (_) {} location.href = "../nda/?l=" + L + "&quick=1"; };
       return j;
     }
     setBar(null, E[j.error] || "解除キーが違います。");
@@ -148,7 +148,7 @@
       var v = $("nda-gp").value.trim(); if (!v) return;
       if (GATE.indexOf(v) >= 0) { ls(S, "1"); g.remove(); document.documentElement.style.overflow = ""; return; }
       var j = await unlock(v);
-      if (j && (j.ok || ["need_request", "requested", "not_allowed", "individual"].indexOf(j.error) >= 0)) { ls(S, "1"); g.remove(); document.documentElement.style.overflow = ""; return; }
+      if (j && (j.ok || ["need_request", "requested", "not_allowed", "individual", "not_signed", "closed", "stopped"].indexOf(j.error) >= 0)) { ls(S, "1"); g.remove(); document.documentElement.style.overflow = ""; return; }
       $("nda-ge").textContent = "パスワードが違います";
     };
     $("nda-gb").onclick = t;

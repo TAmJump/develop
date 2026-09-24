@@ -54,3 +54,6 @@ CREATE TABLE IF NOT EXISTS nda_access (
   requested_at TEXT, decided_at TEXT,
   UNIQUE(nda_id, listing)
 );
+
+-- 案件の掲載状況（掲載中／終了）
+CREATE TABLE IF NOT EXISTS listing_status (listing TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT);

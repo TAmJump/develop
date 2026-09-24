@@ -58,7 +58,7 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
   <div class="top"><b>タムジ株式会社</b><span>取引先限定</span></div>
 
   <h1>秘密保持契約の締結</h1>
-  <p class="lead">資料の所在地・名称・図面を閲覧するための手続き。入力から締結まで約3分。締結後、閲覧用の解除キーをメールでお送りします。<br>契約は1社1回。弊社が紹介する案件全般が対象です。締結済みの会社は、ほかの案件ページで解除キーを入力し「閲覧を申請」してください（弊社の承認後に閲覧できます）。</p>
+  <p class="lead">資料の所在地・名称・図面を閲覧するための手続き。入力から締結まで約3分。締結後、閲覧用の解除キーをメールでお送りします。<br>契約は案件ごと。2件目以降は、案件ページでお手持ちの解除キーを入力すると、入力なしで追加の締結ができ、同じ解除キーで閲覧できます。</p>
 
   <ol class="steps" id="steps" style="padding:0">
     <li data-s="1" class="on">1 貴社情報</li><li data-s="2">2 メール確認</li><li data-s="3">3 契約内容と署名</li><li data-s="4">4 締結完了</li>
@@ -67,7 +67,7 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
   <!-- 1 -->
   <section class="card" id="s1">
     <div class="grid">
-      <div class="full"><label for="listing">最初に閲覧する案件<i>必須</i></label><select id="listing"></select></div>
+      <div class="full"><label for="listing">対象案件<i>必須</i></label><select id="listing"></select></div>
       <div class="full"><label for="company">会社名<i>必須</i></label><input type="text" id="company" autocomplete="organization"></div>
       <div class="full"><label for="address">本店所在地<i>必須</i></label><input type="text" id="address" autocomplete="street-address"></div>
       <div><label for="rep_name">代表者名<i>必須</i></label><input type="text" id="rep_name" placeholder="代表取締役 〇〇 〇〇"></div>
@@ -147,7 +147,7 @@ var st={id:null};
 function $(i){return document.getElementById(i);}
 var qs=new URLSearchParams(location.search), pre=qs.get("l");
 ["listing","rn_l"].forEach(function(s){var sel=$(s);Object.keys(LS).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=LS[k];if(k===pre)o.selected=true;sel.appendChild(o);});});
-var MSG={missing_fields:"必須項目が未入力。",invalid_email:"メールアドレスの形式に誤りがあります。",mail_failed:"メールを送信できませんでした。アドレスをご確認のうえ、再度お試しください。",
+var MSG={stopped:"この案件の閲覧は停止されています。お問い合わせください。",closed:"この案件は掲載を終了しました。",already:"この案件は締結済みです。案件ページからご覧ください。",invalid:"解除キーを確認できませんでした。案件ページで解除キーを入力し直してください。",revoked:"この解除キーは失効しています。",expired:"解除キーの有効期限切れ。このページ下部から更新してください。",missing_fields:"必須項目が未入力。",invalid_email:"メールアドレスの形式に誤りがあります。",mail_failed:"メールを送信できませんでした。アドレスをご確認のうえ、再度お試しください。",
  mismatch:"確認コードが一致しません。",expired:"確認コードの有効期限切れ。コードを再送してください。",locked:"入力回数の上限に達しました。コードを再送してください。",no_code:"確認コードが見つかりません。再送してください。",
  not_verified:"メール確認が完了していません。",verify_expired:"確認から時間が経過しています。最初からやり直してください。",too_many:"試行回数が多いため、しばらく時間をおいてお試しください。",bad_listing:"対象案件を選択してください。"};
 function em(e){return MSG[e]||("処理できませんでした（"+e+"）。");}
@@ -181,12 +181,13 @@ function canSign(){$("b3").disabled=!($("agree").checked&&$("signer").value.trim
 $("agree").onchange=canSign;$("signer").oninput=canSign;
 $("b3").onclick=async function(){
   $("e3").textContent="";busy(this,true,"締結処理中");
-  var j=await post("/api/nda/sign",{id:st.id,signer:$("signer").value,seal:sealText(),agree:$("agree").checked});busy(this,false,"同意して締結する");
+  var j=st.quick?await post("/api/nda/quick/sign",{key:st.quick,listing:st.b.listing,signer:$("signer").value,seal:sealText(),agree:$("agree").checked})
+               :await post("/api/nda/sign",{id:st.id,signer:$("signer").value,seal:sealText(),agree:$("agree").checked});busy(this,false,"同意して締結する");
   if(!j.ok){$("e3").textContent=em(j.error);return;}
-  $("rKey").textContent=j.key;$("rExp").textContent="有効期限 "+fmt(j.expires_at)+"（日本時間）";
+  $("rKey").textContent=j.key||("お手持ちの解除キー（末尾 "+j.key_tail+"）をそのままご利用ください");$("rExp").textContent="有効期限 "+fmt(j.expires_at)+"（日本時間）";
   $("rDoc").textContent=j.doc_no;$("rAt").textContent=j.signed_at;$("rHash").textContent=j.doc_hash;
   $("rGo").href="../"+st.b.listing+"/";
-  try{sessionStorage.setItem("tamj_nda_handoff_"+st.b.listing,j.key);}catch(_){}
+  try{sessionStorage.setItem("tamj_nda_handoff_"+st.b.listing,j.key||st.quick||"");}catch(_){}
   step(4);
 };
 $("rn_b1").onclick=async function(){
@@ -203,6 +204,18 @@ $("rn_b2").onclick=async function(){
   try{sessionStorage.setItem("tamj_nda_handoff_"+$("rn_l").value,j.key);}catch(_){}
   $("rn_ok").hidden=false;$("rn_2").hidden=true;
 };
+(async function(){
+  // 掲載終了の案件は選択肢から外す
+  try{var ls_=await fetch(API+"/api/nda/listings").then(function(r){return r.json();});(ls_.closed||[]).forEach(function(k){["listing","rn_l"].forEach(function(id){var o=document.querySelector("#"+id+" option[value='"+k+"']");if(o)o.remove();});});}catch(_){}
+  if(!qs.get("quick"))return;
+  var key="";try{key=sessionStorage.getItem("tamj_nda_quick")||"";}catch(_){}
+  if(!key)return;
+  var j=await post("/api/nda/quick/text",{key:key,listing:pre});
+  if(!j.ok){$("e1").textContent=em(j.error);return;}
+  st.quick=key;st.b={listing:pre,company:j.company,address:j.address,rep_name:j.rep_name,email:j.email};
+  $("doc").textContent=j.text.replace("〔相手方会社名〕",j.company).replace("〔相手方会社名〕",j.company).replace("〔所在地〕",j.address).replace("〔代表者名〕",j.rep_name);
+  $("signer").value=j.rep_name;sealPrev();canSign();step(3);
+})();
 if(location.hash==="#renew"){setTimeout(function(){$("renew").scrollIntoView();},50);}
 })();
 </script>
