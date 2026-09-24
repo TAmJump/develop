@@ -1,7 +1,7 @@
 /**
  * NDA の PDF 生成（pdf-lib）
  * - 本文は締結時の文面（ndaText）をそのまま組版
- * - 甲の欄に 記名 + 署名画像 + 印影を自動配置。画像は公開リポジトリに置かず、R2（tamj-nda）の assets/sign.png・assets/seal.png から読む
+ * - 甲の欄に 記名 + 署名画像 + 印影を自動配置。画像は公開リポジトリに置かず、D1 の nda_assets テーブルから読む
  * - 各ページ下部に 文書番号・ページ・本文ハッシュ（SHA-256）を印字
  * - 作成日時等のメタデータを締結日時に固定し、同じ入力から同じPDFを再生成できるようにする
  */
@@ -11,11 +11,12 @@ import fontkit from "@pdf-lib/fontkit";
 let FONT = null, IMG = {};
 async function loadImg(env, name) {
   if (IMG[name]) return IMG[name];
-  if (!env.NDA_BUCKET) throw new Error("no_bucket");
-  const o = await env.NDA_BUCKET.get("assets/" + name);
-  if (!o) throw new Error("no_" + name);
-  IMG[name] = new Uint8Array(await o.arrayBuffer());
-  return IMG[name];
+  const r = await env.DB.prepare("SELECT b64 FROM nda_assets WHERE name=?").bind(name).first();
+  if (!r) throw new Error("no_" + name);
+  const bin = atob(r.b64), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  IMG[name] = u;
+  return u;
 }
 async function loadFont(env) {
   if (FONT) return FONT;

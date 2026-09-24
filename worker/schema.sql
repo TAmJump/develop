@@ -41,3 +41,8 @@ CREATE TABLE IF NOT EXISTS nda_log (
 );
 CREATE INDEX IF NOT EXISTS idx_log_ip ON nda_log(ip, at);
 CREATE INDEX IF NOT EXISTS idx_log_nda ON nda_log(nda_id);
+
+-- 印影・署名画像（公開リポジトリに置かないためD1に保存。中身は別途 nda-assets.sql で登録）
+CREATE TABLE IF NOT EXISTS nda_assets (
+  name TEXT PRIMARY KEY, mime TEXT, b64 TEXT
+);

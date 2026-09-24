@@ -213,10 +213,6 @@ async function makePdf(env, nda) {
   const pdf_hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
   return { bytes, pdf_hash };
 }
-async function storePdf(env, nda, bytes) {
-  if (!env.NDA_BUCKET) return false;
-  try { await env.NDA_BUCKET.put(`nda/${nda.doc_no}.pdf`, bytes, { httpMetadata: { contentType: "application/pdf" }, customMetadata: { nda_id: nda.id, company: encodeURIComponent(nda.company || "") } }); return true; } catch { return false; }
-}
 
 /* ---------- ハンドラ ---------- */
 export async function handleNda(req, env, path, m, json, sendMail) {
@@ -293,7 +289,6 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       const signedRow = { ...nda, signer, signed_at: now.toISOString(), doc_no, doc_hash };
       const pdf = await makePdf(env, signedRow);
       pdf_hash = pdf.pdf_hash;
-      await storePdf(env, signedRow, pdf.bytes);
       try { await env.DB.prepare("UPDATE nda SET pdf_hash=? WHERE id=?").bind(pdf_hash, id).run(); } catch (_) {}
       att = [{ filename: `${doc_no}_秘密保持契約書.pdf`, content: toB64(pdf.bytes) }];
     } catch (e) { await log(env, req, "pdf_error:" + String(e && e.message || e).slice(0, 60), { nda_id: id, ok: false }); }
@@ -399,9 +394,7 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     const id = new URL(req.url).searchParams.get("id") || "";
     const nda = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(id).first();
     if (!nda || !nda.doc_hash) return json({ error: "not_found" }, 404, req);
-    let bytes = null;
-    if (env.NDA_BUCKET) { const o = await env.NDA_BUCKET.get(`nda/${nda.doc_no}.pdf`); if (o) bytes = new Uint8Array(await o.arrayBuffer()); }
-    if (!bytes) { const p = await makePdf(env, nda); bytes = p.bytes; await storePdf(env, nda, bytes); }
+    const { bytes } = await makePdf(env, nda);   // 保管はせず、記録済みの締結内容から再生成
     return new Response(bytes, { headers: { "Content-Type": "application/pdf", "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(nda.doc_no + "_秘密保持契約書.pdf")}` } });
   }
   if (m === "POST" && path === "/admin/api/nda/revoke") {
