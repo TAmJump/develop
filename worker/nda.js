@@ -465,7 +465,7 @@ button.p{background:#9b6339;color:#fff}
 </div><script>
 var L={};function e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function f(iso){if(!iso)return"-";var d=new Date(iso);return d.toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});}
-async function load(){var r=await fetch("/admin/api/nda");if(r.status===401){document.getElementById("need").style.display="block";return;}
+async function load(){var r=await fetch("/admin/api/nda");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}
 var j=await r.json();L=j.listings||{};var s=document.getElementById("i_l");s.innerHTML="";for(var k in L){var o=document.createElement("option");o.value=k;o.textContent=L[k];s.appendChild(o);}
 var t=document.getElementById("list");t.innerHTML="";(j.items||[]).forEach(function(a){var exp=a.key_exp&&new Date(a.key_exp)<new Date();
 var st=a.status==="失効"?'<span class="b x">失効</span>':a.status==="締結"?'<span class="b o">締結</span>':'<span class="b">'+e(a.status)+'</span>';

@@ -33,7 +33,7 @@ export const ADMIN_NAV = (cur) => `<div style="display:flex;gap:6px;flex-wrap:wr
 ${[["/admin", "お問い合わせ", "inq"], ["/admin/nda", "NDA", "nda"], ["/admin/members", "会員", "mem"]]
   .map(([h, t, k]) => `<a href="${h}" style="text-decoration:none;font-size:13px;padding:8px 14px;border:1px solid ${k === cur ? "#9b6339" : "#c9bda8"};border-radius:4px;background:${k === cur ? "#9b6339" : "#fff"};color:${k === cur ? "#fff" : "#6e6354"}">${t}</a>`).join("")}
 <a href="https://develop.tamjump.com/" style="text-decoration:none;font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354">サイトを見る</a>
-<button onclick="fetch('/admin/logout',{method:'POST'}).then(function(){location.href='/admin'})" style="font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354;cursor:pointer">ログアウト</button></div>`;
+<button onclick="fetch('/admin/logout',{method:'POST'}).then(function(){location.href='https://develop.tamjump.com/'})" style="font-size:13px;padding:8px 14px;border:1px solid #c9bda8;border-radius:4px;background:#fff;color:#6e6354;cursor:pointer">ログアウト</button></div>`;
 
 export const MEMBERS_HTML = () => `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>会員管理</title>
 <style>
@@ -62,7 +62,7 @@ ALL.filter(function(u){return !q||(String(u.name||"")+" "+String(u.email||"")).t
 var tr=document.createElement("tr");tr.innerHTML="<td>"+e(u.name||"-")+"</td><td>"+e(u.email)+"</td><td>"+(u.email_verified?"済":"<span class='muted'>未</span>")+"</td><td>"+f(u.created_at||u.createdAt)+"</td><td><button class='d' data-id='"+e(u.id)+"' data-em='"+e(u.email)+"'>削除</button></td>";t.appendChild(tr);});
 if(!t.children.length)t.innerHTML="<tr><td colspan='5' class='muted'>該当する会員はいません。</td></tr>";
 t.querySelectorAll("button.d").forEach(function(b){b.onclick=async function(){if(!confirm(b.dataset.em+" を削除します。よろしいですか。"))return;await fetch("/admin/api/members/delete",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:b.dataset.id})});load();};});}
-async function load(){var r=await fetch("/admin/api/members");if(r.status===401){document.getElementById("need").style.display="block";return;}var j=await r.json();ALL=j.items||[];
+async function load(){var r=await fetch("/admin/api/members");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}var j=await r.json();ALL=j.items||[];
 document.getElementById("n_all").textContent=ALL.length;var ok=ALL.filter(function(u){return u.email_verified;}).length;document.getElementById("n_ok").textContent=ok;document.getElementById("n_ng").textContent=ALL.length-ok;render();}
 document.getElementById("q").oninput=render;load();
 </script></body></html>`;
