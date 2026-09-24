@@ -38,7 +38,22 @@ async function contentKey(env, listing) {
   let bin = ""; for (const b of sig) bin += String.fromCharCode(b);
   return btoa(bin);
 }
-export const NDA_VERSION = "v1.1（2026-09-24）";
+export const NDA_VERSION = "v1.2（2026-09-24）";
+
+// 個別の秘密保持契約が必要な案件（売主の意向等）。ここに案件IDを入れると、包括NDAでは閲覧できなくなる
+export const INDIVIDUAL = new Set([]);
+
+/* 包括NDA（scope='all'）：承認済みの案件だけ閲覧可。旧来（scope 空・'listing'）：締結した案件のみ */
+async function canView(env, nda, listing) {
+  if (!nda) return "invalid";
+  if (nda.scope !== "all") return nda.listing === listing ? "ok" : "other_listing";
+  if (INDIVIDUAL.has(listing) && nda.listing !== listing) return "individual";
+  const a = await env.DB.prepare("SELECT status FROM nda_access WHERE nda_id=? AND listing=?").bind(nda.id, listing).first();
+  if (a && a.status === "承認") return "ok";
+  if (a && a.status === "申請") return "requested";
+  if (a && a.status === "却下") return "not_allowed";
+  return "need_request";
+}
 
 const TAMJ = {
   company: "タムジ株式会社",
@@ -46,7 +61,7 @@ const TAMJ = {
   rep: "代表取締役 大下 甚",
 };
 
-export function ndaText(p, ttlDays) {
+function ndaTextV11(p, ttlDays) {
   const listing = LISTINGS[p.listing] || p.listing || "〔対象案件〕";
   const company = p.company || "〔相手方会社名〕";
   return `秘密保持契約書
@@ -118,7 +133,89 @@ ${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」�
 　　署名：${p.signer || "〔署名〕"}
 締結日時：${p.signed_at_jst || "〔締結時に自動付与〕"}
 文書番号：${p.doc_no || "〔締結時に自動付与〕"}
+文面版：v1.1（2026-09-24）`;
+}
+
+function ndaTextV12(p, ttlDays) {
+  const listing = LISTINGS[p.listing] || p.listing || "〔対象案件〕";
+  const company = p.company || "〔相手方会社名〕";
+  return `秘密保持契約書
+
+${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」という。）は、甲が紹介する不動産開発案件及びM&A案件の検討に関し、次のとおり秘密保持契約（以下「本契約」という。）を締結する。
+
+第1条（目的）
+1. 本契約は、甲が乙に紹介する不動産開発案件及びM&A案件（本契約の締結後に紹介するものを含む。以下、個別に又は総称して「本件案件」という。）への参画、取得その他の取引の検討（以下「本目的」という。）のために、甲乙が相互に開示する情報の取扱いを定める。
+2. 本契約締結時に乙が閲覧を希望した案件は「${listing}」とし、その他の本件案件については、乙の申請に基づき甲が閲覧を認めた時点から本契約が適用される。
+
+第2条（秘密情報）
+1. 秘密情報とは、本目的のために一方当事者（以下「開示者」という。）が相手方（以下「受領者」という。）に開示する一切の情報をいい、計画地の所在地・地番、土地所有者・開発事業者・施工会社・他の運営予定事業者・売主・対象会社の名称、図面、財務情報、収支計画、賃料・譲渡対価その他の条件、並びに本件案件の存在及び検討の事実を含む。開示の方法は、書面、電子メール、ウェブページの閲覧その他の電磁的方法を問わない。
+2. 次の各号の情報は秘密情報に含まない。
+(1) 開示時に既に公知であった情報
+(2) 開示後、受領者の責めによらず公知となった情報
+(3) 開示時に受領者が既に保有していた情報
+(4) 正当な権限を有する第三者から秘密保持義務を負わずに取得した情報
+(5) 秘密情報によらず独自に開発した情報
+
+第3条（秘密保持義務）
+1. 受領者は、開示者の事前の書面による承諾なく、秘密情報を第三者に開示し、又は漏えいしない。
+2. 前項にかかわらず、受領者は、本目的のために必要な範囲で、自己の役員・従業員、弁護士・税理士・公認会計士その他の専門家及び金融機関に開示することができる。この場合、受領者は、開示先に本契約と同等の義務を負わせ、その遵守について責任を負う。
+3. 法令、裁判所又は官公庁の命令により開示を求められた場合は、必要最小限の範囲で開示することができる。この場合、受領者は、可能な限り事前に開示者に通知する。
+
+第4条（目的外使用の禁止）
+受領者は、秘密情報を本目的以外に使用しない。
+
+第5条（複製の制限）
+受領者は、本目的に必要な範囲を超えて、秘密情報を複製、転載又は加工しない。
+
+第6条（インターネット上での取扱い）
+乙は、甲がウェブページ等の電磁的方法により開示する秘密情報について、次の各号を遵守する。
+(1) 閲覧用のパスワード及び解除キーを、本目的のために閲覧を認められた者以外に開示せず、電子メール、チャット、SNSその他の方法で転送しない。
+(2) 秘密情報を表示した画面の撮影、スクリーンショット、画面録画、印刷及び保存を行わない。ただし、甲が事前に承諾した場合を除く。
+(3) 秘密情報を、SNS、ブログ、掲示板、共有ストレージ、生成AIサービス、翻訳サービスその他第三者がアクセスし得る外部サービスに入力、投稿又は保存しない。
+(4) 公衆無線LAN等の安全性が確認できない通信環境、第三者と共用する端末及び第三者の目に触れる場所での閲覧を避ける。
+(5) 閲覧に用いる端末及びアカウントを適切に管理し、不正アクセス、紛失又は盗難を防止する。
+(6) 秘密情報の漏えい、又はそのおそれがあることを知った場合、直ちに甲に通知し、甲の指示に従って被害の拡大防止に必要な措置を講じる。
+
+第7条（解除キーの管理）
+1. 甲は、秘密情報の閲覧のため、乙に解除キーを発行する。解除キーの有効期間は発行日から${ttlDays}日間とし、乙は、有効期間の満了後も閲覧を継続する場合、甲所定の手続により解除キーの更新を受ける。
+2. 甲は、解除キーによる閲覧の日時、接続元その他の記録を取得し、保存することができる。
+3. 甲は、乙による本契約の違反又はそのおそれがあると判断した場合、本目的の検討が終了した場合、その他甲が必要と判断した場合、事前の通知なく解除キーを失効させ、又は案件ごとの閲覧の承認を取り消すことができる。
+4. 乙が閲覧できる本件案件は、甲が承認したものに限る。甲は、売主その他の関係者の意向により、特定の案件について別途の秘密保持契約の締結を求めることができる。
+
+第8条（直接交渉の禁止）
+乙は、各本件案件の閲覧を認められた日から2年間、甲の事前の書面による承諾なく、当該案件に関し、土地所有者・開発事業者・施工会社・売主・対象会社その他甲から開示を受けた関係者と、直接又は第三者を介して交渉し、又は契約を締結しない。乙がこれに違反した場合、甲が当該案件において受領すべきであった報酬相当額を甲に支払う。
+
+第9条（返還・破棄）
+受領者は、開示者から請求があった場合又は本目的の検討を終了した場合、秘密情報（複製物を含む。）を遅滞なく返還又は破棄し、開示者の求めに応じて破棄を証する書面を提出する。電磁的記録については、復元できない方法で消去する。
+
+第10条（損害賠償）
+受領者は、本契約に違反して開示者に損害を与えた場合、その損害（合理的な弁護士費用を含む。）を賠償する。
+
+第11条（有効期間）
+本契約の有効期間は締結日から2年間とする。ただし、第3条から第6条まで及び第8条から第10条までの規定は、本契約終了後3年間存続する。
+
+第12条（電子契約）
+本契約は、電磁的方法による署名及び同意により成立する。甲が発行する電子文書を原本とし、甲乙はその効力を争わない。
+
+第13条（準拠法・管轄）
+本契約は日本法に準拠し、本契約に関する紛争は東京地方裁判所を第一審の専属的合意管轄裁判所とする。
+
+第14条（協議）
+本契約に定めのない事項は、甲乙誠実に協議のうえ解決する。
+
+甲：${TAMJ.address}
+　　${TAMJ.company}　${TAMJ.rep}
+乙：${p.address || "〔所在地〕"}
+　　${company}　${p.rep_name || "〔代表者名〕"}
+　　署名：${p.signer || "〔署名〕"}
+締結日時：${p.signed_at_jst || "〔締結時に自動付与〕"}
+文書番号：${p.doc_no || "〔締結時に自動付与〕"}
 文面版：${NDA_VERSION}`;
+}
+
+// 締結済みの記録は、その時点の文面で再現する（PDF再生成・ハッシュ照合のため）
+export function ndaText(p, ttlDays) {
+  return (p.text_ver && String(p.text_ver).startsWith("v1.1")) ? ndaTextV11(p, ttlDays) : ndaTextV12(p, ttlDays);
 }
 
 /* ---------- 共通 ---------- */
@@ -259,8 +356,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (!okEmail(r.email)) return json({ error: "invalid_email" }, 422, req);
     const id = "NA-" + rand(8, "ABCDEFGHJKLMNPQRSTUVWXYZ23456789");
     const now = new Date().toISOString();
-    await env.DB.prepare(`INSERT INTO nda (id,listing,company,address,rep_name,person,title,email,phone,status,created_at,updated_at,ip,ua)
-      VALUES (?,?,?,?,?,?,?,?,?,'申請',?,?,?,?)`).bind(id, r.listing, r.company, r.address, r.rep_name, r.person, r.title, r.email, r.phone, now, now,
+    await env.DB.prepare(`INSERT INTO nda (id,listing,company,address,rep_name,person,title,email,phone,status,created_at,updated_at,ip,ua,scope)
+      VALUES (?,?,?,?,?,?,?,?,?,'申請',?,?,?,?,'${INDIVIDUAL.has(r.listing) ? "listing" : "all"}')`).bind(id, r.listing, r.company, r.address, r.rep_name, r.person, r.title, r.email, r.phone, now, now,
       req.headers.get("cf-connecting-ip") || "", (req.headers.get("user-agent") || "").slice(0, 300)).run();
     const c = await newCode(env, id, "sign");
     const sent = await sendMail(env, {
@@ -302,6 +399,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const doc_hash = await sha256hex(text);
     await env.DB.prepare("UPDATE nda SET status='締結',signer=?,seal=?,signed_at=?,doc_no=?,doc_hash=?,text_ver=?,updated_at=? WHERE id=?")
       .bind(signer, seal, now.toISOString(), doc_no, doc_hash, NDA_VERSION, now.toISOString(), id).run();
+    if (nda.scope === "all") await grant(env, nda.id, nda.listing, "承認");
     const k = await issueKey(env, nda);
     await log(env, req, "sign", { nda_id: id, listing: nda.listing, key_tail: k.key.slice(-4), ok: true });
     // PDF（失敗しても締結自体は成立させ、メール本文の記録で代替）
@@ -343,7 +441,11 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (!row) return bad("invalid");
     if (row.revoked) return bad("revoked");
     if (new Date(row.expires_at) < new Date()) return bad("expired");
-    if (row.listing !== listing) return bad("other_listing");
+    const nd = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(row.nda_id).first();
+    if (!nd || nd.status === "失効") return bad("revoked");
+    const cv = await canView(env, nd, listing);
+    if (cv !== "ok") return log(env, req, "unlock", { key_tail: key.slice(-4), nda_id: row.nda_id, listing, ok: false })
+      .then(() => json({ error: cv, company: nd.company, scope: nd.scope || "listing" }, 400, req));
     await env.DB.prepare("UPDATE nda_keys SET last_used_at=? WHERE key_hash=?").bind(new Date().toISOString(), row.key_hash).run();
     await log(env, req, "unlock", { key_tail: row.key_tail, nda_id: row.nda_id, listing, ok: true });
     return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at, ck: await contentKey(env, listing),
@@ -361,6 +463,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const row = await env.DB.prepare("SELECT k.*, n.company, n.status FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(t.kh).first();
     if (!row || row.revoked || row.status === "失効") return json({ error: "revoked" }, 400, req);
     if (new Date(row.expires_at) < new Date()) return json({ error: "expired" }, 400, req);
+    const cvn = await canView(env, await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(row.nda_id).first(), listing);
+    if (cvn !== "ok") return json({ error: cvn }, 400, req);
     await env.DB.prepare("UPDATE nda_keys SET last_used_at=? WHERE key_hash=?").bind(new Date().toISOString(), row.key_hash).run();
     await log(env, req, "view", { key_tail: row.key_tail, nda_id: row.nda_id, listing, ok: true });
     return json({ ok: true, level: "nda", company: row.company, expires_at: row.expires_at, ck: await contentKey(env, listing) }, 200, req);
@@ -369,7 +473,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
   /* 更新：確認コード送信（登録有無にかかわらず同じ応答） */
   if (m === "POST" && path === "/api/nda/renew/request") {
     const email = clip(body.email, 200).toLowerCase(), listing = clip(body.listing, 40);
-    const nda = await env.DB.prepare("SELECT * FROM nda WHERE email=? AND listing=? AND status='締結' ORDER BY signed_at DESC LIMIT 1").bind(email, listing).first();
+    const nda = await findNda(env, email, listing);
     if (nda) {
       const c = await newCode(env, nda.id, "renew");
       await sendMail(env, {
@@ -385,7 +489,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
   if (m === "POST" && path === "/api/nda/renew") {
     if (await tooManyFails(env, req)) return json({ error: "too_many" }, 429, req);
     const email = clip(body.email, 200).toLowerCase(), listing = clip(body.listing, 40);
-    const nda = await env.DB.prepare("SELECT * FROM nda WHERE email=? AND listing=? AND status='締結' ORDER BY signed_at DESC LIMIT 1").bind(email, listing).first();
+    const nda = await findNda(env, email, listing);
     if (!nda) { await log(env, req, "renew", { listing, ok: false }); return json({ error: "mismatch" }, 400, req); }
     const r = await useCode(env, nda.id, "renew", body.code);
     await log(env, req, "renew", { nda_id: nda.id, listing, ok: r === "ok" });
@@ -398,7 +502,38 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     return json({ ok: true, key: k.key, expires_at: k.expires_at }, 200, req);
   }
 
+  /* 締結済みの取引先による、別案件の閲覧申請（解除キーで本人確認） */
+  if (m === "POST" && path === "/api/nda/access/request") {
+    if (await tooManyFails(env, req)) return json({ error: "too_many" }, 429, req);
+    const listing = clip(body.listing, 40), key = clip(body.key, 80);
+    if (!LISTINGS[listing]) return json({ error: "bad_listing" }, 400, req);
+    const row = await env.DB.prepare("SELECT * FROM nda_keys WHERE key_hash=?").bind(await sha256hex(key)).first();
+    if (!row || row.revoked || new Date(row.expires_at) < new Date()) { await log(env, req, "access", { listing, ok: false }); return json({ error: "invalid" }, 400, req); }
+    const nda = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(row.nda_id).first();
+    const cv = await canView(env, nda, listing);
+    if (cv === "ok" || cv === "requested") return json({ ok: true, status: cv }, 200, req);
+    if (cv !== "need_request") return json({ error: cv }, 400, req);
+    await grant(env, nda.id, listing, "申請");
+    await log(env, req, "access", { key_tail: row.key_tail, nda_id: nda.id, listing, ok: true });
+    await sendMail(env, {
+      to: env.NDA_NOTIFY_TO || "info@tamjump.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
+      text: `締結済みの取引先から、別案件の閲覧申請がありました。\n\n会社：${nda.company}\n代表者：${nda.rep_name}\nメール：${nda.email}\n文書番号：${nda.doc_no}\n申請案件：${LISTINGS[listing]}\n\n承認・却下は管理画面から：https://develop-api.tamjump.com/admin/nda`,
+    });
+    return json({ ok: true, status: "requested" }, 200, req);
+  }
+
   return json({ error: "not_found" }, 404, req);
+}
+
+async function grant(env, nda_id, listing, status) {
+  const now = new Date().toISOString();
+  await env.DB.prepare(`INSERT INTO nda_access (nda_id,listing,status,requested_at,decided_at) VALUES (?,?,?,?,?)
+    ON CONFLICT(nda_id,listing) DO UPDATE SET status=excluded.status, decided_at=excluded.decided_at`)
+    .bind(nda_id, listing, status, now, status === "申請" ? null : now).run();
+}
+async function findNda(env, email, listing) {
+  return await env.DB.prepare(`SELECT n.* FROM nda n WHERE n.email=? AND n.status='締結' AND (n.listing=? OR (n.scope='all' AND EXISTS
+    (SELECT 1 FROM nda_access a WHERE a.nda_id=n.id AND a.listing=? AND a.status='承認'))) ORDER BY n.signed_at DESC LIMIT 1`).bind(email, listing, listing).first();
 }
 
 /* ---------- 管理 ---------- */
@@ -408,9 +543,24 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
       (SELECT key_tail FROM nda_keys k WHERE k.nda_id=n.id AND k.revoked=0 ORDER BY issued_at DESC LIMIT 1) AS key_tail,
       (SELECT expires_at FROM nda_keys k WHERE k.nda_id=n.id AND k.revoked=0 ORDER BY issued_at DESC LIMIT 1) AS key_exp,
       (SELECT MAX(at) FROM nda_log l WHERE l.nda_id=n.id AND l.ok=1 AND l.kind IN ('unlock','view')) AS last_view,
-      (SELECT COUNT(*) FROM nda_log l WHERE l.nda_id=n.id AND l.ok=1 AND l.kind IN ('unlock','view')) AS views
+      (SELECT COUNT(*) FROM nda_log l WHERE l.nda_id=n.id AND l.ok=1 AND l.kind IN ('unlock','view')) AS views,
+      n.scope, (SELECT GROUP_CONCAT(a.listing || ':' || a.status) FROM nda_access a WHERE a.nda_id=n.id) AS access
       FROM nda n ORDER BY n.created_at DESC LIMIT 500`).all();
     return json({ ok: true, items: r.results || [], listings: LISTINGS }, 200, req);
+  }
+  /* 閲覧申請の承認・却下、案件の追加・取消 */
+  if (m === "POST" && path === "/admin/api/nda/access") {
+    const b = await req.json().catch(() => ({}));
+    const id = clip(b.id, 20), listing = clip(b.listing, 40), act = clip(b.action, 10);
+    const nda = await env.DB.prepare("SELECT * FROM nda WHERE id=?").bind(id).first();
+    if (!nda || !LISTINGS[listing] || !["approve", "reject"].includes(act)) return json({ error: "bad_request" }, 400, req);
+    if (nda.scope !== "all") await env.DB.prepare("UPDATE nda SET scope='all' WHERE id=?").bind(id).run();
+    await grant(env, id, listing, act === "approve" ? "承認" : "却下");
+    if (act === "approve" && b.notify !== false && nda.status === "締結") await sendMail(env, {
+      to: nda.email, subject: `【タムジ株式会社】閲覧を承認しました（${LISTINGS[listing]}）`,
+      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n次の案件の閲覧を承認しました。現在お持ちの解除キーでご覧いただけます。\n\n案件：${LISTINGS[listing]}\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n文書番号：${nda.doc_no}\n\n解除キーの有効期限が切れている場合は、資料ページの「解除キーを更新」から更新できます。\n\nタムジ株式会社`,
+    });
+    return json({ ok: true }, 200, req);
   }
   if (m === "GET" && path === "/admin/api/nda/pdf") {
     const id = new URL(req.url).searchParams.get("id") || "";
@@ -434,6 +584,8 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     await env.DB.prepare(`INSERT INTO nda (id,doc_no,listing,company,address,rep_name,person,title,email,phone,status,signer,signed_at,text_ver,created_at,updated_at)
       VALUES (?,?,?,?,?,?,?,?,?,?,'締結',?,?,?,?,?)`).bind(id, "書面締結", listing, clip(b.company, 160), clip(b.address, 200), clip(b.rep_name, 80),
       clip(b.person, 80), clip(b.title, 80), email, clip(b.phone, 40), "（管理画面から発行）", now, "書面", now, now).run();
+    await env.DB.prepare("UPDATE nda SET scope='all' WHERE id=?").bind(id).run();
+    await grant(env, id, listing, "承認");
     const k = await issueKey(env, { id, listing, email });
     if (b.send) await sendMail(env, {
       to: email, subject: `【タムジ株式会社】資料閲覧の解除キー（${LISTINGS[listing]}）`,
@@ -463,22 +615,37 @@ button.p{background:#9b6339;color:#fff}
 </style></head><body><div class="wrap">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #c9bda8;padding-bottom:14px;margin-bottom:18px"><div><h1>NDA 締結一覧</h1><p class="sub" style="margin:0">締結・解除キー・閲覧記録</p></div>${ADMIN_NAV("nda")}</div>
 <div id="need" style="display:none">管理ログインが必要です。<a href="/admin">ログイン</a></div>
-<div class="scroll"><table><thead><tr><th>文書番号</th><th>案件</th><th>会社／担当</th><th>メール</th><th>状況</th><th>締結日時</th><th>キー（末尾／期限）</th><th>閲覧</th><th></th></tr></thead><tbody id="list"></tbody></table></div>
-<div class="box"><b>解除キーの手動発行</b><div class="muted" style="font-size:12.5px;margin:4px 0 10px">書面でNDAを締結済みの先方に、フォームを経ずにキーを発行する。</div>
-<select id="i_l"></select><input id="i_c" placeholder="会社名"><input id="i_p" placeholder="担当者"><input id="i_e" placeholder="メール">
+<div id="pend" class="box" style="display:none;margin-top:0"><b>閲覧申請（承認待ち）</b><div class="muted" style="font-size:12.5px;margin:4px 0 10px">締結済みの取引先から、別案件の閲覧申請。承認すると先方にメールで通知し、現在の解除キーで閲覧できるようになる。</div><div class="scroll"><table><thead><tr><th>会社</th><th>申請案件</th><th>申請日時</th><th></th></tr></thead><tbody id="plist"></tbody></table></div></div>
+<div class="scroll"><table><thead><tr><th>文書番号</th><th>会社／代表者</th><th>メール</th><th>状況</th><th>締結日時</th><th>閲覧できる案件</th><th>キー（末尾／期限）</th><th>閲覧</th><th></th></tr></thead><tbody id="list"></tbody></table></div>
+<div class="box"><b>解除キーの手動発行</b><div class="muted" style="font-size:12.5px;margin:4px 0 10px">書面でNDAを締結済みの先方に、フォームを経ずにキーを発行する（包括扱い。他の案件は上の一覧から追加）。</div>
+<select id="i_l"></select><input id="i_c" placeholder="会社名"><input id="i_p" placeholder="宛名（代表者名など）"><input id="i_e" placeholder="メール">
 <label style="font-size:12.5px"><input type="checkbox" id="i_s" checked style="margin:0 4px 0 0">先方にメール送信</label>
 <button class="p" id="i_b">発行する</button><div id="i_r" class="mono" style="margin-top:8px"></div></div>
 </div><script>
 var L={};function e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function f(iso){if(!iso)return"-";var d=new Date(iso);return d.toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});}
+async function acc(id,l,a){if(a==="reject"&&!confirm("この案件の閲覧を却下（または取消）します。よろしいですか。"))return;var r=await fetch("/admin/api/nda/access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,listing:l,action:a})});if(!r.ok)alert("処理できませんでした");load();}
 async function load(){var r=await fetch("/admin/api/nda");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}
 var j=await r.json();L=j.listings||{};var s=document.getElementById("i_l");s.innerHTML="";for(var k in L){var o=document.createElement("option");o.value=k;o.textContent=L[k];s.appendChild(o);}
-var t=document.getElementById("list");t.innerHTML="";(j.items||[]).forEach(function(a){var exp=a.key_exp&&new Date(a.key_exp)<new Date();
+var t=document.getElementById("list"),pl=document.getElementById("plist");t.innerHTML="";pl.innerHTML="";var np=0;
+(j.items||[]).forEach(function(a){var exp=a.key_exp&&new Date(a.key_exp)<new Date();
 var st=a.status==="失効"?'<span class="b x">失効</span>':a.status==="締結"?'<span class="b o">締結</span>':'<span class="b">'+e(a.status)+'</span>';
-var tr=document.createElement("tr");tr.innerHTML="<td class='mono'>"+e(a.doc_no||a.id)+"</td><td>"+e(L[a.listing]||a.listing)+"</td><td>"+e(a.company)+"<br><span class='muted'>"+e(a.person)+" "+e(a.title||"")+"</span></td><td>"+e(a.email)+"<br><span class='muted'>"+e(a.phone||"")+"</span></td><td>"+st+"</td><td>"+f(a.signed_at)+"<br><span class='muted'>署名 "+e(a.signer||"-")+"</span></td><td class='mono'>"+(a.key_tail?("…"+e(a.key_tail)+"<br>"+(exp?"<span style='color:#b52d2d'>期限切れ</span> ":"")+f(a.key_exp)):"-")+"</td><td>"+(a.views||0)+"回<br><span class='muted'>"+f(a.last_view)+"</span></td><td>"+(a.status!=="失効"?"<button data-id='"+e(a.id)+"'>失効</button>":"")+"</td>";t.appendChild(tr);});
+var ac={};(a.access||"").split(",").forEach(function(x){if(!x)return;var i=x.indexOf(":");ac[x.slice(0,i)]=x.slice(i+1);});
+var cell="";
+if(a.scope==="all"){cell='<div class="muted" style="font-size:11.5px">包括</div>';
+ Object.keys(ac).forEach(function(l){var v=ac[l];
+  if(v==="承認")cell+='<div><span class="b o">可</span> '+e(L[l]||l)+(a.status==="締結"?' <button data-a="reject" data-id="'+e(a.id)+'" data-l="'+e(l)+'">取消</button>':'')+'</div>';
+  else if(v==="申請"){cell+='<div><span class="b">申請中</span> '+e(L[l]||l)+'</div>';if(a.status==="締結"){np++;var tr2=document.createElement("tr");tr2.innerHTML="<td>"+e(a.company)+"<br><span class='muted'>"+e(a.doc_no)+"</span></td><td>"+e(L[l]||l)+"</td><td>-</td><td><button class='p' data-a='approve' data-id='"+e(a.id)+"' data-l='"+e(l)+"'>承認</button> <button data-a='reject' data-id='"+e(a.id)+"' data-l='"+e(l)+"'>却下</button></td>";pl.appendChild(tr2);}}
+  else cell+='<div><span class="b x">却下</span> '+e(L[l]||l)+'</div>';});
+ if(a.status==="締結"){var opt="";for(var k in L){if(ac[k]!=="承認")opt+='<option value="'+k+'">'+e(L[k])+'</option>';}if(opt)cell+='<div style="margin-top:6px"><select data-sel="'+e(a.id)+'" style="font-size:12px;padding:3px">'+opt+'</select> <button data-add="'+e(a.id)+'">追加</button></div>';}
+}else{cell='<div class="muted" style="font-size:11.5px">個別</div>'+e(L[a.listing]||a.listing);}
+var tr=document.createElement("tr");tr.innerHTML="<td class='mono'>"+e(a.doc_no||a.id)+"</td><td>"+e(a.company)+"<br><span class='muted'>"+e(a.rep_name||a.person||"")+"</span></td><td>"+e(a.email)+"<br><span class='muted'>"+e(a.phone||"")+"</span></td><td>"+st+"</td><td>"+f(a.signed_at)+"<br><span class='muted'>署名 "+e(a.signer||"-")+"</span></td><td>"+cell+"</td><td class='mono'>"+(a.key_tail?("…"+e(a.key_tail)+"<br>"+(exp?"<span style='color:#b52d2d'>期限切れ</span> ":"")+f(a.key_exp)):"-")+"</td><td>"+(a.views||0)+"回<br><span class='muted'>"+f(a.last_view)+"</span></td><td>"+(a.status!=="失効"?"<button data-id='"+e(a.id)+"' data-rv='1'>失効</button>":"")+"</td>";t.appendChild(tr);});
+document.getElementById("pend").style.display=np?"block":"none";
 if(!(j.items||[]).length)t.innerHTML="<tr><td colspan='9' class='muted'>まだ申請はありません。</td></tr>";
-t.querySelectorAll("button[data-id]").forEach(function(b){b.onclick=async function(){if(!confirm("この先方の解除キーを失効させます。よろしいですか。"))return;await fetch("/admin/api/nda/revoke",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:b.dataset.id})});load();};});}
+document.querySelectorAll("button[data-rv]").forEach(function(b){b.onclick=async function(){if(!confirm("この先方の解除キーを失効させます。よろしいですか。"))return;await fetch("/admin/api/nda/revoke",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:b.dataset.id})});load();};});
+document.querySelectorAll("button[data-a]").forEach(function(b){b.onclick=function(){acc(b.dataset.id,b.dataset.l,b.dataset.a);};});
+document.querySelectorAll("button[data-add]").forEach(function(b){b.onclick=function(){var sel=document.querySelector('select[data-sel="'+b.dataset.add+'"]');acc(b.dataset.add,sel.value,"approve");};});}
 document.getElementById("i_b").onclick=async function(){var r=await fetch("/admin/api/nda/issue",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({listing:i_l.value,company:i_c.value,person:i_p.value,email:i_e.value,send:i_s.checked})});var j=await r.json();
-document.getElementById("i_r").textContent=j.ok?("発行しました：解除キー "+j.key+"（期限 "+f(j.expires_at)+"）"):("発行できませんでした："+(j.error||r.status));if(j.ok)load();};
+document.getElementById("i_r").textContent=j.ok?("発行しました：解除キー "+j.key+"（期限 "+f(j.expires_at)+"）"):("発行できませんでした：" + (j.error||r.status));if(j.ok)load();};
 load();
 </script></body></html>`;

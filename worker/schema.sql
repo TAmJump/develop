@@ -13,7 +13,7 @@ CREATE INDEX IF NOT EXISTS idx_inq_status ON inquiries(status);
 CREATE TABLE IF NOT EXISTS nda (
   id TEXT PRIMARY KEY,
   doc_no TEXT, listing TEXT,
-  company TEXT, address TEXT, rep_name TEXT, person TEXT, title TEXT, email TEXT, phone TEXT, seal TEXT,
+  company TEXT, address TEXT, rep_name TEXT, person TEXT, title TEXT, email TEXT, phone TEXT, seal TEXT, scope TEXT,
   status TEXT DEFAULT '申請',          -- 申請 / 確認済 / 締結 / 失効
   verified_at TEXT, signer TEXT, signed_at TEXT, doc_hash TEXT, pdf_hash TEXT, text_ver TEXT,
   created_at TEXT, updated_at TEXT, ip TEXT, ua TEXT
@@ -45,4 +45,12 @@ CREATE INDEX IF NOT EXISTS idx_log_nda ON nda_log(nda_id);
 -- 印影・署名画像（公開リポジトリに置かないためD1に保存。中身は別途 nda-assets.sql で登録）
 CREATE TABLE IF NOT EXISTS nda_assets (
   name TEXT PRIMARY KEY, mime TEXT, b64 TEXT
+);
+
+-- 包括NDAの案件ごとの閲覧可否（申請／承認／却下）
+CREATE TABLE IF NOT EXISTS nda_access (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nda_id TEXT NOT NULL, listing TEXT NOT NULL, status TEXT NOT NULL,
+  requested_at TEXT, decided_at TEXT,
+  UNIQUE(nda_id, listing)
 );
