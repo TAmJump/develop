@@ -201,6 +201,40 @@ body.mnav-open .hd .brand small{color:var(--stone);}
 .tcard .ttags{display:flex;gap:6px;flex-wrap:wrap;}
 .tcard .ttag{font-family:var(--es);font-size:9.5px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border:1px solid var(--line);color:var(--stone-d);}
 .tcard .ttag.pro{border-color:var(--stone);color:var(--stone-d);background:var(--bone);}
+
+/* 会員登録（無料）の案内 */
+:root{--coral:#D2553F;--coral-d:#B8452F;--teal:#2E7D78;--cream:#FBF7EF}
+.hero .cta.reg{margin-left:26px;border:0;padding:12px 22px;background:var(--coral);color:#fff;letter-spacing:1.5px}
+.hero .cta.reg:hover{background:var(--coral-d)}
+.member{padding:86px 0 90px;background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.member .ey{font-family:var(--es);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--coral);margin-bottom:14px;text-align:center}
+.member h2{font-family:var(--sj);font-size:28px;font-weight:500;text-align:center;margin-bottom:12px}
+.member .lead{text-align:center;font-size:14px;color:var(--g6);line-height:2;max-width:680px;margin:0 auto 40px}
+.member .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.member .col{background:#fff;border:1px solid var(--line);border-top:3px solid var(--coral);padding:28px 28px 26px}
+.member .col.nda{border-top-color:var(--teal)}
+.member .col h3{font-family:var(--sj);font-size:19px;font-weight:600;margin-bottom:4px}
+.member .col .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;padding:2px 10px;border-radius:99px;margin-bottom:14px;border:1px solid var(--coral);color:var(--coral)}
+.member .col.nda .tag{border-color:var(--teal);color:var(--teal)}
+.member .col ul{list-style:none;margin:0;padding:0}
+.member .col li{font-size:13.5px;line-height:1.8;padding:9px 0 9px 22px;border-bottom:1px dashed var(--line);position:relative;color:var(--ink2)}
+.member .col li:last-child{border-bottom:0}
+.member .col li:before{content:"";position:absolute;left:4px;top:17px;width:8px;height:8px;border-radius:50%;background:var(--coral)}
+.member .col.nda li:before{background:var(--teal)}
+.member .col li small{display:block;color:var(--g5);font-size:12px}
+.member .flow{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:34px 0 0;border:1px solid var(--line);background:#fff}
+.member .flow div{padding:18px 16px;border-right:1px solid var(--line);font-size:13px;line-height:1.7;color:var(--ink2)}
+.member .flow div:last-child{border-right:0}
+.member .flow b{display:block;font-family:var(--fr);font-size:20px;color:var(--coral);font-weight:500;margin-bottom:4px}
+.member .act{text-align:center;margin-top:34px}
+.regbtn{display:inline-flex;align-items:center;gap:10px;background:var(--coral);color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;padding:14px 30px;border-radius:4px;transition:.2s}
+.regbtn:hover{background:var(--coral-d)}
+.reglink{display:inline-block;margin-left:18px;font-size:13px;color:var(--stone-d);border-bottom:1px solid var(--line);padding-bottom:2px}
+.regband{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0}
+.regband .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.regband p{font-size:14px;color:var(--ink2);line-height:1.8;margin:0}
+.regband p b{color:var(--coral)}
+@media(max-width:820px){.member .cols{grid-template-columns:1fr}.member .flow{grid-template-columns:1fr 1fr}.member .flow div:nth-child(2){border-right:0}.member .flow div:nth-child(-n+2){border-bottom:1px solid var(--line)}.hero .cta.reg{margin:16px 0 0}}
 </style>
 
 <style>
@@ -275,7 +309,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="ey">Development Land &amp; M&amp;A · Japan &amp; Worldwide</div>
     <h1>土地を売る。<br>出口まで、設計する。</h1>
     <div class="en">Land — designed all the way to the exit.</div>
-    <a href="#properties" class="cta">取扱案件を見る &darr;</a>
+    <a href="#properties" class="cta">取扱案件を見る &darr;</a><a href="register.html" class="cta reg" data-auth="logged-out">会員登録（無料） &rarr;</a>
   </div>
   <div class="imgnote">Artist's impression（完成予想イメージ・CG）</div>
 </header>
@@ -285,6 +319,45 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="ey">Land × Financial Design</div>
     <h2>構想から、建て方・持ち方、<br>出口まで一気通貫で。</h2>
     <p>全国・海外の開発用地の売買と、介護・医療事業のM&amp;A・事業承継。さらにその土地・事業を「どう建て、どう持ち、どう出口を取るか」まで、シミュレーションと財務設計で一気通貫に支えます。土地を渡して終わりにしない——それが私たちの設計です。</p>
+  </div>
+</section>
+
+<section class="member" id="member">
+  <div class="wrap">
+    <div class="ey">Membership · Free</div>
+    <h2>会員登録（無料）で使える機能と、秘密保持契約が必要な情報</h2>
+    <p class="lead">ツールと取扱案件の閲覧は、会員登録（無料）とログインのうえでご利用いただけます。案件の所在地・名称などの詳細は、案件ごとに秘密保持契約（NDA）を締結したうえで表示します。</p>
+    <div class="cols">
+      <div class="col">
+        <span class="tag">会員登録（無料）で利用可</span>
+        <h3>ツール・案件の概要</h3>
+        <ul>
+          <li>開発費シミュレーター<small>施設種別と入居者数から面積・建築費・投資額を概算</small></li>
+          <li>什器備品＋リース設計<small>数量の自動算出、購入とリースの比較</small></li>
+          <li>オーナー収支計算・見積PDF出力<small>NOI・返済後CF・CCR、PDF／CSV出力</small></li>
+          <li>財務設計資料・スキーム構造設計<small>BS影響概算、リース会計、SPC・運営会社・ファンドの比較</small></li>
+          <li>取扱案件の一覧と概要<small>開発案件・M&amp;A案件を、所在地・名称などを伏せた状態で閲覧</small></li>
+        </ul>
+      </div>
+      <div class="col nda">
+        <span class="tag">秘密保持契約（NDA）の締結後に表示</span>
+        <h3>開発案件・M&amp;A案件の詳細</h3>
+        <ul>
+          <li>所在地・地番・名称<small>計画地、対象施設・対象会社の特定につながる情報</small></li>
+          <li>図面・写真・周辺地図<small>地積測量図、配置図、施設写真など</small></li>
+          <li>収支・価格・譲渡条件<small>賃料、事業収支、譲渡対価の目安など</small></li>
+          <li>締結は案件ごと、Web上で約3分<small>会社情報の入力、メール確認、電子署名。契約書PDFをメールで送付</small></li>
+          <li>2件目以降は同じ解除キー<small>締結済みの会社は入力なしで追加の締結ができ、同じ解除キーで閲覧</small></li>
+        </ul>
+      </div>
+    </div>
+    <div class="flow">
+      <div><b>01</b>会員登録（無料）</div>
+      <div><b>02</b>ツールの利用、案件の概要を閲覧</div>
+      <div><b>03</b>検討する案件で秘密保持契約を締結</div>
+      <div><b>04</b>解除キーで案件の詳細を表示</div>
+    </div>
+    <div class="act" data-auth="logged-out"><a class="regbtn" href="register.html">会員登録（無料）</a><a class="reglink" href="login.html">ログイン</a></div>
   </div>
 </section>
 
@@ -348,6 +421,8 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
   </div>
 </section>
+
+<div class="regband" data-auth="logged-out"><div class="wrap"><p>ツールは<b>会員登録（無料）</b>で回数の制限なく利用可能。</p><div><a class="regbtn" href="register.html">会員登録（無料）</a><a class="reglink" href="login.html">ログイン</a></div></div></div>
 
 <section class="props" id="properties">
   <div class="wrap">
@@ -434,6 +509,8 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
+<div class="regband" data-auth="logged-out"><div class="wrap"><p>案件の概要は<b>会員登録（無料）</b>で閲覧可能。詳細は案件ごとの秘密保持契約の締結後に表示。</p><div><a class="regbtn" href="register.html">会員登録（無料）</a><a class="reglink" href="login.html">ログイン</a></div></div></div>
+
 <section class="dev" id="develop">
   <div class="wrap">
     <div class="ey">The Process</div>
@@ -471,6 +548,8 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
+<div class="regband" data-auth="logged-out"><div class="wrap"><p>開発費の概算・収支・スキームの試算は<b>会員登録（無料）</b>から。</p><div><a class="regbtn" href="register.html">会員登録（無料）</a><a class="reglink" href="login.html">ログイン</a></div></div></div>
+
 <section class="mci">
   <div class="wrap">
     <div class="ey">Live Market Data</div>
@@ -496,6 +575,8 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
   </div>
 </section>
+
+<div class="regband" data-auth="logged-out"><div class="wrap"><p>開発支援ツールはすべて<b>会員登録（無料）</b>で利用可能。</p><div><a class="regbtn" href="register.html">会員登録（無料）</a><a class="reglink" href="login.html">ログイン</a></div></div></div>
 
 <section class="strip" id="contact">
   <div class="wrap">
