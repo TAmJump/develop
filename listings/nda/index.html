@@ -54,6 +54,8 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
 </style>
 </head>
 <body>
+<script src="/js/member-gate.js"></script>
+<script>tamjMemberGate();</script>
 <div class="wrap">
   <div class="top"><b>タムジ株式会社</b><span>取引先限定</span></div>
 
@@ -72,7 +74,7 @@ h2{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600;font-siz
       <div class="full"><label for="address">本店所在地<i>必須</i></label><input type="text" id="address" autocomplete="street-address"></div>
       <div><label for="rep_name">代表者名<i>必須</i></label><input type="text" id="rep_name" placeholder="代表取締役 〇〇 〇〇"></div>
       <div><label for="phone">電話番号</label><input type="tel" id="phone" autocomplete="tel"></div>
-      <div class="full"><label for="email">メールアドレス<i>必須</i></label><input type="email" id="email" autocomplete="email"><div class="note">確認コードと解除キーの送付先。個人ではなく業務用のアドレスをご利用ください。</div></div>
+      <div class="full"><label for="email">メールアドレス<i>必須</i></label><input type="email" id="email" autocomplete="email"><div class="note">確認コードと解除キーの送付先。会員登録のメールアドレスを使用します。</div></div>
       <input type="text" id="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
     </div>
     <div class="row"><button class="btn" id="b1">確認コードを送信</button></div>
@@ -216,6 +218,8 @@ $("rn_b2").onclick=async function(){
   $("doc").textContent=j.text.replace("〔相手方会社名〕",j.company).replace("〔相手方会社名〕",j.company).replace("〔所在地〕",j.address).replace("〔代表者名〕",j.rep_name);
   $("signer").value=j.rep_name;sealPrev();canSign();step(3);
 })();
+// 会員のメールアドレスを使う（会員とNDAの相手先を一致させる）
+(function(){try{var u=JSON.parse(localStorage.getItem("tamj_user")||"null");if(u&&u.email&&!u.admin){["email","rn_e"].forEach(function(id){var el=$(id);if(el){el.value=u.email;el.readOnly=true;el.style.background="#f4efe6";}});}}catch(_){}})();
 if(location.hash==="#renew"){setTimeout(function(){$("renew").scrollIntoView();},50);}
 })();
 </script>

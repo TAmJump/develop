@@ -13,7 +13,6 @@
 (function () {
   "use strict";
   var API = "https://develop-api.tamjump.com";
-  var GATE = ["tamj2026", "tamj2030"];
   var me = document.currentScript;
   var L = (me && me.getAttribute("data-l")) || "";
   var FULL = !!window.__NDA_STATE;
@@ -136,24 +135,19 @@
     return j;
   }
 
-  // 閲覧パスワード
+  // 入口：会員ログイン（無料登録）が必要。管理者・最高権限キーは不要。解除キーを持っている人はその場で入力も可
   function gate() {
-    if (ls(S) === "1") return;
-    var g = document.createElement("div"); g.id = "nda-gate";
-    g.innerHTML = '<div class="box"><h2>' + (document.title.split("｜")[0] || "非公開資料") + '</h2><p>取引先限定の資料。パスワードを入力してください。</p>' +
-      '<input id="nda-gp" type="password" placeholder="パスワード" autocomplete="off"><button id="nda-gb">表示する</button><p class="er" id="nda-ge"></p>' +
-      '<p class="ft">無断での複製・転載・第三者への提供を禁じます<br>タムジ株式会社</p></div>';
-    document.body.appendChild(g); document.documentElement.style.overflow = "hidden";
-    var t = async function () {
-      var v = $("nda-gp").value.trim(); if (!v) return;
-      if (GATE.indexOf(v) >= 0) { ls(S, "1"); g.remove(); document.documentElement.style.overflow = ""; return; }
-      var j = await unlock(v);
-      if (j && (j.ok || ["need_request", "requested", "not_allowed", "individual", "not_signed", "closed", "stopped"].indexOf(j.error) >= 0)) { ls(S, "1"); g.remove(); document.documentElement.style.overflow = ""; return; }
-      $("nda-ge").textContent = "パスワードが違います";
+    var run = function () {
+      window.tamjMemberGate(async function (v) {
+        var j = await unlock(v);
+        return !!(j && (j.ok || ["not_signed", "closed", "stopped"].indexOf(j.error) >= 0));
+      });
     };
-    $("nda-gb").onclick = t;
-    $("nda-gp").addEventListener("keydown", function (e) { if (e.key === "Enter") t(); });
+    if (window.tamjMemberGate) { run(); return; }
+    var sc = document.createElement("script"); sc.src = "/js/member-gate.js"; sc.onload = run;
+    (document.head || document.documentElement).appendChild(sc);
   }
+
 
   function boot() {
     document.body.insertBefore(bar, document.body.firstChild);
@@ -166,7 +160,7 @@
     document.body.classList.add("nonname");
     try { localStorage.removeItem("tamj_nda_ok"); } catch (_) {}
     var h = null; try { h = sessionStorage.getItem("tamj_nda_handoff_" + L); sessionStorage.removeItem("tamj_nda_handoff_" + L); } catch (_) {}
-    if (h) { ls(S, "1"); unlock(h); } else { gate(); check(); }
+    if (h) { unlock(h); } else { gate(); check(); }
   }
   if (document.body) boot(); else document.addEventListener("DOMContentLoaded", boot);
 })();
