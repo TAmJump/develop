@@ -19,7 +19,7 @@ binding = "DB"
 database_name = "develop"
 database_id = "77a77eb2-6e96-412a-940d-221c56a4ab23"
 
-# R2（NDA PDFの保管）── バケット tamj-nda 作成後に有効化する
-# [[r2_buckets]]
-# binding = "NDA_BUCKET"
-# bucket_name = "tamj-nda"
+# R2（NDA PDFと印影・署名画像の保管）── 先に `npx wrangler r2 bucket create tamj-nda` で作成しておく
+[[r2_buckets]]
+binding = "NDA_BUCKET"
+bucket_name = "tamj-nda"
