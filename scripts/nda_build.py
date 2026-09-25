@@ -11,6 +11,7 @@
 
 完全版から公開版を作るときの規則:
   - class="nda-only" の要素を削除
+  - class="admin-only" の要素は、NDA締結先の完全版からも削除（当社の最高権限でのみ表示。master.enc に格納）
   - ページ内CSSの「body.nonname セレクタ{display:none}」に該当する要素を削除
   - class="conf" の中身を「■■■■」に置換
   - 削除した要素のidを参照するインラインscriptを削除（地図の座標など）
@@ -59,6 +60,24 @@ def nonname_selectors(soup):
                     if s and s != ".nda-only":
                         sels.append(s)
     return sels
+
+
+def strip_admin(html):
+    """当社のみの要素（class="admin-only"）を外した版を返す。外した要素のidを参照するインラインscriptも外す"""
+    if "admin-only" not in html:
+        return html
+    soup = BeautifulSoup(html, "lxml")
+    ids = set()
+    for el in soup.select(".admin-only"):
+        for x in [el] + el.find_all(True):
+            if x.get("id"):
+                ids.add(x["id"])
+        el.decompose()
+    for sc in soup.find_all("script"):
+        body = sc.string or ""
+        if not sc.get("src") and any(("'" + i + "'") in body or ('"' + i + '"') in body for i in ids):
+            sc.decompose()
+    return str(soup)
 
 
 def make_public(full_html):
@@ -122,7 +141,8 @@ def build(src_dir, only):
     for L in ids:
         if only and L not in only:
             continue
-        full = open(os.path.join(src_dir, L + ".html"), encoding="utf-8").read()
+        master = open(os.path.join(src_dir, L + ".html"), encoding="utf-8").read()
+        full = strip_admin(master)
         pub_path = os.path.join(src_dir, L + ".public.html")
         extra_path = os.path.join(src_dir, L + ".secret-terms.txt")
         extra = [x.strip() for x in open(extra_path, encoding="utf-8").read().splitlines() if x.strip()] if os.path.exists(extra_path) else []
@@ -136,9 +156,10 @@ def build(src_dir, only):
             sys.exit(f"[{L}] 公開版に伏せるべき語句が残っている: {leaks[:10]}")
         out = os.path.join(ROOT, "listings", L)
         os.makedirs(out, exist_ok=True)
-        public, full = lockver(public), lockver(full)
+        public, full, master = lockver(public), lockver(full), lockver(master)
         open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(public)
         open(os.path.join(out, "full.enc"), "wb").write(encrypt(L, full))
+        open(os.path.join(out, "master.enc"), "wb").write(encrypt("m:" + L, master))
         print(f"[{L}] 公開版 {len(public):,} bytes / 完全版 {len(full):,} bytes → 暗号化済み（伏せ語句 {len(terms)+len(extra)} 件を検査）")
 
 

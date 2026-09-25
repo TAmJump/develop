@@ -31,6 +31,9 @@
     ".nda-bar .nda-cta{display:inline-block;margin:8px 12px 2px 0;padding:10px 20px;background:#D2553F;color:#fff!important;text-decoration:none!important;border-radius:6px;font-weight:700;font-size:14.5px;letter-spacing:.5px}" +
     ".nda-bar .nda-cta:hover{background:#B8452F}" +
     ".nda-bar .nda-sub{font-size:12.5px;margin-right:10px}" +
+    ".nda-bar .nda-nav{display:inline-flex;gap:6px;margin-right:6px}" +
+    ".nda-bar .nda-nav a{display:inline-block;padding:4px 11px;border:1px solid #c9bda8;border-radius:99px;background:#fff;color:#7e4e2d;text-decoration:none;font-size:12px;white-space:nowrap}" +
+    ".nda-bar .nda-nav a:hover{border-color:#9b6339}" +
     ".nda-bar{position:sticky;top:0;z-index:9000;background:#f3e7dd;border-bottom:1px solid #c9bda8;padding:8px 20px;font:12.5px/1.6 -apple-system,BlinkMacSystemFont,'Noto Sans JP',sans-serif;color:#7e4e2d;display:flex;gap:10px;align-items:center;flex-wrap:wrap}" +
     ".nda-bar.ok{background:#e7efec;border-color:#9ec3bc;color:#2e7d78}" +
     ".nda-bar input{border:1px solid #c9bda8;border-radius:6px;padding:5px 9px;font-size:12.5px}" +
@@ -74,14 +77,15 @@
   // 状態バー
   var bar = document.createElement("div"); bar.className = "nda-bar";
   function links() { return '<a class="nda-cta" href="../nda/?l=' + L + '">秘密保持契約を締結して詳細を見る &rarr;</a><a class="nda-sub" href="../nda/?l=' + L + '#renew">解除キーを更新</a>'; }
+  var NAV = '<span class="nda-nav"><a href="/">&larr; トップ</a><a href="../">案件一覧</a></span>';
   function setBar(st, msg) {
     if (st) {
       bar.className = "nda-bar ok";
-      bar.innerHTML = "<b>非公開資料</b><span>" + (st.level === "master" ? "最高権限キーで全項目を表示中。" :
+      bar.innerHTML = NAV + "<b>非公開資料</b><span>" + (st.level === "master" ? "最高権限キーで全項目を表示中。" :
         "秘密保持の締結済み" + (st.company ? "（" + st.company + "）" : "") + "。全項目を表示中。解除キーの有効期限 " + fmt(st.expires_at) + "。") + "</span>";
     } else {
       bar.className = "nda-bar";
-      bar.innerHTML = "<b>非公開資料</b><span>" + (msg ? msg + " " : "") +
+      bar.innerHTML = NAV + "<b>非公開資料</b><span>" + (msg ? msg + " " : "") +
         "秘密保持の締結前のため、所在地・名称・図面・写真などを伏せた概要を表示しています。秘密保持契約の締結後、発行される解除キーを入力すると全項目を表示します。" + links() +
         '</span><span><input id="nda-key" type="password" placeholder="秘密保持の解除キー" autocomplete="off"> <button id="nda-btn">解除</button></span>';
       var go = function () { var v = $("nda-key").value.trim(); if (v) { $("nda-key").value = ""; unlock(v); } };
@@ -118,7 +122,7 @@
     if (!st.ck) { setBar(null, "表示の準備が完了していません。時間をおいて再度お試しください。"); return; }
     var ld = document.createElement("div"); ld.id = "nda-loading"; ld.textContent = "資料を読み込んでいます"; document.body.appendChild(ld);
     try {
-      var r = await fetch("full.enc?v=" + Date.now(), { cache: "no-store" });
+      var r = await fetch((st.src === "master.enc" ? "master.enc" : "full.enc") + "?v=" + Date.now(), { cache: "no-store" });
       if (!r.ok) throw new Error("fetch");
       var buf = new Uint8Array(await r.arrayBuffer());
       var key = await crypto.subtle.importKey("raw", b64(st.ck), { name: "AES-GCM" }, false, ["decrypt"]);

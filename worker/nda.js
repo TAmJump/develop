@@ -32,7 +32,7 @@ export const LISTINGS = {
 
 /* 完全版（full.enc）の復号鍵：CONTENT_SECRET と案件IDから導出 */
 async function contentKey(env, listing) {
-  if (!env.CONTENT_SECRET || !LISTINGS[listing]) return "";
+  if (!env.CONTENT_SECRET || !LISTINGS[String(listing).replace(/^m:/, "")]) return "";
   const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.CONTENT_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   const sig = new Uint8Array(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode("ck:" + listing)));
   let bin = ""; for (const b of sig) bin += String.fromCharCode(b);
@@ -591,7 +591,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (env.MASTER_KEY && eqStr(key, env.MASTER_KEY)) {
       const exp = Date.now() + 30 * 86400 * 1000;
       await log(env, req, "unlock", { key_tail: "MSTR", listing, ok: true });
-      return json({ ok: true, level: "master", expires_at: new Date(exp).toISOString(), ck: await contentKey(env, listing), token: await makeToken(env, { lv: "m", exp }) }, 200, req);
+      return json({ ok: true, level: "master", src: "master.enc", expires_at: new Date(exp).toISOString(), ck: await contentKey(env, "m:" + listing), token: await makeToken(env, { lv: "m", exp }) }, 200, req);
     }
     const row = await env.DB.prepare("SELECT k.*, n.company FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(await sha256hex(key)).first();
     const bad = (e) => log(env, req, "unlock", { key_tail: key.slice(-4), nda_id: row ? row.nda_id : "", listing, ok: false }).then(() => json({ error: e }, 400, req));
@@ -614,7 +614,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const t = await readToken(env, body.token), listing = clip(body.listing, 40);
     if (!t) return json({ error: "invalid" }, 400, req);
     if (Date.now() > t.exp) return json({ error: "expired" }, 400, req);
-    if (t.lv === "m") return json({ ok: true, level: "master", expires_at: new Date(t.exp).toISOString(), ck: await contentKey(env, listing) }, 200, req);
+    if (t.lv === "m") return json({ ok: true, level: "master", src: "master.enc", expires_at: new Date(t.exp).toISOString(), ck: await contentKey(env, "m:" + listing) }, 200, req);
     if (t.l !== listing) return json({ error: "other_listing" }, 400, req);
     const row = await env.DB.prepare("SELECT k.*, n.company, n.status FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(t.kh).first();
     if (!row || row.revoked) return json({ error: "revoked" }, 400, req);
