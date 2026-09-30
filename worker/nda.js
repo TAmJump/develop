@@ -43,6 +43,12 @@ export const NDA_VERSION = "v1.3（2026-09-24）";
 // 個別の秘密保持契約が必要な案件（売主の意向等）。ここに案件IDを入れると、包括NDAでは閲覧できなくなる
 export const INDIVIDUAL = new Set([]);
 
+/* 案件ごとの関係者アカウント（ID・パスワードで、その案件の完全版をNDA手続きなしで表示）
+ * hash = sha256("ID:パスワード")。12 条件など当社のみの内容は見えない */
+const GUESTS = {
+  igarashi: { hash: "ff16bc248481f92f054d74f16e463b382aef2a479b7360a2f62c843db99bcd3f", listings: ["murakami"], name: "五十嵐様（関係者）" },
+};
+
 /* 掲載終了 */
 async function isClosed(env, listing) {
   try { const r = await env.DB.prepare("SELECT status FROM listing_status WHERE listing=?").bind(listing).first(); return !!(r && r.status === "終了"); } catch { return false; }
@@ -352,7 +358,7 @@ async function log(env, req, kind, o) {
 async function tooManyFails(env, req) {
   const ip = req.headers.get("cf-connecting-ip") || "";
   const since = new Date(Date.now() - 3600 * 1000).toISOString();
-  const r = await env.DB.prepare("SELECT COUNT(*) AS n FROM nda_log WHERE ip=? AND ok=0 AND at>? AND kind IN ('unlock','verify','renew')").bind(ip, since).first();
+  const r = await env.DB.prepare("SELECT COUNT(*) AS n FROM nda_log WHERE ip=? AND ok=0 AND at>? AND kind IN ('unlock','verify','renew','guest')").bind(ip, since).first();
   return (r && r.n >= 10);
 }
 
@@ -481,12 +487,25 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     return json({ ok: true, version: NDA_VERSION, ttl_days: ttlDays(env), listing_name: LISTINGS[l], text: ndaText({ listing: l }, ttlDays(env)) }, 200, req);
   }
 
+  /* 関係者アカウントのログイン */
+  if (m === "POST" && path === "/api/nda/guest-login") {
+    if (await tooManyFails(env, req)) return json({ error: "too_many" }, 429, req);
+    const id = clip(body.id, 40).toLowerCase().trim(), g = GUESTS[id];
+    const ok = g && eqStr(await sha256hex(id + ":" + String(body.password || "")), g.hash);
+    await log(env, req, "guest", { key_tail: "g:" + id, ok: !!ok });
+    if (!ok) return json({ error: "unauthorized" }, 401, req);
+    const exp = Date.now() + 90 * 86400 * 1000, tokens = {};
+    for (const l of g.listings) tokens[l] = await makeToken(env, { lv: "g", g: id, l, exp });
+    return json({ ok: true, listings: g.listings, tokens, name: g.name }, 200, req);
+  }
+
   /* 印刷の記録（締結後の画面で印刷したとき、ページから送られる） */
   if (m === "POST" && path === "/api/nda/print") {
     const t = await readToken(env, body.token), listing = clip(body.listing, 40), serial = clip(body.serial, 40);
     if (!t || !LISTINGS[listing] || !serial) return json({ error: "invalid" }, 400, req);
     let nda_id = "", doc_no = "", company = "", level = t.lv === "m" ? "master" : "nda";
     if (t.lv === "m") company = "タムジ株式会社（管理者）";
+    else if (t.lv === "g") { const g = GUESTS[t.g]; if (!g || !g.listings.includes(listing)) return json({ error: "invalid" }, 400, req); company = g.name; level = "guest"; }
     else {
       const kr = await env.DB.prepare("SELECT * FROM nda_keys WHERE key_hash=?").bind(t.kh).first();
       const fk = kr ? await ndaForKey(env, kr, listing) : { err: "invalid" };
@@ -615,6 +634,13 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (!t) return json({ error: "invalid" }, 400, req);
     if (Date.now() > t.exp) return json({ error: "expired" }, 400, req);
     if (t.lv === "m") return json({ ok: true, level: "master", src: "master.enc", expires_at: new Date(t.exp).toISOString(), ck: await contentKey(env, "m:" + listing) }, 200, req);
+    if (t.lv === "g") {
+      const g = GUESTS[t.g];
+      if (!g || !g.listings.includes(listing)) return json({ error: "other_listing" }, 400, req);
+      if (await isClosed(env, listing)) return json({ error: "closed" }, 400, req);
+      await log(env, req, "view", { key_tail: "g:" + t.g, listing, ok: true });
+      return json({ ok: true, level: "nda", company: g.name, doc_no: "", expires_at: new Date(t.exp).toISOString(), ck: await contentKey(env, listing) }, 200, req);
+    }
     if (t.l !== listing) return json({ error: "other_listing" }, 400, req);
     const row = await env.DB.prepare("SELECT k.*, n.company, n.status FROM nda_keys k LEFT JOIN nda n ON n.id=k.nda_id WHERE k.key_hash=?").bind(t.kh).first();
     if (!row || row.revoked) return json({ error: "revoked" }, 400, req);

@@ -8,7 +8,12 @@
 (function () {
   var MEMBER_API = "https://tamjump-member-api.animalb001.workers.dev";
   function g(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
-  function privileged() { return g("tamj_admin") === "1" || !!g("tamj_nda_tok_master"); }
+  function privileged() {
+    if (g("tamj_admin") === "1" || !!g("tamj_nda_tok_master")) return true;
+    // 案件ごとの関係者アカウント：許可された案件のページだけ入口を出さない
+    try { var gl = JSON.parse(g("tamj_guest") || "[]"), m = location.pathname.match(/\/listings\/([^/]+)\//); if (m && gl.indexOf(m[1]) >= 0) return true; } catch (_) {}
+    return false;
+  }
   function back() { return encodeURIComponent(location.pathname + location.search); }
 
   var css = document.createElement("style");

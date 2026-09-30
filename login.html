@@ -68,8 +68,8 @@
                 <a href="register.html" class="" data-keep>新規登録（無料）</a>
             </nav>
             <div class="auth-field">
-                <label>メールアドレス</label>
-                <input type="email" id="loginEmail" placeholder="info@example.com" autocomplete="email">
+                <label>メールアドレス（案件の関係者の方はID）</label>
+                <input type="text" inputmode="email" id="loginEmail" placeholder="info@example.com" autocomplete="email">
             </div>
             <div class="auth-field">
                 <label>パスワード</label>
@@ -126,6 +126,24 @@
             err.classList.remove('show');
             resendBox.classList.remove('show');
             if(!email||!pw){err.textContent='メールアドレスとパスワードを入力してください。';err.classList.add('show');return;}
+
+            // 案件ごとの関係者アカウント（メールではなくIDでログイン）
+            if(email.indexOf('@')<0){
+                btn.disabled=true;btn.textContent='ログイン中…';
+                try{
+                    const r=await fetch('https://develop-api.tamjump.com/api/nda/guest-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:email,password:pw})});
+                    const j=await r.json().catch(()=>({}));
+                    if(r.ok&&j.ok){
+                        Object.keys(j.tokens).forEach(function(l){localStorage.setItem('tamj_nda_tok_'+l,j.tokens[l]);});
+                        localStorage.setItem('tamj_guest',JSON.stringify(j.listings));
+                        location.href='/listings/'+j.listings[0]+'/';
+                        return;
+                    }
+                    err.textContent='IDまたはパスワードが違います。';
+                }catch(_){ err.textContent='認証サーバーに接続できません。'; }
+                err.classList.add('show');btn.disabled=false;btn.textContent='ログイン';
+                return;
+            }
 
             // 管理者（info@tamjump.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
             if(email.toLowerCase()==='info@tamjump.com'){
