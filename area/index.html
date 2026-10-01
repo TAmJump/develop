@@ -107,6 +107,12 @@ details.orig img{width:100%;margin-top:10px;border:1px solid #d5c9b7}
 .cand-b{border:1px solid #c9bda8;background:#fff;padding:5px 10px;border-radius:14px;cursor:pointer;font-size:12px}
 .cand-b:hover{background:#eee5d6}
 .own{border-left:4px solid #804a6e;background:#f3edf1;padding:10px 14px;margin:10px 0;font-size:12.5px}
+
+.mapbox.fs{position:fixed;inset:0;z-index:5000;background:#f4efe6;overflow:auto;padding:12px 16px}
+.mapbox.fs #hazmap,.mapbox.fs #areamap{height:calc(100vh - 150px)!important;min-height:0}
+.mapbox .fsbar{display:flex;justify-content:flex-end;gap:8px;margin:0 0 8px}
+.mapbox .fsbar .ctrl{margin-left:0}
+.mapbox.fs .fsbar .ctrl:first-child{background:#D2553F;border-color:#D2553F;color:#fff}
 #areamap{height:600px;border:1px solid #c9bda8;background:#eee5d6}
 .am-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
 .am-bar button,.am-bar label.btn{border:1px solid #9b6339;background:#faf7f0;color:#7e4e2d;padding:6px 12px;border-radius:18px;cursor:pointer;font-size:12.5px}
@@ -178,16 +184,21 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div class="head"><span class="num">01 / DISASTER RISK</span><h2>災害リスクとハザードマップ</h2></div>
 <p class="muted" style="margin:0 0 10px">国土地理院「重ねるハザードマップ」の洪水浸水想定・浸水継続時間・家屋倒壊等氾濫想定・土砂災害警戒区域を重ねて表示。半径は50mから50kmまで設定できる。</p>
 <div class="bar"><span class="muted">半径</span>
-<button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button>
+<button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button><button class="ctrl r-btn" data-m="50000" type="button">50km</button><button class="ctrl" id="btn-jp" type="button">日本全体</button>
 <input id="r-range" max="4.7" min="1.7" step="0.01" type="range" value="3.3"><input id="r-num" max="50000" min="20" step="10" type="number" value="2000">
 <span class="muted">m　現在：<b id="r-txt">2km</b>（外側の円が指定半径、内側は1/2・1/4）</span></div>
+<div class="mapbox" id="hz-box"><div class="fsbar"><button class="ctrl" id="hz-fs" type="button">大画面で見る</button></div>
 <div id="hazmap"></div>
 <div class="am-legend" id="haz-legend"></div>
 <div class="own"><b>参考レイヤー</b>　<span class="mut">［公式］＝国の公開データ／［弊社の見解］＝弊社が作成した目安</span><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-now" type="checkbox">［弊社の見解］2026年の主な災害で大きな被害が出た市町村（概略）</label><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-past" type="checkbox">［弊社の見解］過去の主な災害（1995〜2025年）で大きな被害が出た市町村（概略）</label>
+<span class="mut" style="display:inline-flex;gap:14px;flex-wrap:wrap;margin-left:4px"><span><span class="sw" style="background:#b52d2d;opacity:.6"></span> 赤＝地震</span><span><span class="sw" style="background:#0d9488;opacity:.6"></span> 緑＝津波</span><span><span class="sw" style="background:#2b6cb0;opacity:.6"></span> 青＝豪雨・台風</span><span><span class="sw" style="background:#a8741a;opacity:.6"></span> 茶＝土砂災害</span></span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button></label><br>
 <label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
-<div class="mut" style="margin-top:6px">自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。表示中の半径に連動して取得（最大12km）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム11以上で表示。</div></div>
+<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。表示中の半径に連動して取得（最大12km）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム11以上で表示。</div></div>
+</div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
 <p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
 </div></section>
@@ -196,8 +207,9 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div class="head"><span class="num">02 / AREA MAP</span><h2>周辺の医療・介護・生活施設（半径2km・6km・10km・15km）</h2></div>
 <p class="muted">上で調べた地点を中心に表示。病院・診療所・薬局・スーパー・学校・高齢者施設はOpenStreetMap、介護・看護事業所は厚生労働省「介護サービス情報公表システム」のオープンデータ（CSV）を読み込んで重ねる。CSVは厚労省のサイトから都道府県・サービス別に取得できる。</p>
 <div class="am-bar"><button id="am-osm" type="button">病院・診療所・生活施設を読み込む（OpenStreetMap）</button><label class="btn" for="am-csv">介護・看護事業所のCSVを読み込む（複数可）</label><input accept=".csv" id="am-csv" multiple type="file"><span class="am-status" id="am-status"></span></div>
+<div class="mapbox" id="mk-box"><div class="fsbar"><button class="ctrl" id="mk-fs" type="button">大画面で見る</button></div>
 <div id="areamap"></div>
-<div class="am-legend" id="am-legend"></div>
+<div class="am-legend" id="am-legend"></div></div>
 <div class="tw"><table class="table" id="am-count" style="margin-top:8px"><thead><tr><th>区分</th><th class="n">2km以内</th><th class="n">6km以内</th><th class="n">10km以内</th><th class="n">15km以内</th></tr></thead><tbody><tr><td class="muted" colspan="5">データを読み込むと件数を集計</td></tr></tbody></table></div>
 <p class="source">出典：OpenStreetMap contributors（ODbL）、厚生労働省「介護サービス情報公表システム」オープンデータ。OpenStreetMapは有志の登録データのため、抜けや閉院の反映遅れがある。</p>
 </div></section>
@@ -267,11 +279,15 @@ var AREA=(function(){
     sync:function(c,label,from){if(from!=="mk"&&window.__mkSet)window.__mkSet(c);}
   };
 })();
+function FS(boxId,btnId,map){var box=document.getElementById(boxId),btn=document.getElementById(btnId);if(!box||!btn)return;
+  function set(on){box.classList.toggle("fs",on);document.documentElement.style.overflow=on?"hidden":"";btn.textContent=on?"大画面を閉じる（Esc）":"大画面で見る";setTimeout(function(){map.invalidateSize();},60);}
+  btn.onclick=function(){set(!box.classList.contains("fs"));};
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&box.classList.contains("fs"))set(false);});}
 document.getElementById("gate-close").onclick=function(){document.getElementById("gate").style.display="none";};
 </script>
 <script>(function(){
 var C0=[35.6812,139.7671], center=C0.slice(), radius=2000;
-var map=L.map('hazmap',{zoomSnap:0.25}).setView(C0,14); window.__hazMap=map;
+var map=L.map('hazmap',{zoomSnap:0.25,minZoom:4,maxBounds:[[18,115],[50,158]]}).setView(C0,14); window.__hazMap=map;
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図・標高：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜ハザード：<a href="https://disaportal.gsi.go.jp/" target="_blank">重ねるハザードマップ</a>'}).addTo(map);
 var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('中心（ドラッグで移動）');
 var rings=L.layerGroup().addTo(map);
@@ -329,6 +345,50 @@ defs.forEach(function(d,i){
  lh+='<label><input type="checkbox" data-i="'+i+'"'+(d.on?' checked':'')+'><span class="sw" style="background:'+d.c+'"></span>'+d.name+'</label>';});
 var el=document.getElementById('haz-legend');el.innerHTML=lh;
 el.querySelectorAll('input').forEach(function(cb){cb.onchange=function(){var d=defs[cb.dataset.i];cb.checked?map.addLayer(d.layer):map.removeLayer(d.layer);};});
+
+// ［弊社の見解］国内の主な災害で大きな被害が出た市町村（概略）。代表点を中心にした円で、実際の被害範囲ではない
+var DIS=[
+ {y:2026,ev:'令和8年熊本地震（7月・M7.1・最大震度7）',k:'地震',p:[['熊本県宇城市',3],['熊本県氷川町',3],['熊本市南区',2],['熊本県宇土市',2],['熊本県益城町',2],['熊本県嘉島町',2],['熊本県上天草市',1],['熊本県合志市',1]]},
+ {y:2026,ev:'岩手県沖の地震（6月・M7.2・最大震度6強）',k:'地震',p:[['青森県階上町',2],['青森県八戸市',1]]},
+ {y:2026,ev:'令和8年8月千葉豪雨',k:'豪雨',p:[['千葉市',3],['千葉県市川市',3],['千葉県八千代市',3],['千葉県佐倉市',3],['千葉県柏市',2],['千葉県我孫子市',2],['千葉県船橋市',2],['千葉県市原市',2],['千葉県四街道市',2],['千葉県印西市',2],['千葉県白井市',2],['千葉県習志野市',1],['千葉県松戸市',1],['千葉県茂原市',1],['千葉県東金市',1],['千葉県鎌ケ谷市',1],['千葉県八街市',1],['千葉県富里市',1],['千葉県山武市',1],['千葉県大網白里市',1],['千葉県館山市',1],['千葉県酒々井町',1],['千葉県白子町',1],['千葉県長柄町',1],['千葉県九十九里町',1]]},
+ {y:2026,ev:'8月27日からの北陸の大雨（大雨特別警報）',k:'豪雨',p:[['石川県羽咋市',3],['石川県志賀町',3],['石川県宝達志水町',3],['石川県中能登町',3],['富山県氷見市',3],['福井県福井市',2],['福井県大野市',2],['福井県勝山市',2]]},
+ {y:2024,ev:'令和6年能登半島地震',k:'地震',p:[['石川県輪島市',3],['石川県珠洲市',3],['石川県能登町',3],['石川県穴水町',3],['石川県七尾市',2],['石川県志賀町',2]]},
+ {y:2024,ev:'令和6年9月 能登半島の大雨',k:'豪雨',p:[['石川県輪島市',3],['石川県珠洲市',3]]},
+ {y:2023,ev:'令和5年7月 秋田の大雨',k:'豪雨',p:[['秋田県秋田市',2]]},
+ {y:2022,ev:'令和4年 台風15号（静岡）',k:'豪雨',p:[['静岡市清水区',2]]},
+ {y:2021,ev:'令和3年7月 熱海の土石流',k:'土砂',p:[['静岡県熱海市',3]]},
+ {y:2021,ev:'令和3年8月の大雨（佐賀）',k:'豪雨',p:[['佐賀県武雄市',2],['佐賀県大町町',2]]},
+ {y:2020,ev:'令和2年7月豪雨',k:'豪雨',p:[['熊本県人吉市',3],['熊本県球磨村',3],['熊本県八代市',2]]},
+ {y:2019,ev:'令和元年東日本台風（台風19号）',k:'豪雨',p:[['長野県長野市',3],['福島県郡山市',3],['福島県いわき市',3],['宮城県丸森町',3],['栃木県栃木市',2]]},
+ {y:2019,ev:'令和元年房総半島台風（台風15号）',k:'豪雨',p:[['千葉県鋸南町',2]]},
+ {y:2018,ev:'平成30年7月豪雨（西日本豪雨）',k:'豪雨',p:[['岡山県倉敷市',3],['広島県坂町',3],['広島県呉市',3],['愛媛県宇和島市',2],['愛媛県大洲市',2]]},
+ {y:2018,ev:'平成30年北海道胆振東部地震',k:'地震',p:[['北海道厚真町',3],['北海道安平町',2],['北海道むかわ町',2]]},
+ {y:2017,ev:'平成29年7月九州北部豪雨',k:'豪雨',p:[['福岡県朝倉市',3],['福岡県東峰村',3],['大分県日田市',2]]},
+ {y:2016,ev:'平成28年熊本地震',k:'地震',p:[['熊本県益城町',3],['熊本県西原村',3],['熊本県南阿蘇村',3],['熊本市東区',2]]},
+ {y:2015,ev:'平成27年9月関東・東北豪雨',k:'豪雨',p:[['茨城県常総市',3]]},
+ {y:2014,ev:'平成26年8月 広島の土砂災害',k:'土砂',p:[['広島市安佐南区',3],['広島市安佐北区',3]]},
+ {y:2011,ev:'東日本大震災（地震・津波）',k:'津波',p:[['岩手県陸前高田市',3],['岩手県大槌町',3],['岩手県釜石市',3],['宮城県気仙沼市',3],['宮城県南三陸町',3],['宮城県女川町',3],['宮城県石巻市',3],['宮城県東松島市',3],['宮城県名取市',3],['福島県南相馬市',3],['福島県大熊町',3],['福島県双葉町',3]]},
+ {y:2004,ev:'平成16年新潟県中越地震',k:'地震',p:[['新潟県長岡市',3],['新潟県小千谷市',3]]},
+ {y:1995,ev:'阪神・淡路大震災',k:'地震',p:[['兵庫県神戸市',3],['兵庫県芦屋市',3],['兵庫県西宮市',3],['兵庫県淡路市',3]]}
+];
+// 縮尺に合わせて円の大きさを変える（広域表示でも見えるよう最小サイズを確保）
+function sizeOne(cm){var z=map.getZoom(),lat=cm.getLatLng().lat,mpp=40075016.686*Math.cos(lat*Math.PI/180)/Math.pow(2,z+8);cm.setRadius(Math.max(4+cm._sv*1.5,cm._m/mpp));}
+map.on('zoomend',function(){[disNow,disPast].forEach(function(g){g.eachLayer(sizeOne);});});
+var KCOL={'地震':'#b52d2d','津波':'#0d9488','豪雨':'#2b6cb0','土砂':'#a8741a'};
+var disNow=L.layerGroup(), disPast=L.layerGroup(), disLoaded={}, geoCache={};
+function geo(q){if(geoCache[q])return Promise.resolve(geoCache[q]);
+ return fetch('https://msearch.gsi.go.jp/address-search/AddressSearch?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(j){var c=j&&j.length?[j[0].geometry.coordinates[1],j[0].geometry.coordinates[0]]:null;geoCache[q]=c;return c;});}
+function loadDis(now){var key=now?'now':'past';if(disLoaded[key])return;disLoaded[key]=1;
+ var layer=now?disNow:disPast,jobs=[];
+ DIS.forEach(function(d){if((d.y===2026)!==now)return;d.p.forEach(function(pl){jobs.push([d,pl]);});});
+ st('災害の被害エリアを読み込み中…（'+jobs.length+'市町村）');var i=0,done=0;
+ function next(){if(i>=jobs.length)return;var jb=jobs[i++],d=jb[0],nm=jb[1][0],sv=jb[1][1];
+  geo(nm).then(function(c){if(c){var col=KCOL[d.k]||'#804a6e',rad=sv==3?3500:sv==2?2800:2200;
+   var cm=L.circleMarker(c,{radius:6,color:col,weight:1.5,fillColor:col,fillOpacity:now?.35:.2,dashArray:now?null:'4 4'});cm._m=rad;cm._sv=sv;sizeOne(cm);cm
+    .bindTooltip(d.y+' '+nm.replace(/^(北海道|..[都府県]|...県)/,''),{direction:'top'})
+    .bindPopup('<b>'+d.ev+'</b><br>'+d.y+'年｜'+d.k+'<br>'+nm+'：'+(sv==3?'被害が特に大きかった地域':sv==2?'大きな被害があった地域':'被害の報告があった地域')+'<br><span class="mut">市町村の代表点を中心にした概略円。実際の被害範囲ではない（弊社の見解）。</span>').addTo(layer);}
+  }).catch(function(){}).then(function(){done++;if(done===jobs.length)st((now?'2026年':'過去')+'の主な災害：'+jobs.length+'市町村を表示（概略）');next();});}
+ for(var k=0;k<4;k++)next();}
 // 低地・窪地（雨水が集まりやすい地形）— 標高タイルから算出
 var LowLand=L.GridLayer.extend({createTile:function(coords,done){
  var tile=document.createElement('canvas');tile.width=tile.height=256;
@@ -381,9 +441,9 @@ document.getElementById('cb-lore').onchange=function(){loreOn=this.checked;if(lo
 // アンダーパス・冠水しやすい道路（OpenStreetMap）
 var roadLayer=L.layerGroup(), roadDone=false;
 function loadRoad(){
- var r=Math.max(1000,Math.min(radius*1.5,12000)),a='(around:'+Math.round(r)+','+center[0]+','+center[1]+')';
- var q='[out:json][timeout:60];(way["highway"]["tunnel"]'+a+';way["highway"]["layer"~"^-"]'+a+';way["highway"]["flood_prone"="yes"]'+a+';node["ford"]'+a+';way["ford"]'+a+';way["highway"]["bridge"]["waterway"]'+a+';);out center tags;';
- var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];var i=0;
+ var r=Math.max(800,Math.min(radius*1.2,5000)),a='(around:'+Math.round(r)+','+center[0]+','+center[1]+')';
+ var q='[out:json][timeout:90];(way["highway"]["tunnel"]'+a+';way["highway"]["layer"~"^-"]'+a+';way["highway"]["flood_prone"="yes"]'+a+';node["ford"]'+a+';way["ford"]'+a+';);out center tags;';
+ var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];var i=0;
  (function go(){ if(i>=eps.length){st('道路データを取得できず。時間をおいて再実行');return;}
   var ep=eps[i++];st('アンダーパス等を取得中…（'+i+'/'+eps.length+'）');
   fetch(ep+'?data='+encodeURIComponent(q)).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
@@ -393,19 +453,23 @@ function loadRoad(){
     n++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
      .bindTooltip(kind,{direction:'top'})
      .bindPopup('<b>'+(t.name||t.ref||'（名称なし）')+'</b><br>'+kind+'<br>種別：'+(t.highway||'—')+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});
-   st('アンダーパス・冠水しやすい道路：'+n+'件（半径'+fmt(Math.round(r))+'）');roadDone=true;
+   st('アンダーパス・冠水しやすい道路：'+n+'件（半径'+fmt(Math.round(r))+'）'+(n?'':'。該当なし、または未登録'));roadDone=true;
   }).catch(function(){go();});})();}
 document.getElementById('cb-road').onchange=function(){if(this.checked){map.addLayer(roadLayer);loadRoad();}else map.removeLayer(roadLayer);};
 document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad();};
+document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadDis(true);map.addLayer(disNow);}else map.removeLayer(disNow);};
+document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);}else map.removeLayer(disPast);};
 document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
 setRadius(2000);
+document.getElementById('btn-jp').onclick=function(){map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
+FS('hz-box','hz-fs',map);
 })();
 </script>
 <script>(function(){
 var C0=[35.6812,139.7671], center=C0.slice(), RADII=[2,6,10,15];
 var CAT={hospital:['病院','#b52d2d'],clinic:['診療所','#e0735f'],pharmacy:['薬局・ドラッグストア','#be9234'],super:['スーパー','#6b8e23'],school:['学校','#346096'],eldfac:['高齢者施設（OSM）','#804a6e'],
 k_nyusho:['介護・入所系（特養・老健・有料・GH・短期）','#2e7d78'],k_tsusho:['介護・通所系','#3fa39c'],k_houmon:['訪問介護','#8a6f3a'],k_kango:['訪問看護','#c45a78'],k_kyotaku:['居宅介護支援・福祉用具','#7b6c5a']};
-var map=L.map('areamap',{zoomSnap:0.25}).fitBounds(L.latLng(C0).toBounds(31000)); window.__areaMap=map;
+var map=L.map('areamap',{zoomSnap:0.25,minZoom:4,maxBounds:[[18,115],[50,158]]}).fitBounds(L.latLng(C0).toBounds(31000)); window.__areaMap=map;
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜施設：© OpenStreetMap contributors／介護サービス情報公表システム（厚生労働省）'}).addTo(map);
 var ringLayer=L.layerGroup().addTo(map);
 var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('調査地点',{permanent:false});
@@ -449,6 +513,7 @@ document.getElementById('am-csv').onchange=function(ev){var files=[].slice.call(
    if(dist(center[0],center[1],lat,lon)>40)continue;var sv=iSv>=0?x[iSv]:file.name;var k=kcat(sv+' '+file.name);data[k].push({lat:lat,lon:lon,name:iName>=0?x[iName]:'',sub:sv,addr:iAd>=0?x[iAd]:''});added++;}}
   if(++done==files.length){redraw();status('介護・看護事業所：'+added+'件を読み込み（調査地点から40km以内を保持、15km圏内を表示）');}};fr.readAsText(file,'utf-8');});};
 drawRings();legend();
+FS('mk-box','mk-fs',map);
 })();
 </script>
 <script>(function(){var q=new URLSearchParams(location.search).get("q");if(q){var el=document.getElementById("q");el.value=q;setTimeout(function(){document.getElementById("btn-q").click();},300);}})();</script>
