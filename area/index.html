@@ -191,13 +191,13 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div id="hazmap"></div>
 <div class="am-legend" id="haz-legend"></div>
 <div class="own"><b>参考レイヤー</b>　<span class="mut">［公式］＝国の公開データ／［弊社の見解］＝弊社が作成した目安</span><br>
-<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-now" type="checkbox">［弊社の見解］2026年の主な災害で大きな被害が出た市町村（概略）</label><br>
-<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-past" type="checkbox">［弊社の見解］過去の主な災害（1995〜2025年）で大きな被害が出た市町村（概略）</label>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-now" type="checkbox">［弊社の見解］2026年の主な災害で大きな被害が出た市町村（概略）<span class="mut" id="dis-now-st"></span></label><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-past" type="checkbox">［弊社の見解］過去の主な災害（1995〜2025年）で大きな被害が出た市町村（概略）<span class="mut" id="dis-past-st"></span></label>
 <span class="mut" style="display:inline-flex;gap:14px;flex-wrap:wrap;margin-left:4px"><span><span class="sw" style="background:#b52d2d;opacity:.6"></span> 赤＝地震</span><span><span class="sw" style="background:#0d9488;opacity:.6"></span> 緑＝津波</span><span><span class="sw" style="background:#2b6cb0;opacity:.6"></span> 青＝豪雨・台風</span><span><span class="sw" style="background:#a8741a;opacity:.6"></span> 茶＝土砂災害</span></span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
-<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button></label><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button><span class="mut" id="road-st" style="margin-left:6px"></span></label><br>
 <label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
-<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。表示中の半径に連動して取得（最大12km）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム11以上で表示。</div></div>
+<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。調査地点を中心に、表示中の半径に連動して取得（最大4km四方。広げても取得は調査地点の周辺のみ）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
 </div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
 <p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
@@ -387,13 +387,13 @@ function loadDis(now){var key=now?'now':'past';if(disLoaded[key])return;disLoade
    var cm=L.circleMarker(c,{radius:6,color:col,weight:1.5,fillColor:col,fillOpacity:now?.35:.2,dashArray:now?null:'4 4'});cm._m=rad;cm._sv=sv;sizeOne(cm);cm
     .bindTooltip(d.y+' '+nm.replace(/^(北海道|..[都府県]|...県)/,''),{direction:'top'})
     .bindPopup('<b>'+d.ev+'</b><br>'+d.y+'年｜'+d.k+'<br>'+nm+'：'+(sv==3?'被害が特に大きかった地域':sv==2?'大きな被害があった地域':'被害の報告があった地域')+'<br><span class="mut">市町村の代表点を中心にした概略円。実際の被害範囲ではない（弊社の見解）。</span>').addTo(layer);}
-  }).catch(function(){}).then(function(){done++;if(done===jobs.length)st((now?'2026年':'過去')+'の主な災害：'+jobs.length+'市町村を表示（概略）');next();});}
+  }).catch(function(){}).then(function(){done++;if(done===jobs.length)st((now?'2026年':'過去')+'の主な災害：'+jobs.length+'市町村を表示（概略）');var de=document.getElementById(now?'dis-now-st':'dis-past-st');if(de)de.textContent=jobs.length+'市町村';next();});}
  for(var k=0;k<4;k++)next();}
 // 低地・窪地（雨水が集まりやすい地形）— 標高タイルから算出
 var LowLand=L.GridLayer.extend({createTile:function(coords,done){
  var tile=document.createElement('canvas');tile.width=tile.height=256;
  var ctx=tile.getContext('2d');var z=Math.min(coords.z,14);
- if(coords.z<11){done(null,tile);return tile;}
+ if(coords.z<9){done(null,tile);return tile;}
  var img=new Image();img.crossOrigin='anonymous';
  img.onload=function(){
   var c2=document.createElement('canvas');c2.width=c2.height=256;var x2=c2.getContext('2d');x2.drawImage(img,0,0);
@@ -441,24 +441,28 @@ document.getElementById('cb-lore').onchange=function(){loreOn=this.checked;if(lo
 // アンダーパス・冠水しやすい道路（OpenStreetMap）
 var roadLayer=L.layerGroup(), roadDone=false;
 function loadRoad(){
- var r=Math.max(800,Math.min(radius*1.2,5000)),a='(around:'+Math.round(r)+','+center[0]+','+center[1]+')';
- var q='[out:json][timeout:90];(way["highway"]["tunnel"]'+a+';way["highway"]["layer"~"^-"]'+a+';way["highway"]["flood_prone"="yes"]'+a+';node["ford"]'+a+';way["ford"]'+a+';);out center tags;';
+ var r=Math.max(500,Math.min(radius,4000)),dlat=r/111320,dlon=r/(111320*Math.cos(center[0]*Math.PI/180));
+ var bb='('+(center[0]-dlat).toFixed(5)+','+(center[1]-dlon).toFixed(5)+','+(center[0]+dlat).toFixed(5)+','+(center[1]+dlon).toFixed(5)+')';
+ var RD='["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|living_street)(_link)?$"]';
+ var q='[out:json][timeout:40];(way'+RD+'["tunnel"~"^(yes|culvert|building_passage)$"]'+bb+';way'+RD+'["layer"~"^-"]'+bb+';way["highway"]["flood_prone"="yes"]'+bb+';node["ford"]'+bb+';way["ford"]'+bb+';);out center 600;';
  var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];var i=0;
- (function go(){ if(i>=eps.length){st('道路データを取得できず。時間をおいて再実行');return;}
-  var ep=eps[i++];st('アンダーパス等を取得中…（'+i+'/'+eps.length+'）');
-  fetch(ep+'?data='+encodeURIComponent(q)).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
+ function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;st(t);}
+ (function go(){ if(i>=eps.length){rs('取得できず（地図データのサーバーが混雑）。少し時間をおいて「再取得」');return;}
+  var ep=eps[i++];rs('取得中…（'+i+'/'+eps.length+'）');
+  var ac=('AbortController' in window)?new AbortController():null;var tm=setTimeout(function(){if(ac)ac.abort();},45000);
+  fetch(ep,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'},signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json();}).then(function(j){
    roadLayer.clearLayers();var n=0;
-   j.elements.forEach(function(e){var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;
-    var kind=t.tunnel?'トンネル・アンダーパス':(t.layer&&t.layer.indexOf('-')===0)?'掘割・地下区間':t.ford?'洗い越し（冠水路）':t.flood_prone?'冠水しやすい道路':'橋梁';
+   (j.elements||[]).forEach(function(e){var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;
+    var kind=t.tunnel?'トンネル・アンダーパス':(t.layer&&t.layer.indexOf('-')===0)?'掘割・地下区間':t.ford?'洗い越し（冠水路）':'冠水しやすい道路';
     n++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
      .bindTooltip(kind,{direction:'top'})
      .bindPopup('<b>'+(t.name||t.ref||'（名称なし）')+'</b><br>'+kind+'<br>種別：'+(t.highway||'—')+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});
-   st('アンダーパス・冠水しやすい道路：'+n+'件（半径'+fmt(Math.round(r))+'）'+(n?'':'。該当なし、または未登録'));roadDone=true;
-  }).catch(function(){go();});})();}
+   rs(n+'件（調査地点から約'+fmt(Math.round(r))+'四方）'+(n?'':'。該当なし、または未登録'));roadDone=true;
+  }).catch(function(){clearTimeout(tm);go();});})();}
 document.getElementById('cb-road').onchange=function(){if(this.checked){map.addLayer(roadLayer);loadRoad();}else map.removeLayer(roadLayer);};
 document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad();};
-document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadDis(true);map.addLayer(disNow);}else map.removeLayer(disNow);};
-document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);}else map.removeLayer(disPast);};
+document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
+document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
 document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
 setRadius(2000);
 document.getElementById('btn-jp').onclick=function(){setRadius(1500000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
