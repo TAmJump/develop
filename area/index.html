@@ -182,10 +182,10 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 
 <section class="section" id="hazard"><div class="wrap">
 <div class="head"><span class="num">01 / DISASTER RISK</span><h2>災害リスクとハザードマップ</h2></div>
-<p class="muted" style="margin:0 0 10px">国土地理院「重ねるハザードマップ」の洪水浸水想定・浸水継続時間・家屋倒壊等氾濫想定・土砂災害警戒区域を重ねて表示。半径は50mから50kmまで設定できる。</p>
+<p class="muted" style="margin:0 0 10px">国土地理院「重ねるハザードマップ」の洪水浸水想定・浸水継続時間・家屋倒壊等氾濫想定・土砂災害警戒区域を重ねて表示。半径は50mから日本全体（1,500km）まで、ボタンかバーで設定できる。</p>
 <div class="bar"><span class="muted">半径</span>
-<button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button><button class="ctrl r-btn" data-m="50000" type="button">50km</button><button class="ctrl" id="btn-jp" type="button">日本全体</button>
-<input id="r-range" max="4.7" min="1.7" step="0.01" type="range" value="3.3"><input id="r-num" max="50000" min="20" step="10" type="number" value="2000">
+<button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button><button class="ctrl r-btn" data-m="50000" type="button">50km</button><button class="ctrl r-btn" data-m="100000" type="button">100km</button><button class="ctrl r-btn" data-m="300000" type="button">300km</button><button class="ctrl" id="btn-jp" type="button">日本全体</button>
+<input id="r-range" max="6.18" min="1.7" step="0.01" type="range" value="3.3"><input id="r-num" max="1500000" min="20" step="10" type="number" value="2000">
 <span class="muted">m　現在：<b id="r-txt">2km</b>（外側の円が指定半径、内側は1/2・1/4）</span></div>
 <div class="mapbox" id="hz-box"><div class="fsbar"><button class="ctrl" id="hz-fs" type="button">大画面で見る</button></div>
 <div id="hazmap"></div>
@@ -298,7 +298,7 @@ function drawRings(){rings.clearLayers();
   L.circle(center,{radius:r,color:['#c43434','#be9234','#2e7d78'][i],weight:i?1.5:2.5,fill:false,dashArray:i?'6 6':null}).addTo(rings);
   L.marker(L.latLng(center[0]+r/111320,center[1]),{icon:L.divIcon({className:'',html:'<span class="ring-label">'+fmt(Math.round(r))+'</span>',iconSize:[50,16],iconAnchor:[25,8]})}).addTo(rings);});}
 function fit(){map.fitBounds(L.latLng(center).toBounds(radius*2.2));}
-function setRadius(m,doFit){radius=Math.max(20,Math.min(50000,Math.round(m)));
+function setRadius(m,doFit){radius=Math.max(20,Math.min(1500000,Math.round(m)));
  document.getElementById('r-num').value=radius;document.getElementById('r-range').value=Math.log10(radius);
  document.getElementById('r-txt').textContent=fmt(radius);drawRings();if(doFit!==false)fit();}
 document.querySelectorAll('.r-btn').forEach(function(b){b.onclick=function(){setRadius(+b.dataset.m);};});
@@ -461,7 +461,7 @@ document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadD
 document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);}else map.removeLayer(disPast);};
 document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
 setRadius(2000);
-document.getElementById('btn-jp').onclick=function(){map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
+document.getElementById('btn-jp').onclick=function(){setRadius(1500000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
 FS('hz-box','hz-fs',map);
 })();
 </script>
