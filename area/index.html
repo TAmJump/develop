@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全国エリア調査｜ハザード・周辺の医療介護施設・水害対策｜TAmJ 不動産開発</title>
+<meta name="description" content="住所・地名を入れると全国どこでも、洪水・土砂災害のハザード、低地・窪地、アンダーパス、周辺の病院・診療所・介護施設・生活施設、水害対策の設計の目安と国の支援制度を確認できる。">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#f4efe6;color:#1c2530;font-family:"Noto Sans JP","Yu Gothic","Hiragino Sans",sans-serif;line-height:1.75}
+.nav{position:sticky;top:0;z-index:20;background:#f4efe6;color:#1c2530;display:flex;align-items:center;padding:0 24px;height:62px;border-bottom:1px solid #c9bda8}
+.brand{font-family:Georgia,serif;font-size:18px;margin-right:24px;white-space:nowrap}
+.brand small{display:block;font:8px monospace;letter-spacing:.22em;color:#9b6339}
+.tabs{display:flex;overflow-x:auto;height:100%;flex:1;scrollbar-width:thin}
+.tabs button{border:0;background:none;color:#6e6354;padding:0 12px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-size:13px}
+.tabs button.on{color:#1c2530;border-color:#9b6339;font-weight:600}
+.ctrl{border:1px solid #9b6339;background:none;color:#7e4e2d;border-radius:20px;padding:6px 12px;cursor:pointer;white-space:nowrap;margin-left:6px}
+
+.hero{padding:64px 0 44px;border-bottom:1px solid #c9bda8;background:#eee5d6}
+.wrap{max-width:1180px;margin:auto;padding:0 28px}
+.kicker{font:10px monospace;letter-spacing:.28em;color:#9b6339;text-transform:uppercase}
+.hero h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:42px;line-height:1.3;margin:12px 0}
+.hero p{max-width:880px;font-size:15px}
+.chips span{display:inline-block;border:1px solid #9b6339;color:#7e4e2d;padding:3px 9px;margin:12px 5px 0 0;font:10px monospace}
+.section{padding:48px 0;border-bottom:1px solid #d3c7b4}
+.head{display:flex;gap:18px;align-items:baseline;margin-bottom:22px;flex-wrap:wrap}
+.num{font:10px monospace;color:#9b6339;letter-spacing:.2em}
+.head h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:27px;margin:0}
+h3{font-size:16px;margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:#faf7f0;border:1px solid #c9bda8;padding:20px}
+.card.acc{border-left:4px solid #9b6339}
+.card.teal{border-top:4px solid #2e7d78}.card.coral{border-top:4px solid #d66a54}.card.gold{border-top:4px solid #be9234}.card.plum{border-top:4px solid #804a6e}
+.card p{margin:.3em 0 0}
+.stat{font:34px Georgia,serif;line-height:1.15}
+.stat small{font:12px sans-serif;color:#7b6c5a}
+.label{font-size:11px;color:#6e6354;margin-top:7px}
+.table{width:100%;border-collapse:collapse;background:#faf7f0;font-size:13px;margin:6px 0}
+.table th,.table td{padding:9px 12px;border-bottom:1px solid #d5c9b7;text-align:left;vertical-align:top}
+.table thead th{background:#eee5d6;font-weight:600;border-bottom:2px solid #c9bda8}
+.table tbody th{background:#f2ebdf;font-weight:600;width:24%}
+.table .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.table .note{font-size:11.5px;color:#6e6354}
+.table .neg{color:#b52d2d;font-weight:600}
+.pl tr.grp td{background:#eee5d6;font-weight:600;font-size:12px;letter-spacing:.08em}
+.pl tr.sub td{font-weight:600;border-top:1px solid #b9aa94}
+.pl tr.tot td{font-weight:700;font-size:14px;border-top:2px solid #9b6339;background:#f5ede0}
+.pl tr.tot.neg td{color:#b52d2d}
+.pl th:nth-child(1),.pl td:nth-child(1){width:30%}
+.pl th:nth-child(2),.pl td:nth-child(2),.pl th:nth-child(3),.pl td:nth-child(3){width:12%}
+.sens th,.sens td{text-align:center}
+.pl.ramp th,.pl.ramp td{width:25%!important}
+.sens tbody th{width:auto}
+.callout{border-left:4px solid #9b6339;background:#eee5d6;padding:16px 20px;margin:18px 0}
+.callout.warn{border-left-color:#b52d2d;background:#f8ece7}
+.callout.teal{border-left-color:#2e7d78;background:#e7efec}
+.plan{background:#fff;border:1px solid #c9bda8;padding:10px;position:relative;margin:8px 22px 30px 0;box-shadow:22px 22px 0 #dfe9e6}
+.plan.coral{box-shadow:22px 22px 0 #f1dcd4}.plan.gold{box-shadow:22px 22px 0 #efe3c6}.plan.plum{box-shadow:22px 22px 0 #e8dbe3}
+.plan img{width:100%;display:block}
+.caption{font-size:11px;color:#665d51;padding:8px 4px 0}
+details.orig{margin:14px 0;border:1px solid #c9bda8;background:#faf7f0;padding:10px 14px}
+details.orig summary{cursor:pointer;font-size:13px;color:#7e4e2d}
+details.orig img{width:100%;margin-top:10px;border:1px solid #d5c9b7}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.step{padding:16px 14px;border:1px solid #c9bda8;background:#faf7f0}
+.step b{display:block;color:#9b6339;font:10px monospace;letter-spacing:.14em;margin-bottom:7px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.kpi{border:1px solid #c9bda8;background:#faf7f0;padding:14px 16px}
+.kpi span{display:block;font-size:11px;color:#6e6354}
+.kpi b{display:block;font:26px Georgia,serif;margin-top:4px}
+.kpi small{font-size:11px;color:#6e6354}
+.kpi.neg b{color:#b52d2d}
+.kpi.acc{border-left:4px solid #2e7d78}
+.zone{padding:14px;border:1px solid #c9bda8;background:#fff}
+.zone b{display:block;margin-bottom:5px}
+.zone.red{border-top:5px solid #c43434}.zone.yellow{border-top:5px solid #c8961e}.zone.green{border-top:5px solid #3c7d5a}.zone.blue{border-top:5px solid #346096}
+.muted{color:#6e6354;font-size:12px}
+.source{font:10.5px monospace;color:#746a5d;border-left:2px solid #9b6339;padding-left:9px;margin-top:10px}
+.conf{background:#c9bda8;color:#c9bda8;border-radius:2px;padding:0 6px}
+.show .conf{background:transparent;color:inherit}
+.footer{background:#eee5d6;border-top:3px solid #9b6339;padding:36px 0;margin-top:0}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.tag{display:inline-block;border:1px solid #9b6339;color:#7e4e2d;padding:1px 7px;font-size:10px;margin-left:6px;vertical-align:middle}
+.fee-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+.fee-card{border:1px solid #cdbda5;padding:24px;background:#faf7f0}
+.fee-card.acc{border-top:4px solid #9b6339}
+.payline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.paypoint{border-top:3px solid #a86542;padding-top:10px;font-size:13px}
+.big{font:40px Georgia,serif}
+@media(max-width:900px){.grid,.grid3,.grid2,.flow,.kpis,.fee-grid,.footer-grid,.payline{grid-template-columns:1fr}.hero h1{font-size:30px}.wrap{padding:0 16px}.table{display:block;overflow-x:auto}.plan{margin-right:12px;box-shadow:12px 12px 0 #dfe9e6}.brand small{display:none}}
+@media print{.nav{display:none}.panel{display:block!important;page-break-before:always}.panel:first-of-type{page-break-before:auto}.hero{padding:26px 0}.section{padding:24px 0}details.orig{display:none}.table{font-size:11px}}
+
+
+#hazmap{height:70vh;min-height:500px;border:1px solid #c9bda8;background:#eee5d6}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 8px;font-size:12.5px}
+.bar input[type=number]{border:1px solid #c9bda8;padding:5px 6px;width:86px;border-radius:6px}
+.bar input[type=range]{width:220px}
+.r-btn{padding:5px 10px}
+.am-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;margin:10px 0}
+.am-legend label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.site-pin{width:22px;height:22px;border-radius:50%;background:#c43434;border:3px solid #fff;box-shadow:0 0 0 2px #c43434}
+.ring-label{background:rgba(250,247,240,.92);border:1px solid #9b6339;color:#7e4e2d;font-size:11px;padding:1px 6px;border-radius:10px;white-space:nowrap}
+.mut{color:#6e6354;font-size:11px}
+.cand-b{border:1px solid #c9bda8;background:#fff;padding:5px 10px;border-radius:14px;cursor:pointer;font-size:12px}
+.cand-b:hover{background:#eee5d6}
+.own{border-left:4px solid #804a6e;background:#f3edf1;padding:10px 14px;margin:10px 0;font-size:12.5px}
+#areamap{height:600px;border:1px solid #c9bda8;background:#eee5d6}
+.am-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.am-bar button,.am-bar label.btn{border:1px solid #9b6339;background:#faf7f0;color:#7e4e2d;padding:6px 12px;border-radius:18px;cursor:pointer;font-size:12.5px}
+.am-bar input[type=file]{display:none}
+.am-status{font-size:12px;color:#6e6354}
+.am-dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+
+:root{--coral:#D2553F;--coral-d:#B8452F;--teal:#2E7D78}
+body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select:text}
+.topnav{position:sticky;top:0;z-index:1000;background:#f4efe6;border-bottom:1px solid #c9bda8}
+.topnav .in{max-width:1180px;margin:auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:20px}
+.topnav .brand{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:18px;color:#1c2530;text-decoration:none;margin-right:auto}
+.topnav .brand small{display:block;font:9px monospace;letter-spacing:.22em;color:#9b6339}
+.topnav nav{display:flex;gap:18px;font-size:13px}.topnav nav a{color:#6e6354;text-decoration:none}.topnav nav a.cta{color:var(--coral)}
+.locbar{position:sticky;top:62px;z-index:999;background:#faf7f0;border-bottom:1px solid #c9bda8;padding:10px 0}
+.locbar .wrap{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.locbar input[type=text]{border:1px solid #c9bda8;background:#fff;padding:8px 14px;border-radius:20px;font-size:14px;width:340px;max-width:100%}
+.locbar .ctrl{margin-left:0;font-size:13px;padding:7px 14px}.locbar .ctrl.p{background:var(--coral);border-color:var(--coral);color:#fff}
+#cand{margin-top:8px}
+.tw{overflow-x:auto}
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.toc a{display:block;border:1px solid #c9bda8;background:#faf7f0;padding:12px 14px;text-decoration:none;color:#1c2530;font-size:13.5px}
+.toc a em{display:block;font:10px monospace;color:#9b6339;letter-spacing:.14em;font-style:normal;margin-bottom:3px}
+.gos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.go{display:block;border:1px solid #c9bda8;border-top:3px solid var(--teal);background:#fff;padding:16px 18px;text-decoration:none;color:#1c2530;transition:.2s}
+.go:nth-child(2n){border-top-color:var(--coral)}.go:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(60,40,20,.08)}
+.go em{font:10px monospace;color:#9b6339;letter-spacing:.14em;font-style:normal}.go b{display:block;font-size:16px;margin:4px 0}.go span{font-size:12.5px;color:#6e6354}
+.policy{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.policy div{background:#faf7f0;border:1px solid #c9bda8;padding:16px 18px;font-size:13px;line-height:1.85}
+.policy b{display:block;margin-bottom:4px;color:#7e4e2d}
+.free{display:inline-block;background:#fff;border:1px solid var(--coral);color:var(--coral);border-radius:99px;padding:3px 12px;font-size:12px;margin-top:14px}
+#gate{position:fixed;inset:0;z-index:20000;background:rgba(244,239,230,.94);display:none;align-items:center;justify-content:center}
+#gate .bx{background:#faf7f0;border:1px solid #c9bda8;max-width:440px;width:90%;padding:32px 28px;text-align:center}
+#gate h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:20px;margin:0 0 10px}
+#gate p{font-size:13px;color:#6e6354;line-height:1.9;margin:0 0 16px}
+#gate a.b{display:block;padding:11px;border:1px solid var(--coral);border-radius:6px;text-decoration:none;font-size:14px;margin-top:10px}
+#gate a.p{background:var(--coral);color:#fff}#gate a.s{background:#fff;color:var(--coral)}
+#gate button{margin-top:14px;border:0;background:none;color:#8a7c68;font-size:12px;cursor:pointer;text-decoration:underline}
+.foot{background:#eee5d6;border-top:3px solid #9b6339;padding:28px 0;font-size:12px;color:#6e6354}
+@media(max-width:900px){.toc,.gos,.policy{grid-template-columns:1fr 1fr}.topnav nav{display:none}.locbar input[type=text]{width:100%}}
+@media(max-width:560px){.toc,.gos,.policy{grid-template-columns:1fr}}
+@media print{.topnav,.locbar,#gate,.toc,.gos{display:none}}
+</style>
+</head><body>
+<header class="topnav"><div class="in">
+<a class="brand" href="/">不動産開発<small>TAMJ DEVELOPMENT</small></a>
+<nav><a href="/listings/">案件一覧</a><a href="/members/index.html">ツール</a><a href="/contact/" class="cta">お問い合わせ</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+<div class="kicker">AREA CHECK · JAPAN</div>
+<h1>全国エリア調査</h1>
+<p>医療・介護・住まいの開発候補地について、災害リスク、周辺の医療・介護・生活施設、水害対策の設計の目安と国の支援制度を確認するページ。住所・地名を入れると全国どこでも表示。</p>
+<div class="chips"><span>HAZARD MAP</span><span>LOW LAND</span><span>MEDICAL &amp; CARE MAP</span><span>FLOOD RESILIENCE</span><span>SUBSIDY</span></div>
+<span class="free">1地点は登録なしで利用可。2地点目からは会員登録（無料）</span>
+<div class="toc"><a href="#hazard"><em>01</em>災害リスクとハザードマップ</a><a href="#market"><em>02</em>周辺の医療・介護・生活施設</a><a href="#flood"><em>03</em>浸水・停電に備える設計の目安</a><a href="#policy"><em>04</em>水害対策の制度と国の支援</a></div>
+</div></div>
+
+<div class="locbar"><div class="wrap">
+<input id="q" type="text" placeholder="調べる住所・地名・駅名（例：横浜市青葉区、大宮駅）">
+<button class="ctrl p" id="btn-q" type="button">調べる</button>
+<button class="ctrl" id="btn-geo" type="button">現在地</button>
+<button class="ctrl" id="btn-print" type="button">印刷・PDF保存</button>
+<span class="muted" id="note">初期表示は東京駅周辺。地図の右クリック、ピンのドラッグでも地点を変えられる。</span>
+<div id="cand" style="display:none;gap:6px;flex-wrap:wrap;width:100%"></div>
+</div></div>
+
+<section class="section" id="hazard"><div class="wrap">
+<div class="head"><span class="num">01 / DISASTER RISK</span><h2>災害リスクとハザードマップ</h2></div>
+<p class="muted" style="margin:0 0 10px">国土地理院「重ねるハザードマップ」の洪水浸水想定・浸水継続時間・家屋倒壊等氾濫想定・土砂災害警戒区域を重ねて表示。半径は50mから50kmまで設定できる。</p>
+<div class="bar"><span class="muted">半径</span>
+<button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button>
+<input id="r-range" max="4.7" min="1.7" step="0.01" type="range" value="3.3"><input id="r-num" max="50000" min="20" step="10" type="number" value="2000">
+<span class="muted">m　現在：<b id="r-txt">2km</b>（外側の円が指定半径、内側は1/2・1/4）</span></div>
+<div id="hazmap"></div>
+<div class="am-legend" id="haz-legend"></div>
+<div class="own"><b>参考レイヤー</b>　<span class="mut">［公式］＝国の公開データ／［弊社の見解］＝弊社が作成した目安</span><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button></label><br>
+<label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
+<div class="mut" style="margin-top:6px">自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。表示中の半径に連動して取得（最大12km）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム11以上で表示。</div></div>
+<div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
+<p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
+</div></section>
+
+<section class="section" id="market"><div class="wrap">
+<div class="head"><span class="num">02 / AREA MAP</span><h2>周辺の医療・介護・生活施設（半径2km・6km・10km・15km）</h2></div>
+<p class="muted">上で調べた地点を中心に表示。病院・診療所・薬局・スーパー・学校・高齢者施設はOpenStreetMap、介護・看護事業所は厚生労働省「介護サービス情報公表システム」のオープンデータ（CSV）を読み込んで重ねる。CSVは厚労省のサイトから都道府県・サービス別に取得できる。</p>
+<div class="am-bar"><button id="am-osm" type="button">病院・診療所・生活施設を読み込む（OpenStreetMap）</button><label class="btn" for="am-csv">介護・看護事業所のCSVを読み込む（複数可）</label><input accept=".csv" id="am-csv" multiple type="file"><span class="am-status" id="am-status"></span></div>
+<div id="areamap"></div>
+<div class="am-legend" id="am-legend"></div>
+<div class="tw"><table class="table" id="am-count" style="margin-top:8px"><thead><tr><th>区分</th><th class="n">2km以内</th><th class="n">6km以内</th><th class="n">10km以内</th><th class="n">15km以内</th></tr></thead><tbody><tr><td class="muted" colspan="5">データを読み込むと件数を集計</td></tr></tbody></table></div>
+<p class="source">出典：OpenStreetMap contributors（ODbL）、厚生労働省「介護サービス情報公表システム」オープンデータ。OpenStreetMapは有志の登録データのため、抜けや閉院の反映遅れがある。</p>
+</div></section>
+
+<section class="section" id="flood"><div class="wrap">
+<div class="head"><span class="num">03 / FLOOD RESILIENCE</span><h2>浸水・停電に備える設計の目安</h2></div>
+<p class="muted">豪雨では、地上に置いた電気設備や発電機が水に浸かって使えなくなる事例が出ている。医療・介護施設は、浸水を前提に設備の置き場所を決めておく。金額は設計前の概算で、規模・構造・地域で変わる。</p>
+<div class="tw"><table class="table"><thead><tr><th>対策</th><th>内容</th><th>概算費用</th><th>効果</th></tr></thead><tbody><tr><td><b>1階床高の引上げ</b></td><td>基礎の立上げで地盤面＋0.5〜1.0m。玄関・車寄せはスロープで接続。</td><td>800〜1,500万円／棟</td><td>床上浸水の回避。想定浸水深0.5m級なら居室を守れる</td></tr><tr><td><b>非常用発電機を2階・屋上へ</b></td><td>地上設置を避け、2階または屋上に設置。燃料タンク（72時間分）も同じ階。床荷重・防振・排気・燃料配管・搬入と点検の動線を設計に入れる。</td><td>1,500〜2,500万円／棟（上階設置の割増 2〜4割）</td><td>浸水で発電機が止まる事態を避ける</td></tr><tr><td><b>受変電・サーバー・厨房冷蔵を2階へ</b></td><td>キュービクル、分電盤、通信機器、冷蔵・冷凍庫を2階以上に。引込みは高所から。</td><td>600〜1,200万円／棟</td><td>停電復旧後すぐ使える。食材・薬剤の保全</td></tr><tr><td><b>蓄電池と太陽光の連系</b></td><td>屋根の太陽光に産業用蓄電池100kWh級を接続。停電時に空調・給水ポンプ・冷蔵へ給電する回路を分ける。</td><td>蓄電池 2,000〜3,000万円／棟、回路分け 200〜400万円／棟</td><td>発電機の燃料が尽きる前に日中の電力を確保</td></tr><tr><td><b>止水板・防水扉</b></td><td>出入口・搬入口・EV前に設置。常時は外して使える形式。</td><td>300〜800万円／棟</td><td>0.3〜0.5m級の浸水と雨水の逆流を止める</td></tr><tr><td><b>排水ピット・逆流防止弁</b></td><td>水中ポンプ2台と逆流防止弁。非常用電源の回路に接続。</td><td>300〜600万円／棟</td><td>内水氾濫時の建物内への逆流を防ぐ</td></tr><tr><td><b>雨水の貯留・浸透</b></td><td>敷地内の貯留槽・浸透施設、外構の勾配と排水経路の二系統化。</td><td>規模により 1,000〜6,000万円</td><td>敷地内と周辺道路の冠水を軽減。流出抑制の協議にも使う</td></tr><tr><td><b>給水の確保</b></td><td>受水槽の増設（3日分）、非常用給水栓、災害用井戸＋簡易浄水。</td><td>受水槽 200〜500万円／棟、井戸 300〜800万円</td><td>断水時の飲料・生活用水</td></tr><tr><td><b>備蓄・通信・車両</b></td><td>3日分以上の備蓄（1階が浸水想定なら2階）、衛星通信と無線機、外部給電できる送迎車。</td><td>合計 900〜2,100万円程度</td><td>孤立時も安否確認・応援要請・給電ができる</td></tr></tbody></table></div>
+<h3 style="margin:26px 0 10px">運営で決めておくこと</h3>
+<div class="tw"><table class="table"><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td><b>救急搬送のルート</b></td><td>敷地から搬送先病院までの経路を2ルート以上確保し、各ルートで冠水しやすい地点を洗い出す。1本でも通れれば搬送できる配置にする。</td></tr><tr><td><b>アンダーパス・掘割</b></td><td>大雨時にまず通行止めになる。上の地図の「アンダーパス・冠水しやすい道路」で位置を確認し、搬送・職員参集・物資搬入の迂回路を平時に決める。</td></tr><tr><td><b>職員の参集</b></td><td>公共交通が止まった場合の参集可能人数を、居住地別に事前把握する。近隣採用を増やすほど災害時の体制が強くなる。</td></tr><tr><td><b>車両の退避</b></td><td>送迎車・訪問車を、地上駐車場が冠水する前に高い場所へ移す判断基準（警報・水位・時刻）を決める。</td></tr><tr><td><b>地域の受入れ</b></td><td>デイサービスの食堂などを福祉避難所として市町村と協定すると、市町村の支援・備蓄の対象になる。トイレ・電源・段差のない出入口を設計に入れる。</td></tr></tbody></table></div>
+<div class="callout teal">建築費に上乗せする項目（床高・上階設置・止水）と、運営側が設備投資する項目（蓄電池・備蓄・通信・車両）は、賃料と設備投資の負担区分を契約で決める。開発費全体への影響は<a href="/members/estimate-development.html">開発費シミュレーター</a>で試算できる。</div>
+</div></section>
+
+<section class="section" id="policy"><div class="wrap">
+<div class="head"><span class="num">04 / POLICY &amp; SUBSIDY</span><h2>水害対策の制度と国の支援</h2></div>
+<p class="muted">2026年9月時点の整理。都道府県・市町村の上乗せ制度や募集時期は地域で異なるため、候補地の自治体の最新の要綱で確認する。</p>
+<h3 style="margin:6px 0 10px">制度・指針の流れ</h3>
+<div class="tw"><table class="table"><thead><tr><th>時期</th><th>制度・指針</th><th>内容</th></tr></thead><tbody><tr><td>2020年〜</td><td><b>建築物における電気設備の浸水対策ガイドライン（国土交通省・経済産業省）</b></td><td>受変電設備・非常用発電機の高所配置、止水板・防水扉、防水区画、配管貫通部の止水など。新築の設計時から適用できる。</td></tr><tr><td>2021年〜</td><td><b>介護施設等の非常災害対策の強化</b></td><td>浸水想定区域・土砂災害警戒区域内の要配慮者利用施設は、避難確保計画の作成と訓練が義務。</td></tr><tr><td>2024年4月〜</td><td><b>介護事業所の業務継続計画（BCP）</b></td><td>自然災害・感染症のBCP策定が義務化。未策定は基本報酬の減算対象。</td></tr><tr><td>2026年9月〜</td><td><b>国土交通省 水災害調査・対策検討委員会</b></td><td>都市型の内水氾濫対策などを検討し、年内を目途に取りまとめ予定。ハザード情報・設計・補助の見直しにつながる可能性。</td></tr><tr><td>今後</td><td><b>浸水想定・建築設備の基準</b></td><td>内水リスク情報の高度化が焦点。全国一律の床高・発電機の設置階などの新しい数値は未決定のため、最新の想定浸水深＋余裕で自主基準を置くのが安全。</td></tr></tbody></table></div>
+<h3 style="margin:26px 0 10px">主な支援制度（国の制度・都道府県経由のもの）</h3>
+<div class="tw"><table class="table"><thead><tr><th>制度</th><th>対象</th><th>主な対象経費</th><th>注意点</th><th>出典</th></tr></thead><tbody><tr><td><b>地域介護・福祉空間整備等施設整備交付金</b></td><td>高齢者施設等</td><td>非常用自家発電、給水設備、水害対策の改修など</td><td>新築時の単純な上乗せとは限らない。対象メニューと施設種別を確認</td><td><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/fukushi/shisetsu_seibi_00001.html" target="_blank" rel="noopener">開く</a></td></tr><tr><td><b>高齢者施設等の水害対策強化事業</b></td><td>高齢者施設等</td><td>水害対策に係る整備（止水・設備の高所化等）</td><td>年度ごとの募集。都道府県経由の協議が一般的</td><td>—</td></tr><tr><td><b>介護施設等の施設整備補助（都道府県）</b></td><td>介護保険施設・事業所</td><td>特養などの新築・整備</td><td>公募・整備計画・選定が前提。要望調査への回答は補助の確約ではない</td><td>—</td></tr><tr><td><b>社会福祉施設等施設整備費補助金</b></td><td>障害福祉サービス事業所等</td><td>施設整備</td><td>法人種別・サービス・年度の募集要件を確認</td><td>—</td></tr><tr><td><b>医療施設の防災・非常用設備関連補助</b></td><td>対象となる病院・診療所等</td><td>非常用発電・給水など</td><td>事業ごとに補助率・対象が異なる。無床診療所が一律対象ではない</td><td>—</td></tr><tr><td><b>社会福祉施設等災害復旧費</b></td><td>被災した社会福祉施設等</td><td>建物・設備の災害復旧</td><td>新築の事前整備ではなく被災後の復旧が対象</td><td>—</td></tr></tbody></table></div>
+<p class="source">出典：厚生労働省「介護施設等の整備について」<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/fukushi/shisetsu_seibi_00001.html" target="_blank" rel="noopener">開く</a>、国土交通省「水災害調査・対策検討委員会」<a href="https://www.mlit.go.jp/report/press/mizukokudo03_hh_001364.html" target="_blank" rel="noopener">開く</a>。補助額・補助率は各年度の要綱で確認が必要。</p>
+</div></section>
+
+<section class="section" id="next"><div class="wrap">
+<div class="head"><span class="num">05 / NEXT</span><h2>候補地の検討を進める</h2></div>
+<div class="gos"><a class="go" href="/members/estimate-development.html"><em>01</em><b>開発費の概算はコチラ</b><span>施設種別と規模から、面積・建築費・投資額を試算</span></a><a class="go" href="/members/service-equipment.html"><em>02</em><b>什器備品・リースはコチラ</b><span>数量の自動算出と、購入・リースの比較</span></a><a class="go" href="/members/scheme-structure.html"><em>03</em><b>スキーム設計はコチラ</b><span>SPC・運営会社・ファンドの組み方を比較</span></a><a class="go" href="/listings/"><em>04</em><b>取扱案件はコチラ</b><span>開発用地・運営事業者募集・M&A案件</span></a><a class="go" href="https://rebridge.tamjump.com/" target="_blank" rel="noopener"><em>05</em><b>M&A・事業承継はコチラ</b><span>医療・介護事業の譲渡・承継（Re-Bridge）</span></a><a class="go" href="/contact/"><em>06</em><b>個別のご相談はコチラ</b><span>候補地の評価・事業計画・運営者探し</span></a></div>
+</div></section>
+
+<section class="section" id="terms"><div class="wrap">
+<div class="head"><span class="num">06 / TERMS &amp; DATA</span><h2>利用条件とデータの取扱い</h2></div>
+<div class="policy">
+<div><b>入力した住所・地点</b>弊社のサーバーには送信・保存しない。住所の検索は国土地理院とOpenStreetMap、施設の取得はOpenStreetMap（Overpass API）に、ブラウザから直接送信され、各提供元の利用条件に従う。現在地はボタンを押したときだけ、この端末内で使う。</div>
+<div><b>利用回数の管理</b>未登録の方が調べた最初の地点の概略位置（市区町村程度の精度）を、この端末のブラウザ内にだけ保存する。弊社が取得・閲覧することはない。会員の方はこの制限なく利用できる。</div>
+<div><b>表示内容の位置づけ</b>公開データに基づく目安で、土地・建物の安全性や補助の採択を保証するものではない。正式な判断には、市町村のハザードマップ、各制度の要綱、現地調査、専門家の確認を用いる。表示に基づく判断と結果は利用者の責任とする。</div>
+<div><b>出典とライセンス</b>地図・ハザード・標高：国土地理院（利用規約に基づく出典表示）。施設：© OpenStreetMap contributors（ODbL）。介護事業所：厚生労働省 介護サービス情報公表システム。各データの権利は各提供元に帰属する。</div>
+<div><b>著作物の扱い</b>本ページの文章・構成・独自の算出（低地・窪地の表示方法、設計の目安、制度の整理）は弊社の著作物。無断での転載・複製・営利目的の再配布を禁じる。印刷・PDF保存は、自社内の検討の範囲で利用できる。</div>
+<div><b>個人情報</b>会員登録・お問い合わせで取得する個人情報は、<a href="https://tamjump.github.io/TAmj/privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に基づき取り扱う。本ページの地図操作で個人情報を取得することはない。</div>
+</div>
+</div></section>
+
+<footer class="foot"><div class="wrap">タムジ株式会社｜<a href="/">不動産開発トップ</a>｜<a href="/contact/">お問い合わせ</a></div></footer>
+
+<div id="gate"><div class="bx">
+<h2>続けて調べるには会員登録（無料）</h2>
+<p>登録なしで調べられるのは1地点まで。会員登録（無料）とログインで、別の地点の調査、開発費シミュレーター、スキーム設計などのツールを制限なく利用できる。</p>
+<a class="b p" href="/register.html?return=%2Farea%2F">会員登録（無料）</a>
+<a class="b s" href="/login.html?return=%2Farea%2F">ログイン</a>
+<button id="gate-close" type="button">閉じる</button>
+</div></div>
+
+<script>
+var AREA=(function(){
+  var KEY="tamj_area_first", LIMIT_KM=5;
+  function g(k){try{return localStorage.getItem(k);}catch(_){return null;}}
+  function member(){return !!(g("tamj_session")||g("tamj_admin")==="1"||g("tamj_nda_tok_master"));}
+  function km(a,b,c,d){var R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180,s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
+  function gate(){document.getElementById("gate").style.display="flex";}
+  return {
+    // 1地点目は無料。別の地点（5km超）を調べるときは会員登録へ
+    ok:function(lat,lon){
+      if(member())return true;
+      var f=null;try{f=JSON.parse(g(KEY)||"null");}catch(_){}
+      if(!f){try{localStorage.setItem(KEY,JSON.stringify([+lat.toFixed(2),+lon.toFixed(2)]));}catch(_){}return true;}
+      if(km(f[0],f[1],lat,lon)<=LIMIT_KM)return true;
+      gate();return false;
+    },
+    sync:function(c,label,from){if(from!=="mk"&&window.__mkSet)window.__mkSet(c);}
+  };
+})();
+document.getElementById("gate-close").onclick=function(){document.getElementById("gate").style.display="none";};
+</script>
+<script>(function(){
+var C0=[35.6812,139.7671], center=C0.slice(), radius=2000;
+var map=L.map('hazmap',{zoomSnap:0.25}).setView(C0,14); window.__hazMap=map;
+L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図・標高：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜ハザード：<a href="https://disaportal.gsi.go.jp/" target="_blank">重ねるハザードマップ</a>'}).addTo(map);
+var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('中心（ドラッグで移動）');
+var rings=L.layerGroup().addTo(map);
+function fmt(m){return m>=1000?(m/1000)+'km':m+'m';}
+function drawRings(){rings.clearLayers();
+ var rs=[radius,radius/2,radius/4].filter(function(r){return r>=20;});
+ rs.forEach(function(r,i){
+  L.circle(center,{radius:r,color:['#c43434','#be9234','#2e7d78'][i],weight:i?1.5:2.5,fill:false,dashArray:i?'6 6':null}).addTo(rings);
+  L.marker(L.latLng(center[0]+r/111320,center[1]),{icon:L.divIcon({className:'',html:'<span class="ring-label">'+fmt(Math.round(r))+'</span>',iconSize:[50,16],iconAnchor:[25,8]})}).addTo(rings);});}
+function fit(){map.fitBounds(L.latLng(center).toBounds(radius*2.2));}
+function setRadius(m,doFit){radius=Math.max(20,Math.min(50000,Math.round(m)));
+ document.getElementById('r-num').value=radius;document.getElementById('r-range').value=Math.log10(radius);
+ document.getElementById('r-txt').textContent=fmt(radius);drawRings();if(doFit!==false)fit();}
+document.querySelectorAll('.r-btn').forEach(function(b){b.onclick=function(){setRadius(+b.dataset.m);};});
+document.getElementById('r-range').oninput=function(){setRadius(Math.pow(10,+this.value),false);};
+document.getElementById('r-range').onchange=function(){fit();};
+document.getElementById('r-num').onchange=function(){setRadius(+this.value);};
+pin.on('dragend',function(){var ll=pin.getLatLng();if(!AREA.ok(ll.lat,ll.lng)){pin.setLatLng(center);return;}center=[ll.lat,ll.lng];drawRings();AREA.sync(center,'ピンで指定');});
+map.on('contextmenu',function(e){if(!AREA.ok(e.latlng.lat,e.latlng.lng))return;center=[e.latlng.lat,e.latlng.lng];pin.setLatLng(center);drawRings();AREA.sync(center,'地図で指定');});
+document.getElementById('btn-geo').onclick=function(){if(!navigator.geolocation){st('この端末では現在地を取得できない');return;}st('現在地を取得中…');navigator.geolocation.getCurrentPosition(function(p){moveTo(p.coords.latitude,p.coords.longitude,'現在地');},function(){st('現在地を取得できず。住所・地名で検索する');},{enableHighAccuracy:false,timeout:10000});};
+document.getElementById('btn-print').onclick=function(){window.print();};
+// 住所・地名検索（全国）
+function moveTo(lat,lon,label){if(!AREA.ok(lat,lon)){hideCand();return;}center=[lat,lon];pin.setLatLng(center);drawRings();fit();st('調査地点：'+label);hideCand();AREA.sync(center,label);}
+function hideCand(){document.getElementById('cand').style.display='none';}
+function showCand(list){var el=document.getElementById('cand');
+ if(!list.length){el.style.display='none';st('該当なし');return;}
+ el.innerHTML=list.map(function(c,i){return '<button type="button" class="cand-b" data-i="'+i+'">'+c.label+'<span class="mut">（'+c.src+'）</span></button>';}).join('');
+ el.style.display='flex';
+ el.querySelectorAll('.cand-b').forEach(function(b){b.onclick=function(){var c=list[+b.dataset.i];moveTo(c.lat,c.lon,c.label);};});
+ st(list.length+'件の候補。クリックで移動');}
+function search(){var q=document.getElementById('q').value.trim();if(!q)return;st('検索中…');
+ var out=[];
+ fetch('https://msearch.gsi.go.jp/address-search/AddressSearch?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(j){
+  (j||[]).slice(0,6).forEach(function(f){out.push({lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0],label:f.properties.title,src:'国土地理院'});});
+  return fetch('https://nominatim.openstreetmap.org/search?format=json&countrycodes=jp&limit=5&accept-language=ja&q='+encodeURIComponent(q));
+ }).then(function(r){return r.json();}).then(function(j){
+  (j||[]).forEach(function(f){out.push({lat:+f.lat,lon:+f.lon,label:f.display_name.split(',').slice(0,4).join('、'),src:'OpenStreetMap'});});
+  showCand(out);
+ }).catch(function(){showCand(out);});}
+document.getElementById('btn-q').onclick=search;
+document.getElementById('q').onkeydown=function(e){if(e.key==='Enter')search();};
+function st(t){document.getElementById('note').textContent=t;}
+// ハザードタイル
+var defs=[{name:'洪水浸水想定区域（想定最大規模・県管理河川）',a:'01_flood_l2_shinsuishin_data',b:'01_flood_l2_shinsuishin',on:true,c:'#3a6ea8'},
+{name:'洪水浸水想定区域（想定最大規模・国管理河川）',a:'01_flood_l2_shinsuishin_kuni_data',b:'01_flood_l2_shinsuishin_kuni',on:true,c:'#2b5c94'},
+{name:'浸水継続時間（想定最大規模）',a:'01_flood_l2_keizoku_data',b:'01_flood_l2_keizoku',on:false,c:'#7aa7d6'},
+{name:'家屋倒壊等氾濫想定区域（氾濫流）',a:'01_flood_l2_kaokutoukai_hanran_data',b:'01_flood_l2_kaokutoukai_hanran',on:false,c:'#b52d2d'},
+{name:'土砂災害警戒区域（急傾斜地の崩壊）',a:'05_kyukeishakeikaikuiki_data',b:'05_kyukeishakeikaikuiki',on:false,c:'#c8961e'},
+{name:'土砂災害警戒区域（土石流）',a:'05_dosekiryukeikaikuiki_data',b:'05_dosekiryukeikaikuiki',on:false,c:'#a8741a'}];
+var lh='';
+defs.forEach(function(d,i){
+ var t=L.tileLayer('https://disaportaldata.gsi.go.jp/raster/'+d.a+'/{z}/{x}/{y}.png',{opacity:.7,maxNativeZoom:17,maxZoom:18});
+ var sw=false;t.on('tileerror',function(){if(sw)return;sw=true;t.setUrl('https://disaportaldata.gsi.go.jp/raster/'+d.b+'/{z}/{x}/{y}.png');});
+ d.layer=t;if(d.on)t.addTo(map);
+ lh+='<label><input type="checkbox" data-i="'+i+'"'+(d.on?' checked':'')+'><span class="sw" style="background:'+d.c+'"></span>'+d.name+'</label>';});
+var el=document.getElementById('haz-legend');el.innerHTML=lh;
+el.querySelectorAll('input').forEach(function(cb){cb.onchange=function(){var d=defs[cb.dataset.i];cb.checked?map.addLayer(d.layer):map.removeLayer(d.layer);};});
+// 低地・窪地（雨水が集まりやすい地形）— 標高タイルから算出
+var LowLand=L.GridLayer.extend({createTile:function(coords,done){
+ var tile=document.createElement('canvas');tile.width=tile.height=256;
+ var ctx=tile.getContext('2d');var z=Math.min(coords.z,14);
+ if(coords.z<11){done(null,tile);return tile;}
+ var img=new Image();img.crossOrigin='anonymous';
+ img.onload=function(){
+  var c2=document.createElement('canvas');c2.width=c2.height=256;var x2=c2.getContext('2d');x2.drawImage(img,0,0);
+  var d;try{d=x2.getImageData(0,0,256,256).data;}catch(e){done(null,tile);return;}
+  var h=new Float32Array(65536),valid=new Uint8Array(65536);
+  for(var p=0;p<65536;p++){var r=d[p*4],g=d[p*4+1],b=d[p*4+2];
+   if(r===128&&g===0&&b===0){valid[p]=0;continue;}
+   var v=r*65536+g*256+b;if(v>8388608)v-=16777216;h[p]=v*0.01;valid[p]=1;}
+  var B=16,G=16,bmin=new Float32Array(G*G);
+  for(var by=0;by<G;by++)for(var bx=0;bx<G;bx++){var mn=1e9;
+   for(var yy=0;yy<B;yy++)for(var xx=0;xx<B;xx++){var idx=(by*B+yy)*256+bx*B+xx;if(valid[idx]&&h[idx]<mn)mn=h[idx];}
+   bmin[by*G+bx]=mn;}
+  var th=+document.getElementById('low-th').value;
+  var out=ctx.createImageData(256,256);
+  for(var y=0;y<256;y++)for(var x=0;x<256;x++){var i2=y*256+x;if(!valid[i2])continue;
+   var bx2=Math.floor(x/B),by2=Math.floor(y/B),mn2=1e9;
+   for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){var nx=bx2+dx,ny=by2+dy;if(nx<0||ny<0||nx>=G||ny>=G)continue;var v2=bmin[ny*G+nx];if(v2<mn2)mn2=v2;}
+   var rel=h[i2]-mn2;if(rel>th)continue;
+   var a=Math.round(190*(1-rel/th))+30;
+   out.data[i2*4]=30;out.data[i2*4+1]=90;out.data[i2*4+2]=190;out.data[i2*4+3]=a;}
+  ctx.putImageData(out,0,0);done(null,tile);};
+ img.onerror=function(){done(null,tile);};
+ img.src='https://cyberjapandata.gsi.go.jp/xyz/dem_png/'+z+'/'+(coords.x>>(coords.z-z))+'/'+(coords.y>>(coords.z-z))+'.png';
+ return tile;}});
+var lowLayer=new LowLand({opacity:.75,maxZoom:18});
+document.getElementById('low-th').oninput=function(){document.getElementById('low-th-v').textContent=this.value+'m';if(map.hasLayer(lowLayer)){map.removeLayer(lowLayer);map.addLayer(lowLayer);}};
+
+var LORE_COL={'洪水':'#2b6cb0','土砂災害':'#a8741a','津波':'#0d9488','地震':'#b52d2d','高潮':'#7c3aed','火山災害':'#c2410c'};
+var loreLayer=L.layerGroup(), loreCache={}, loreOn=false;
+function loreLoad(){if(!loreOn)return;var b=map.getBounds(),z=7;
+ function tx(lon){return Math.floor((lon+180)/360*Math.pow(2,z));}
+ function ty(lat){var r=lat*Math.PI/180;return Math.floor((1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*Math.pow(2,z));}
+ var x0=tx(b.getWest()),x1=tx(b.getEast()),y0=ty(b.getNorth()),y1=ty(b.getSouth());
+ if((x1-x0+1)*(y1-y0+1)>40){st('自然災害伝承碑：広域すぎるため一部のみ表示');}
+ for(var x=x0;x<=x1;x++)for(var y=y0;y<=y1;y++){(function(x,y){var k=x+'_'+y;if(loreCache[k])return;loreCache[k]=1;
+  fetch('https://cyberjapandata.gsi.go.jp/xyz/disaster_lore_all/7/'+x+'/'+y+'.geojson').then(function(r){return r.ok?r.json():null;}).then(function(g){
+   if(!g||!g.features)return;
+   L.geoJSON(g,{pointToLayer:function(f,ll){var p=f.properties||{},kind=(p.DisasterKind||'').split(/[、,]/)[0],col=LORE_COL[kind]||'#6b21a8';
+    return L.circleMarker(ll,{radius:5,color:'#fff',weight:1,fillColor:col,fillOpacity:.95})
+     .bindPopup('<b>'+(p.Name||'自然災害伝承碑')+'</b><br>災害名：'+(p.DisasterName||'—')+'<br>種別：'+(p.DisasterKind||'—')+'<br>建立：'+(p.ErectionYear||'—')+'<br><span class="mut">'+(p.Description||'').slice(0,160)+'</span><br><span class="mut">出典：国土地理院 自然災害伝承碑</span>');}}).addTo(loreLayer);
+  }).catch(function(){});})(x,y);}}
+map.on('moveend',loreLoad);
+document.getElementById('cb-lore').onchange=function(){loreOn=this.checked;if(loreOn){map.addLayer(loreLayer);loreLoad();st('自然災害伝承碑（全国）を表示');}else map.removeLayer(loreLayer);};
+
+// アンダーパス・冠水しやすい道路（OpenStreetMap）
+var roadLayer=L.layerGroup(), roadDone=false;
+function loadRoad(){
+ var r=Math.max(1000,Math.min(radius*1.5,12000)),a='(around:'+Math.round(r)+','+center[0]+','+center[1]+')';
+ var q='[out:json][timeout:60];(way["highway"]["tunnel"]'+a+';way["highway"]["layer"~"^-"]'+a+';way["highway"]["flood_prone"="yes"]'+a+';node["ford"]'+a+';way["ford"]'+a+';way["highway"]["bridge"]["waterway"]'+a+';);out center tags;';
+ var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];var i=0;
+ (function go(){ if(i>=eps.length){st('道路データを取得できず。時間をおいて再実行');return;}
+  var ep=eps[i++];st('アンダーパス等を取得中…（'+i+'/'+eps.length+'）');
+  fetch(ep+'?data='+encodeURIComponent(q)).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
+   roadLayer.clearLayers();var n=0;
+   j.elements.forEach(function(e){var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;
+    var kind=t.tunnel?'トンネル・アンダーパス':(t.layer&&t.layer.indexOf('-')===0)?'掘割・地下区間':t.ford?'洗い越し（冠水路）':t.flood_prone?'冠水しやすい道路':'橋梁';
+    n++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
+     .bindTooltip(kind,{direction:'top'})
+     .bindPopup('<b>'+(t.name||t.ref||'（名称なし）')+'</b><br>'+kind+'<br>種別：'+(t.highway||'—')+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});
+   st('アンダーパス・冠水しやすい道路：'+n+'件（半径'+fmt(Math.round(r))+'）');roadDone=true;
+  }).catch(function(){go();});})();}
+document.getElementById('cb-road').onchange=function(){if(this.checked){map.addLayer(roadLayer);loadRoad();}else map.removeLayer(roadLayer);};
+document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad();};
+document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
+setRadius(2000);
+})();
+</script>
+<script>(function(){
+var C0=[35.6812,139.7671], center=C0.slice(), RADII=[2,6,10,15];
+var CAT={hospital:['病院','#b52d2d'],clinic:['診療所','#e0735f'],pharmacy:['薬局・ドラッグストア','#be9234'],super:['スーパー','#6b8e23'],school:['学校','#346096'],eldfac:['高齢者施設（OSM）','#804a6e'],
+k_nyusho:['介護・入所系（特養・老健・有料・GH・短期）','#2e7d78'],k_tsusho:['介護・通所系','#3fa39c'],k_houmon:['訪問介護','#8a6f3a'],k_kango:['訪問看護','#c45a78'],k_kyotaku:['居宅介護支援・福祉用具','#7b6c5a']};
+var map=L.map('areamap',{zoomSnap:0.25}).fitBounds(L.latLng(C0).toBounds(31000)); window.__areaMap=map;
+L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜施設：© OpenStreetMap contributors／介護サービス情報公表システム（厚生労働省）'}).addTo(map);
+var ringLayer=L.layerGroup().addTo(map);
+var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('調査地点',{permanent:false});
+var layers={}, data={}; Object.keys(CAT).forEach(function(k){layers[k]=L.layerGroup().addTo(map);data[k]=[];});
+function drawRings(){ringLayer.clearLayers();RADII.forEach(function(r,i){var col=['#c43434','#be9234','#2e7d78','#346096'][i];
+ L.circle(center,{radius:r*1000,color:col,weight:2,fill:i==0,fillOpacity:0.05,dashArray:i?'6 6':null}).addTo(ringLayer);
+ var p=L.latLng(center[0]+r/111.0,center[1]); L.marker(p,{icon:L.divIcon({className:'',html:'<span class="ring-label">'+r+'km</span>',iconSize:[40,16],iconAnchor:[20,8]})}).addTo(ringLayer);});}
+function dist(a,b,c,d){var R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180,s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
+function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function redraw(){Object.keys(CAT).forEach(function(k){layers[k].clearLayers();data[k].forEach(function(p){var d=dist(center[0],center[1],p.lat,p.lon);if(d>15)return;
+ L.circleMarker([p.lat,p.lon],{radius:k.indexOf('k_')==0?4.5:5.5,color:'#fff',weight:1,fillColor:CAT[k][1],fillOpacity:.9}).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(CAT[k][0])+(p.sub?'｜'+esc(p.sub):'')+(p.addr?'<br>'+esc(p.addr):'')+'<br>調査地点から約'+d.toFixed(1)+'km').addTo(layers[k]);});});count();}
+function count(){var rows='',any=false;Object.keys(CAT).forEach(function(k){if(!data[k].length)return;any=true;var c=[0,0,0,0];data[k].forEach(function(p){var d=dist(center[0],center[1],p.lat,p.lon);RADII.forEach(function(r,i){if(d<=r)c[i]++;});});
+ rows+='<tr><th><span class="am-dot" style="background:'+CAT[k][1]+'"></span> '+CAT[k][0]+'</th>'+c.map(function(v){return '<td class="n">'+v.toLocaleString()+'</td>';}).join('')+'</tr>';});
+ document.querySelector('#am-count tbody').innerHTML=any?rows:'<tr><td colspan="5" class="muted">データを読み込むと件数を集計</td></tr>';}
+function legend(){var h='';Object.keys(CAT).forEach(function(k){h+='<label><input type="checkbox" checked data-k="'+k+'"><span class="am-dot" style="background:'+CAT[k][1]+'"></span>'+CAT[k][0]+'</label>';});
+ var el=document.getElementById('am-legend');el.innerHTML=h;el.querySelectorAll('input').forEach(function(cb){cb.onchange=function(){var l=layers[cb.dataset.k];cb.checked?map.addLayer(l):map.removeLayer(l);};});}
+function status(t){document.getElementById('am-status').textContent=t;}
+pin.on('dragend',function(){var ll=pin.getLatLng();if(!AREA.ok(ll.lat,ll.lng)){pin.setLatLng(center);return;}center=[ll.lat,ll.lng];drawRings();redraw();AREA.sync(center,'ピンで指定','mk');});
+window.__mkSet=function(c){center=c.slice();pin.setLatLng(center);drawRings();redraw();map.fitBounds(L.latLng(center).toBounds(31000));status('地点を変更。施設は「読み込む」で再取得');};
+document.getElementById('am-osm').onclick=function(){
+ var r=15500,a='(around:'+r+','+center[0]+','+center[1]+')';
+ var q='[out:json][timeout:90];(nwr["amenity"="hospital"]'+a+';nwr["amenity"~"^(clinic|doctors)$"]'+a+';nwr["amenity"="pharmacy"]'+a+';nwr["shop"="chemist"]'+a+';nwr["shop"="supermarket"]'+a+';nwr["amenity"="school"]'+a+';nwr["social_facility"~"^(nursing_home|assisted_living|group_home)$"]'+a+';);out center tags;';
+ var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+ var i=0;
+ function tryNext(){
+  if(i>=eps.length){status('取得できず。時間をおいて再実行するか、別のネットワークで試す');return;}
+  var ep=eps[i++];status('OpenStreetMapから取得中…（'+i+'/'+eps.length+'）');
+  fetch(ep+'?data='+encodeURIComponent(q)).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
+   ['hospital','clinic','pharmacy','super','school','eldfac'].forEach(function(k){data[k]=[];});
+   j.elements.forEach(function(e){var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;
+    var k=t.amenity=='hospital'?'hospital':(t.amenity=='clinic'||t.amenity=='doctors')?'clinic':(t.amenity=='pharmacy'||t.shop=='chemist')?'pharmacy':t.shop=='supermarket'?'super':t.amenity=='school'?'school':t.social_facility?'eldfac':null;
+    if(!k)return;data[k].push({lat:lat,lon:lon,name:t.name||'（名称未登録）',sub:t['healthcare:speciality']||'',addr:t['addr:full']||((t['addr:city']||'')+(t['addr:neighbourhood']||''))});});
+   redraw();status('OpenStreetMap：'+j.elements.length+'件を取得（15km圏）');}).catch(function(){tryNext();});}
+ tryNext();};
+function parseCSV(text){var rows=[],row=[],f='',q=false;for(var i=0;i<text.length;i++){var c=text[i];if(q){if(c=='"'){if(text[i+1]=='"'){f+='"';i++;}else q=false;}else f+=c;}else{if(c=='"')q=true;else if(c==','){row.push(f);f='';}else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';}else if(c!='\r')f+=c;}}if(f||row.length){row.push(f);rows.push(row);}return rows;}
+function kcat(s){s=s||'';if(/訪問看護/.test(s))return 'k_kango';if(/訪問介護|訪問入浴|夜間対応|定期巡回/.test(s))return 'k_houmon';if(/通所|デイ/.test(s))return 'k_tsusho';if(/居宅介護支援|福祉用具/.test(s))return 'k_kyotaku';return 'k_nyusho';}
+document.getElementById('am-csv').onchange=function(ev){var files=[].slice.call(ev.target.files);if(!files.length)return;status('CSVを読み込み中…');var done=0,added=0;
+ files.forEach(function(file){var fr=new FileReader();fr.onload=function(){var rows=parseCSV(fr.result);var h=rows[0]||[];function idx(re){for(var i=0;i<h.length;i++)if(re.test(h[i]))return i;return -1;}
+  var iLat=idx(/緯度/),iLon=idx(/経度/),iName=idx(/事業所名$|^事業所名/),iSv=idx(/サービスの種類/),iAd=idx(/^住所|所在地/);
+  if(iLat<0||iLon<0){status(file.name+'：緯度・経度の列が見つからない');}else{for(var r=1;r<rows.length;r++){var x=rows[r],lat=parseFloat(x[iLat]),lon=parseFloat(x[iLon]);if(!lat||!lon)continue;
+   if(dist(center[0],center[1],lat,lon)>40)continue;var sv=iSv>=0?x[iSv]:file.name;var k=kcat(sv+' '+file.name);data[k].push({lat:lat,lon:lon,name:iName>=0?x[iName]:'',sub:sv,addr:iAd>=0?x[iAd]:''});added++;}}
+  if(++done==files.length){redraw();status('介護・看護事業所：'+added+'件を読み込み（調査地点から40km以内を保持、15km圏内を表示）');}};fr.readAsText(file,'utf-8');});};
+drawRings();legend();
+})();
+</script>
+<script src="/js/admin-bar.js"></script>
+</body></html>
