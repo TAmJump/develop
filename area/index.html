@@ -151,10 +151,11 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 #gate a.b{display:block;padding:11px;border:1px solid var(--coral);border-radius:6px;text-decoration:none;font-size:14px;margin-top:10px}
 #gate a.p{background:var(--coral);color:#fff}#gate a.s{background:#fff;color:var(--coral)}
 #gate button{margin-top:14px;border:0;background:none;color:#8a7c68;font-size:12px;cursor:pointer;text-decoration:underline}
+.mem{display:inline-block;font-size:10.5px;font-weight:700;color:#D2553F;border:1px solid #D2553F;border-radius:99px;padding:0 7px;margin-left:6px;vertical-align:1px}
 .foot{background:#eee5d6;border-top:3px solid #9b6339;padding:28px 0;font-size:12px;color:#6e6354}
 @media(max-width:900px){.toc,.gos,.policy{grid-template-columns:1fr 1fr}.topnav nav{display:none}.locbar input[type=text]{width:100%}}
 @media(max-width:560px){.toc,.gos,.policy{grid-template-columns:1fr}}
-@media print{.topnav,.locbar,#gate,.toc,.gos{display:none}}
+@media print{.topnav,.locbar,#gate,.toc,.gos{display:none}html.np body *{display:none!important}html.np body:before{content:'印刷・PDF保存は会員登録（無料）のうえでご利用いただけます。';display:block;padding:40px;font-size:16px}}
 </style>
 </head><body>
 <header class="topnav"><div class="in">
@@ -167,7 +168,7 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <h1>全国エリア調査</h1>
 <p>医療・介護・住まいの開発候補地について、災害リスク、周辺の医療・介護・生活施設、水害対策の設計の目安と国の支援制度を確認するページ。住所・地名を入れると全国どこでも表示。</p>
 <div class="chips"><span>HAZARD MAP</span><span>LOW LAND</span><span>MEDICAL &amp; CARE MAP</span><span>FLOOD RESILIENCE</span><span>SUBSIDY</span></div>
-<span class="free">1地点は登録なしで利用可。2地点目からは会員登録（無料）</span>
+<span class="free">登録なしで利用可。［弊社の見解］のレイヤーと印刷・PDF保存は会員登録（無料）</span>
 <div class="toc"><a href="#hazard"><em>01</em>災害リスクとハザードマップ</a><a href="#market"><em>02</em>周辺の医療・介護・生活施設</a><a href="#flood"><em>03</em>浸水・停電に備える設計の目安</a><a href="#policy"><em>04</em>水害対策の制度と国の支援</a></div>
 </div></div>
 
@@ -190,13 +191,13 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div class="mapbox" id="hz-box"><div class="fsbar"><button class="ctrl" id="hz-fs" type="button">大画面で見る</button></div>
 <div id="hazmap"></div>
 <div class="am-legend" id="haz-legend"></div>
-<div class="own"><b>参考レイヤー</b>　<span class="mut">［公式］＝国の公開データ／［弊社の見解］＝弊社が作成した目安</span><br>
-<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-now" type="checkbox">［弊社の見解］2026年の主な災害で大きな被害が出た市町村（概略）<span class="mut" id="dis-now-st"></span></label><br>
-<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-past" type="checkbox">［弊社の見解］過去の主な災害（1995〜2025年）で大きな被害が出た市町村（概略）<span class="mut" id="dis-past-st"></span></label>
+<div class="own"><b>参考レイヤー</b>　<span class="mut">［公式］＝国の公開データ／［弊社の見解］＝弊社が作成した目安（会員登録（無料）で表示）</span><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-now" type="checkbox">［弊社の見解］2026年の主な災害で大きな被害が出た市町村（概略）<span class="mem">会員</span><span class="mut" id="dis-now-st"></span></label><br>
+<label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-dis-past" type="checkbox">［弊社の見解］過去の主な災害（1995〜2025年）で大きな被害が出た市町村（概略）<span class="mem">会員</span><span class="mut" id="dis-past-st"></span></label>
 <span class="mut" style="display:inline-flex;gap:14px;flex-wrap:wrap;margin-left:4px"><span><span class="sw" style="background:#b52d2d;opacity:.6"></span> 赤＝地震</span><span><span class="sw" style="background:#0d9488;opacity:.6"></span> 緑＝津波</span><span><span class="sw" style="background:#2b6cb0;opacity:.6"></span> 青＝豪雨・台風</span><span><span class="sw" style="background:#a8741a;opacity:.6"></span> 茶＝土砂災害</span></span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button><span class="mut" id="road-st" style="margin-left:6px"></span></label><br>
-<label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
+<label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）<span class="mem">会員</span>　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
 <div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。地図に表示している範囲を取得（市区町村の一部が見える程度まで拡大すると表示。地図を動かすとその範囲も追加で取得）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
 </div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
@@ -242,7 +243,7 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div class="head"><span class="num">06 / TERMS &amp; DATA</span><h2>利用条件とデータの取扱い</h2></div>
 <div class="policy">
 <div><b>入力した住所・地点</b>弊社のサーバーには送信・保存しない。住所の検索は国土地理院とOpenStreetMap、施設の取得はOpenStreetMap（Overpass API）に、ブラウザから直接送信され、各提供元の利用条件に従う。現在地はボタンを押したときだけ、この端末内で使う。</div>
-<div><b>利用回数の管理</b>未登録の方が調べた最初の地点の概略位置（市区町村程度の精度）を、この端末のブラウザ内にだけ保存する。弊社が取得・閲覧することはない。会員の方はこの制限なく利用できる。</div>
+<div><b>会員限定の範囲</b>［弊社の見解］のレイヤーと印刷・PDF保存は会員登録（無料）のうえで利用できる。その他の地図・データは登録なしで閲覧できる。ログイン状態の確認はこの端末のブラウザ内で行う。</div>
 <div><b>表示内容の位置づけ</b>公開データに基づく目安で、土地・建物の安全性や補助の採択を保証するものではない。正式な判断には、市町村のハザードマップ、各制度の要綱、現地調査、専門家の確認を用いる。表示に基づく判断と結果は利用者の責任とする。</div>
 <div><b>出典とライセンス</b>地図・ハザード・標高：国土地理院（利用規約に基づく出典表示）。施設：© OpenStreetMap contributors（ODbL）。介護事業所：厚生労働省 介護サービス情報公表システム。各データの権利は各提供元に帰属する。</div>
 <div><b>著作物の扱い</b>本ページの文章・構成・独自の算出（低地・窪地の表示方法、設計の目安、制度の整理）は弊社の著作物。無断での転載・複製・営利目的の再配布を禁じる。印刷・PDF保存は、自社内の検討の範囲で利用できる。</div>
@@ -253,8 +254,8 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <footer class="foot"><div class="wrap">タムジ株式会社｜<a href="/">不動産開発トップ</a>｜<a href="/contact/">お問い合わせ</a></div></footer>
 
 <div id="gate"><div class="bx">
-<h2>続けて調べるには会員登録（無料）</h2>
-<p>登録なしで調べられるのは1地点まで。会員登録（無料）とログインで、別の地点の調査、開発費シミュレーター、スキーム設計などのツールを制限なく利用できる。</p>
+<h2>会員登録（無料）でご利用いただけます</h2>
+<p>［弊社の見解］のレイヤー（主な災害の被害エリア、低地・窪地）と印刷・PDF保存は、会員登録（無料）とログインのうえでご利用いただけます。会員は開発費シミュレーター、スキーム設計などのツールも制限なく利用できます。</p>
 <a class="b p" href="/register.html?return=%2Farea%2F">会員登録（無料）</a>
 <a class="b s" href="/login.html?return=%2Farea%2F">ログイン</a>
 <button id="gate-close" type="button">閉じる</button>
@@ -267,15 +268,12 @@ var AREA=(function(){
   function member(){return !!(g("tamj_session")||g("tamj_admin")==="1"||g("tamj_nda_tok_master"));}
   function km(a,b,c,d){var R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180,s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
   function gate(){document.getElementById("gate").style.display="flex";}
+  if(!member()){document.documentElement.classList.add('np');document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&(e.key==='p'||e.key==='P')){e.preventDefault();gate();}});}
   return {
     // 1地点目は無料。別の地点（5km超）を調べるときは会員登録へ
-    ok:function(lat,lon){
-      if(member())return true;
-      var f=null;try{f=JSON.parse(g(KEY)||"null");}catch(_){}
-      if(!f){try{localStorage.setItem(KEY,JSON.stringify([+lat.toFixed(2),+lon.toFixed(2)]));}catch(_){}return true;}
-      if(km(f[0],f[1],lat,lon)<=LIMIT_KM)return true;
-      gate();return false;
-    },
+    ok:function(){return true;},
+    member:member,
+    gate:gate,
     sync:function(c,label,from){if(from!=="mk"&&window.__mkSet)window.__mkSet(c);}
   };
 })();
@@ -308,7 +306,7 @@ document.getElementById('r-num').onchange=function(){setRadius(+this.value);};
 pin.on('dragend',function(){var ll=pin.getLatLng();if(!AREA.ok(ll.lat,ll.lng)){pin.setLatLng(center);return;}center=[ll.lat,ll.lng];drawRings();AREA.sync(center,'ピンで指定');});
 map.on('contextmenu',function(e){if(!AREA.ok(e.latlng.lat,e.latlng.lng))return;center=[e.latlng.lat,e.latlng.lng];pin.setLatLng(center);showPin();drawRings();AREA.sync(center,'地図で指定');});
 document.getElementById('btn-geo').onclick=function(){if(!navigator.geolocation){st('この端末では現在地を取得できない');return;}st('現在地を取得中…');navigator.geolocation.getCurrentPosition(function(p){moveTo(p.coords.latitude,p.coords.longitude,'現在地');},function(){st('現在地を取得できず。住所・地名で検索する');},{enableHighAccuracy:false,timeout:10000});};
-document.getElementById('btn-print').onclick=function(){window.print();};
+document.getElementById('btn-print').onclick=function(){if(!AREA.member()){AREA.gate();return;}window.print();};
 // 住所・地名検索（全国）
 function moveTo(lat,lon,label){if(!AREA.ok(lat,lon)){hideCand();return;}center=[lat,lon];pin.setLatLng(center);showPin();drawRings();fit();st('調査地点：'+label);hideCand();AREA.sync(center,label);}
 function hideCand(){document.getElementById('cand').style.display='none';}
@@ -465,9 +463,9 @@ function loadRoad(force){
 map.on('moveend',function(){if(!roadOn)return;clearTimeout(roadTimer);roadTimer=setTimeout(function(){loadRoad(false);},600);});
 document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){map.addLayer(roadLayer);loadRoad(false);}else{map.removeLayer(roadLayer);rs('');}};
 document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad(true);};
-document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
-document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
-document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
+document.getElementById('cb-dis-now').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
+document.getElementById('cb-dis-past').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
+document.getElementById('cb-low').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
 setRadius(2000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);
 document.getElementById('btn-clear').onclick=function(){hasPin=false;map.removeLayer(pin);rings.clearLayers();st('調査地点をクリア。地図とデータはそのまま閲覧できる');if(window.__mkClear)window.__mkClear();};
 document.getElementById('btn-jp').onclick=function(){setRadius(1500000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
