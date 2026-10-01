@@ -47,7 +47,7 @@ export const INDIVIDUAL = new Set([]);
  * hash = sha256("ID:パスワード")。12 条件など当社のみの内容は見えない */
 const GUESTS = {
   igarashi1001: { hash: "c427c4f03d3d707f3ee13f6da1b0412aa9913cab60206942488bbb956f72179c", listings: ["murakami"], name: "五十嵐様" },
-  sumirin1015: { hash: "79412fd20d546e6619e089253b2916168c322d7595b2f99705e573b9743cbbdb", listings: ["murakami"], name: "住友林業／緒続様" },
+  sumirin1015: { hash: "77ad6ceb9333207a8182a8f0f7a5e36c1f31fa8c817b3a848257bf965b396d19", listings: ["murakami"], name: "住友林業／緒続様" },
 };
 
 /* 掲載終了 */
