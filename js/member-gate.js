@@ -36,6 +36,7 @@
       '<p>開発・M&amp;A案件の閲覧には、会員登録（無料）とログインが必要です。所在地・名称などの詳細は、案件ごとの秘密保持契約の締結後に表示します。</p>' +
       '<a class="b p" href="/login.html?return=' + back() + '">ログイン</a>' +
       '<a class="b s" href="/register.html?return=' + back() + '">会員登録（無料）</a>' +
+      '<p style="margin:12px 0 0;font-size:12px"><a href="/guide/" style="color:#7e4e2d">登録・ログインの方法（ご利用ガイド）</a></p>' +
       (onKey ? '<div class="k">解除キーをお持ちの方<input id="tamj-mg-k" type="password" autocomplete="off" placeholder="解除キー"><button id="tamj-mg-b">表示する</button><div class="er" id="tamj-mg-e"></div></div>' : '') +
       '</div>';
     (document.body || document.documentElement).appendChild(d);
