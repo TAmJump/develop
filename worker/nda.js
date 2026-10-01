@@ -46,7 +46,8 @@ export const INDIVIDUAL = new Set([]);
 /* 案件ごとの関係者アカウント（ID・パスワードで、その案件の完全版をNDA手続きなしで表示）
  * hash = sha256("ID:パスワード")。12 条件など当社のみの内容は見えない */
 const GUESTS = {
-  igarashi: { hash: "ff16bc248481f92f054d74f16e463b382aef2a479b7360a2f62c843db99bcd3f", listings: ["murakami"], name: "五十嵐様（関係者）" },
+  igarashi1001: { hash: "c427c4f03d3d707f3ee13f6da1b0412aa9913cab60206942488bbb956f72179c", listings: ["murakami"], name: "五十嵐様（関係者）" },
+  sumirin1015: { hash: "79412fd20d546e6619e089253b2916168c322d7595b2f99705e573b9743cbbdb", listings: ["murakami"], name: "sumirin1015（関係者）" },
 };
 
 /* 掲載終了 */
