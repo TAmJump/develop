@@ -174,9 +174,9 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <div class="locbar"><div class="wrap">
 <input id="q" type="text" placeholder="調べる住所・地名・駅名（例：横浜市青葉区、大宮駅）">
 <button class="ctrl p" id="btn-q" type="button">調べる</button>
-<button class="ctrl" id="btn-geo" type="button">現在地</button>
+<button class="ctrl" id="btn-geo" type="button">現在地</button><button class="ctrl" id="btn-clear" type="button">地点をクリア</button>
 <button class="ctrl" id="btn-print" type="button">印刷・PDF保存</button>
-<span class="muted" id="note">初期表示は東京駅周辺。地図の右クリック、ピンのドラッグでも地点を変えられる。</span>
+<span class="muted" id="note">地点を決めなくても地図とデータは閲覧できる。地点は検索・現在地・地図の右クリックで決め、ピンのドラッグで動かせる。</span>
 <div id="cand" style="display:none;gap:6px;flex-wrap:wrap;width:100%"></div>
 </div></div>
 
@@ -197,7 +197,7 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button><span class="mut" id="road-st" style="margin-left:6px"></span></label><br>
 <label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
-<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。調査地点を中心に、表示中の半径に連動して取得（最大4km四方。広げても取得は調査地点の周辺のみ）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
+<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。地図に表示している範囲を取得（市区町村の一部が見える程度まで拡大すると表示。地図を動かすとその範囲も追加で取得）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
 </div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
 <p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
@@ -205,7 +205,7 @@ body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select
 
 <section class="section" id="market"><div class="wrap">
 <div class="head"><span class="num">02 / AREA MAP</span><h2>周辺の医療・介護・生活施設（半径2km・6km・10km・15km）</h2></div>
-<p class="muted">上で調べた地点を中心に表示。病院・診療所・薬局・スーパー・学校・高齢者施設はOpenStreetMap、介護・看護事業所は厚生労働省「介護サービス情報公表システム」のオープンデータ（CSV）を読み込んで重ねる。CSVは厚労省のサイトから都道府県・サービス別に取得できる。</p>
+<p class="muted">上で決めた地点を中心に表示（地点が無いときは、この地図の中心のまわりを読み込む）。病院・診療所・薬局・スーパー・学校・高齢者施設はOpenStreetMap、介護・看護事業所は厚生労働省「介護サービス情報公表システム」のオープンデータ（CSV）を読み込んで重ねる。CSVは厚労省のサイトから都道府県・サービス別に取得できる。</p>
 <div class="am-bar"><button id="am-osm" type="button">病院・診療所・生活施設を読み込む（OpenStreetMap）</button><label class="btn" for="am-csv">介護・看護事業所のCSVを読み込む（複数可）</label><input accept=".csv" id="am-csv" multiple type="file"><span class="am-status" id="am-status"></span></div>
 <div class="mapbox" id="mk-box"><div class="fsbar"><button class="ctrl" id="mk-fs" type="button">大画面で見る</button></div>
 <div id="areamap"></div>
@@ -289,15 +289,15 @@ document.getElementById("gate-close").onclick=function(){document.getElementById
 var C0=[35.6812,139.7671], center=C0.slice(), radius=2000;
 var map=L.map('hazmap',{zoomSnap:0.25,minZoom:4,maxBounds:[[18,115],[50,158]]}).setView(C0,14); window.__hazMap=map;
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図・標高：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜ハザード：<a href="https://disaportal.gsi.go.jp/" target="_blank">重ねるハザードマップ</a>'}).addTo(map);
-var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('中心（ドラッグで移動）');
+var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).bindTooltip('調査地点（ドラッグで移動）');var hasPin=false;function showPin(){if(!hasPin){hasPin=true;pin.addTo(map);}}
 var rings=L.layerGroup().addTo(map);
 function fmt(m){return m>=1000?(m/1000)+'km':m+'m';}
-function drawRings(){rings.clearLayers();
+function drawRings(){rings.clearLayers();if(!hasPin)return;
  var rs=[radius,radius/2,radius/4].filter(function(r){return r>=20;});
  rs.forEach(function(r,i){
   L.circle(center,{radius:r,color:['#c43434','#be9234','#2e7d78'][i],weight:i?1.5:2.5,fill:false,dashArray:i?'6 6':null}).addTo(rings);
   L.marker(L.latLng(center[0]+r/111320,center[1]),{icon:L.divIcon({className:'',html:'<span class="ring-label">'+fmt(Math.round(r))+'</span>',iconSize:[50,16],iconAnchor:[25,8]})}).addTo(rings);});}
-function fit(){map.fitBounds(L.latLng(center).toBounds(radius*2.2));}
+function fit(){var c=hasPin?L.latLng(center):map.getCenter();map.fitBounds(c.toBounds(radius*2.2));}
 function setRadius(m,doFit){radius=Math.max(20,Math.min(1500000,Math.round(m)));
  document.getElementById('r-num').value=radius;document.getElementById('r-range').value=Math.log10(radius);
  document.getElementById('r-txt').textContent=fmt(radius);drawRings();if(doFit!==false)fit();}
@@ -306,11 +306,11 @@ document.getElementById('r-range').oninput=function(){setRadius(Math.pow(10,+thi
 document.getElementById('r-range').onchange=function(){fit();};
 document.getElementById('r-num').onchange=function(){setRadius(+this.value);};
 pin.on('dragend',function(){var ll=pin.getLatLng();if(!AREA.ok(ll.lat,ll.lng)){pin.setLatLng(center);return;}center=[ll.lat,ll.lng];drawRings();AREA.sync(center,'ピンで指定');});
-map.on('contextmenu',function(e){if(!AREA.ok(e.latlng.lat,e.latlng.lng))return;center=[e.latlng.lat,e.latlng.lng];pin.setLatLng(center);drawRings();AREA.sync(center,'地図で指定');});
+map.on('contextmenu',function(e){if(!AREA.ok(e.latlng.lat,e.latlng.lng))return;center=[e.latlng.lat,e.latlng.lng];pin.setLatLng(center);showPin();drawRings();AREA.sync(center,'地図で指定');});
 document.getElementById('btn-geo').onclick=function(){if(!navigator.geolocation){st('この端末では現在地を取得できない');return;}st('現在地を取得中…');navigator.geolocation.getCurrentPosition(function(p){moveTo(p.coords.latitude,p.coords.longitude,'現在地');},function(){st('現在地を取得できず。住所・地名で検索する');},{enableHighAccuracy:false,timeout:10000});};
 document.getElementById('btn-print').onclick=function(){window.print();};
 // 住所・地名検索（全国）
-function moveTo(lat,lon,label){if(!AREA.ok(lat,lon)){hideCand();return;}center=[lat,lon];pin.setLatLng(center);drawRings();fit();st('調査地点：'+label);hideCand();AREA.sync(center,label);}
+function moveTo(lat,lon,label){if(!AREA.ok(lat,lon)){hideCand();return;}center=[lat,lon];pin.setLatLng(center);showPin();drawRings();fit();st('調査地点：'+label);hideCand();AREA.sync(center,label);}
 function hideCand(){document.getElementById('cand').style.display='none';}
 function showCand(list){var el=document.getElementById('cand');
  if(!list.length){el.style.display='none';st('該当なし');return;}
@@ -439,32 +439,37 @@ map.on('moveend',loreLoad);
 document.getElementById('cb-lore').onchange=function(){loreOn=this.checked;if(loreOn){map.addLayer(loreLayer);loreLoad();st('自然災害伝承碑（全国）を表示');}else map.removeLayer(loreLayer);};
 
 // アンダーパス・冠水しやすい道路（OpenStreetMap）
-var roadLayer=L.layerGroup(), roadDone=false;
-function loadRoad(){
- var r=Math.max(500,Math.min(radius,4000)),dlat=r/111320,dlon=r/(111320*Math.cos(center[0]*Math.PI/180));
- var bb='('+(center[0]-dlat).toFixed(5)+','+(center[1]-dlon).toFixed(5)+','+(center[0]+dlat).toFixed(5)+','+(center[1]+dlon).toFixed(5)+')';
+var roadLayer=L.layerGroup(), roadDone=false, roadOn=false, roadSeen={}, roadKeys={}, roadTimer=null, roadN=0;
+function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;}
+function loadRoad(force){
+ if(!roadOn)return;
+ if(map.getZoom()<12){rs('地図を拡大すると表示（市区町村の一部が見える程度まで）');return;}
+ var b=map.getBounds(),k=[b.getSouth(),b.getWest(),b.getNorth(),b.getEast()].map(function(v){return v.toFixed(2);}).join(',');
+ if(roadKeys[k]&&!force){rs(roadN+'件を表示中');return;}
+ var bb='('+b.getSouth().toFixed(5)+','+b.getWest().toFixed(5)+','+b.getNorth().toFixed(5)+','+b.getEast().toFixed(5)+')';
  var RD='["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|living_street)(_link)?$"]';
- var q='[out:json][timeout:40];(way'+RD+'["tunnel"~"^(yes|culvert|building_passage)$"]'+bb+';way'+RD+'["layer"~"^-"]'+bb+';way["highway"]["flood_prone"="yes"]'+bb+';node["ford"]'+bb+';way["ford"]'+bb+';);out center 600;';
+ var q='[out:json][timeout:40];(way'+RD+'["tunnel"~"^(yes|culvert|building_passage)$"]'+bb+';way'+RD+'["layer"~"^-"]'+bb+';way["highway"]["flood_prone"="yes"]'+bb+';node["ford"]'+bb+';way["ford"]'+bb+';);out center 800;';
  var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];var i=0;
- function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;st(t);}
  (function go(){ if(i>=eps.length){rs('取得できず（地図データのサーバーが混雑）。少し時間をおいて「再取得」');return;}
-  var ep=eps[i++];rs('取得中…（'+i+'/'+eps.length+'）');
+  var ep=eps[i++];rs('この範囲を取得中…（'+i+'/'+eps.length+'）');
   var ac=('AbortController' in window)?new AbortController():null;var tm=setTimeout(function(){if(ac)ac.abort();},45000);
   fetch(ep,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'},signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json();}).then(function(j){
-   roadLayer.clearLayers();var n=0;
-   (j.elements||[]).forEach(function(e){var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;
+   roadKeys[k]=1;
+   (j.elements||[]).forEach(function(e){var id=e.type+e.id;if(roadSeen[id])return;var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;roadSeen[id]=1;
     var kind=t.tunnel?'トンネル・アンダーパス':(t.layer&&t.layer.indexOf('-')===0)?'掘割・地下区間':t.ford?'洗い越し（冠水路）':'冠水しやすい道路';
-    n++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
+    roadN++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
      .bindTooltip(kind,{direction:'top'})
      .bindPopup('<b>'+(t.name||t.ref||'（名称なし）')+'</b><br>'+kind+'<br>種別：'+(t.highway||'—')+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});
-   rs(n+'件（調査地点から約'+fmt(Math.round(r))+'四方）'+(n?'':'。該当なし、または未登録'));roadDone=true;
+   rs(roadN+'件を表示中（地図を動かすと、その範囲も追加で取得）');roadDone=true;
   }).catch(function(){clearTimeout(tm);go();});})();}
-document.getElementById('cb-road').onchange=function(){if(this.checked){map.addLayer(roadLayer);loadRoad();}else map.removeLayer(roadLayer);};
-document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad();};
+map.on('moveend',function(){if(!roadOn)return;clearTimeout(roadTimer);roadTimer=setTimeout(function(){loadRoad(false);},600);});
+document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){map.addLayer(roadLayer);loadRoad(false);}else{map.removeLayer(roadLayer);rs('');}};
+document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad(true);};
 document.getElementById('cb-dis-now').onchange=function(){if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
 document.getElementById('cb-dis-past').onchange=function(){if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
 document.getElementById('cb-low').onchange=function(){this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
-setRadius(2000);
+setRadius(2000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);
+document.getElementById('btn-clear').onclick=function(){hasPin=false;map.removeLayer(pin);rings.clearLayers();st('調査地点をクリア。地図とデータはそのまま閲覧できる');if(window.__mkClear)window.__mkClear();};
 document.getElementById('btn-jp').onclick=function(){setRadius(1500000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);};
 FS('hz-box','hz-fs',map);
 })();
@@ -473,12 +478,12 @@ FS('hz-box','hz-fs',map);
 var C0=[35.6812,139.7671], center=C0.slice(), RADII=[2,6,10,15];
 var CAT={hospital:['病院','#b52d2d'],clinic:['診療所','#e0735f'],pharmacy:['薬局・ドラッグストア','#be9234'],super:['スーパー','#6b8e23'],school:['学校','#346096'],eldfac:['高齢者施設（OSM）','#804a6e'],
 k_nyusho:['介護・入所系（特養・老健・有料・GH・短期）','#2e7d78'],k_tsusho:['介護・通所系','#3fa39c'],k_houmon:['訪問介護','#8a6f3a'],k_kango:['訪問看護','#c45a78'],k_kyotaku:['居宅介護支援・福祉用具','#7b6c5a']};
-var map=L.map('areamap',{zoomSnap:0.25,minZoom:4,maxBounds:[[18,115],[50,158]]}).fitBounds(L.latLng(C0).toBounds(31000)); window.__areaMap=map;
+var map=L.map('areamap',{zoomSnap:0.25,minZoom:4,maxBounds:[[18,115],[50,158]]}).fitBounds([[24.0,123.0],[45.6,146.0]]); window.__areaMap=map;
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{maxZoom:18,attribution:'地図：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>｜施設：© OpenStreetMap contributors／介護サービス情報公表システム（厚生労働省）'}).addTo(map);
 var ringLayer=L.layerGroup().addTo(map);
-var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map).bindTooltip('調査地点',{permanent:false});
+var pin=L.marker(center,{draggable:true,icon:L.divIcon({className:'',html:'<div class="site-pin"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).bindTooltip('調査地点',{permanent:false});var hasPin=false;
 var layers={}, data={}; Object.keys(CAT).forEach(function(k){layers[k]=L.layerGroup().addTo(map);data[k]=[];});
-function drawRings(){ringLayer.clearLayers();RADII.forEach(function(r,i){var col=['#c43434','#be9234','#2e7d78','#346096'][i];
+function drawRings(){ringLayer.clearLayers();if(!hasPin)return;RADII.forEach(function(r,i){var col=['#c43434','#be9234','#2e7d78','#346096'][i];
  L.circle(center,{radius:r*1000,color:col,weight:2,fill:i==0,fillOpacity:0.05,dashArray:i?'6 6':null}).addTo(ringLayer);
  var p=L.latLng(center[0]+r/111.0,center[1]); L.marker(p,{icon:L.divIcon({className:'',html:'<span class="ring-label">'+r+'km</span>',iconSize:[40,16],iconAnchor:[20,8]})}).addTo(ringLayer);});}
 function dist(a,b,c,d){var R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180,s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
@@ -492,8 +497,10 @@ function legend(){var h='';Object.keys(CAT).forEach(function(k){h+='<label><inpu
  var el=document.getElementById('am-legend');el.innerHTML=h;el.querySelectorAll('input').forEach(function(cb){cb.onchange=function(){var l=layers[cb.dataset.k];cb.checked?map.addLayer(l):map.removeLayer(l);};});}
 function status(t){document.getElementById('am-status').textContent=t;}
 pin.on('dragend',function(){var ll=pin.getLatLng();if(!AREA.ok(ll.lat,ll.lng)){pin.setLatLng(center);return;}center=[ll.lat,ll.lng];drawRings();redraw();AREA.sync(center,'ピンで指定','mk');});
-window.__mkSet=function(c){center=c.slice();pin.setLatLng(center);drawRings();redraw();map.fitBounds(L.latLng(center).toBounds(31000));status('地点を変更。施設は「読み込む」で再取得');};
+window.__mkClear=function(){hasPin=false;map.removeLayer(pin);ringLayer.clearLayers();status('調査地点をクリア。地図の中心のまわりを読み込める');};
+window.__mkSet=function(c){center=c.slice();pin.setLatLng(center);if(!hasPin){hasPin=true;pin.addTo(map);}drawRings();redraw();map.fitBounds(L.latLng(center).toBounds(31000));status('地点を変更。施設は「読み込む」で再取得');};
 document.getElementById('am-osm').onclick=function(){
+ if(!hasPin){if(map.getZoom()<9){status('地点を決めるか、地図を拡大してから読み込む');return;}var mc=map.getCenter();center=[mc.lat,mc.lng];}
  var r=15500,a='(around:'+r+','+center[0]+','+center[1]+')';
  var q='[out:json][timeout:90];(nwr["amenity"="hospital"]'+a+';nwr["amenity"~"^(clinic|doctors)$"]'+a+';nwr["amenity"="pharmacy"]'+a+';nwr["shop"="chemist"]'+a+';nwr["shop"="supermarket"]'+a+';nwr["amenity"="school"]'+a+';nwr["social_facility"~"^(nursing_home|assisted_living|group_home)$"]'+a+';);out center tags;';
  var eps=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
