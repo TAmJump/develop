@@ -160,6 +160,11 @@ html.np .mklock{display:flex}
 .mklock b{display:block;font-size:16px;margin-bottom:8px}.mklock p{font-size:13px;color:#6e6354;margin:0 0 12px}
 .mklock a.lk{display:block;padding:10px;border:1px solid #D2553F;border-radius:6px;text-decoration:none;font-size:14px;margin-top:8px}
 .mklock a.p{background:#D2553F;color:#fff}.mklock a.s{background:#fff;color:#D2553F}
+.lowbox{margin:6px 0 4px 24px;padding:10px 12px;border:1px solid #d9cfe0;background:#fff;font-size:12px;color:#4a4048;line-height:1.75}
+.lowbox p{margin:4px 0}
+.lowgrad{display:flex;align-items:center;gap:8px;font-size:11px;color:#6e6354}
+.lowgrad i{display:inline-block;width:160px;height:10px;border-radius:3px;background:linear-gradient(90deg,rgba(30,90,190,.15),rgba(30,90,190,.9))}
+.vw{display:inline-block;margin-left:12px;padding:2px 10px;border:1px solid #c9bda8;border-radius:99px;background:#fff;font-size:12px;color:#7e4e2d}
 .foot{background:#eee5d6;border-top:3px solid #9b6339;padding:28px 0;font-size:12px;color:#6e6354}
 @media(max-width:900px){.toc,.gos,.policy{grid-template-columns:1fr 1fr}.topnav nav{display:none}.locbar input[type=text]{width:100%}}
 @media(max-width:560px){.toc,.gos,.policy{grid-template-columns:1fr}}
@@ -195,7 +200,7 @@ html.np .mklock{display:flex}
 <div class="bar"><span class="muted">半径</span>
 <button class="ctrl r-btn" data-m="50" type="button">50m</button><button class="ctrl r-btn" data-m="100" type="button">100m</button><button class="ctrl r-btn" data-m="300" type="button">300m</button><button class="ctrl r-btn" data-m="500" type="button">500m</button><button class="ctrl r-btn" data-m="1000" type="button">1km</button><button class="ctrl r-btn" data-m="2000" type="button">2km</button><button class="ctrl r-btn" data-m="5000" type="button">5km</button><button class="ctrl r-btn" data-m="10000" type="button">10km</button><button class="ctrl r-btn" data-m="20000" type="button">20km</button><button class="ctrl r-btn" data-m="50000" type="button">50km</button><button class="ctrl r-btn" data-m="100000" type="button">100km</button><button class="ctrl r-btn" data-m="300000" type="button">300km</button><button class="ctrl" id="btn-jp" type="button">日本全体</button>
 <input id="r-range" max="6.18" min="1.7" step="0.01" type="range" value="3.3"><input id="r-num" max="1500000" min="20" step="10" type="number" value="2000">
-<span class="muted">m　現在：<b id="r-txt">2km</b>（外側の円が指定半径、内側は1/2・1/4）</span></div>
+<span class="muted">m　円の半径：<b id="r-txt">2km</b>（外側の円が指定半径、内側は1/2・1/4）</span><span class="vw">地図の横幅 約<b class="vw-now">—</b>（左下に縮尺）</span></div>
 <div class="mapbox" id="hz-box"><div class="fsbar"><button class="ctrl" id="hz-fs" type="button">大画面で見る</button></div>
 <div id="hazmap"></div>
 <div class="am-legend" id="haz-legend"></div>
@@ -205,8 +210,11 @@ html.np .mklock{display:flex}
 <span class="mut" style="display:inline-flex;gap:14px;flex-wrap:wrap;margin-left:4px"><span><span class="sw" style="background:#b52d2d;opacity:.6"></span> 赤＝地震</span><span><span class="sw" style="background:#0d9488;opacity:.6"></span> 緑＝津波</span><span><span class="sw" style="background:#2b6cb0;opacity:.6"></span> 青＝豪雨・台風</span><span><span class="sw" style="background:#a8741a;opacity:.6"></span> 茶＝土砂災害</span></span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button><span class="mut" id="road-st" style="margin-left:6px"></span></label><br>
-<label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）<span class="mem">会員</span><span class="mut" id="low-st" style="margin-left:6px"></span></label><br><span class="mut" style="margin-left:24px">塗る範囲：周りでいちばん低い所から <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b> 以内の高さの土地（数字を上げるほど広く塗る）</span>
-<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。全国分を毎日自動で更新して表示（縮小中は地域ごとの件数、拡大すると1か所ずつ）。さらに拡大すると、その範囲の最新の登録も確認して追加する。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmでいちばん低い地点を基準に、そこから指定した高さ（初期値2m）以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
+<label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）<span class="mem">会員</span><span class="mut" id="low-st" style="margin-left:6px"></span></label><div class="lowbox"><div class="lowgrad"><span>周りより少し低い</span><i></i><span>周りより低い（水が集まる）</span></div>
+<p>青く塗った所は、周り約0.5〜1kmの中でいちばん低い地点に近い高さの土地。短時間の強い雨で雨水が流れ込み、道路冠水や床下・床上浸水が起きやすい地形の目安。青が濃いほど低い。</p>
+<p>低地とみなす高さ：いちばん低い所から <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b> 以内（数字を上げるほど、少し高い土地まで含めて広く塗る）</p>
+<p>表示されるのは、地図の横幅がおおむね <b id="low-need">—</b> 以下になるまで拡大したとき（今の横幅：<b class="vw-now">—</b>）。</p></div>
+<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。全国分を毎日自動で更新して表示（縮小中は地域ごとの件数、拡大すると1か所ずつ）。さらに拡大すると、その範囲の最新の登録も確認して追加する。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmでいちばん低い地点を基準に、そこから指定した高さ（初期値2m）以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。地図の横幅がおおむね300km以下になるまで拡大すると表示（広い範囲ほど目安が粗くなる）。</div></div>
 </div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
 <p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
@@ -451,7 +459,7 @@ var KNAME=['トンネル・アンダーパス','掘割・地下区間','洗い�
 function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;}
 function rsum(){if(!roadOn)return;var z=map.getZoom();
  var base=UP.ok?('全国 '+UP.meta.total.toLocaleString()+'件（'+UP.meta.updated.slice(0,10).replace(/-/g,'/')+' 時点）'):'';
- rs(z<11?(base?base+'。縮小中は地域ごとの件数で表示':'地図を拡大すると表示'):(base+(liveN?'＋最新の追加 '+liveN+'件':'')+(liveRun?'（最新の情報を確認中…）':'')));}
+ rs(z<11?(base?base+'。縮小中は地域ごとの件数。地図の横幅 約'+kmTxt(vwAt(11))+'以下で1か所ずつ表示':'地図を拡大すると表示'):(base+(liveN?'＋最新の追加 '+liveN+'件':'')+(liveRun?'（最新の情報を確認中…）':'')));}
 function upInit(cb){if(UP.ok!==null){cb();return;}
  fetch('/up/meta.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(m){UP.meta=m;return fetch('/up/grid.json');}).then(function(r){return r.json();}).then(function(g){UP.grid=g;UP.ok=true;cb();}).catch(function(){UP.ok=false;cb();});}
 function drawGrid(){gridLayer.clearLayers();if(!UP.ok)return;
@@ -500,7 +508,12 @@ document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(th
 document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked){loadLive(true);}};
 document.getElementById('cb-dis-now').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(true);map.addLayer(disNow);}else map.removeLayer(disNow);};
 document.getElementById('cb-dis-past').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(false);map.addLayer(disPast);}else map.removeLayer(disPast);};
-function lowSt(){var e=document.getElementById('low-st');if(!e)return;e.textContent=(document.getElementById('cb-low').checked&&map.getZoom()<9)?'地図を拡大すると表示（県の一部が見える程度まで）':'';}
+function vwAt(z){var c=map.getCenter(),mpp=40075016.686*Math.cos(c.lat*Math.PI/180)/Math.pow(2,z+8);return map.getSize().x*mpp/1000;}
+function kmTxt(k){return k>=100?Math.round(k/10)*10+'km':k>=10?Math.round(k)+'km':k.toFixed(1)+'km';}
+function vwUpd(){var t=kmTxt(vwAt(map.getZoom()));document.querySelectorAll('.vw-now').forEach(function(e){e.textContent=t;});var n=document.getElementById('low-need');if(n)n.textContent=kmTxt(vwAt(9));}
+map.on('zoomend moveend resize',vwUpd);setTimeout(vwUpd,300);
+L.control.scale({imperial:false,maxWidth:160,position:'bottomleft'}).addTo(map);
+function lowSt(){vwUpd();var e=document.getElementById('low-st');if(!e)return;e.textContent=(document.getElementById('cb-low').checked&&map.getZoom()<9)?'地図の横幅が約'+kmTxt(vwAt(9))+'以下になるまで拡大すると表示（今 約'+kmTxt(vwAt(map.getZoom()))+'）':'';}
 map.on('zoomend',lowSt);
 document.getElementById('cb-low').onchange=function(){setTimeout(lowSt,0);if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
 setRadius(2000,false);map.fitBounds([[24.0,123.0],[45.6,146.0]]);
@@ -560,6 +573,7 @@ document.getElementById('am-csv').onchange=function(ev){if(!AREA.member()){ev.ta
    if(dist(center[0],center[1],lat,lon)>40)continue;var sv=iSv>=0?x[iSv]:file.name;var k=kcat(sv+' '+file.name);data[k].push({lat:lat,lon:lon,name:iName>=0?x[iName]:'',sub:sv,addr:iAd>=0?x[iAd]:''});added++;}}
   if(++done==files.length){redraw();status('介護・看護事業所：'+added+'件を読み込み（調査地点から40km以内を保持、15km圏内を表示）');}};fr.readAsText(file,'utf-8');});};
 drawRings();legend();
+L.control.scale({imperial:false,maxWidth:160,position:'bottomleft'}).addTo(map);
 FS('mk-box','mk-fs',map);
 })();
 </script>
