@@ -9,6 +9,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+  # 毎日、全国のアンダーパス等のデータを作り直して公開（日本時間 4:30）
+  schedule:
+    - cron: '30 19 * * *'
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -33,6 +37,34 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      # ---- 全国のアンダーパス・掘割・洗い越し（OpenStreetMap）を up/ に用意 ----
+      - name: Date
+        id: d
+        run: echo "day=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+      - name: Restore underpass data
+        id: upc
+        uses: actions/cache/restore@v4
+        with:
+          path: up
+          key: underpass-${{ steps.d.outputs.day }}
+          restore-keys: underpass-
+      - name: Build underpass data
+        id: upb
+        if: steps.upc.outputs.cache-hit != 'true' && (github.event_name != 'push' || steps.upc.outputs.cache-matched-key == '')
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq osmium-tool
+          curl -sSL --retry 3 -o japan.pbf https://download.geofabrik.de/asia/japan-latest.osm.pbf
+          osmium tags-filter japan.pbf w/tunnel w/layer w/ford n/ford w/flood_prone -o f.pbf --overwrite
+          rm -f japan.pbf
+          osmium export f.pbf -f geojsonseq -a type,id --geometry-types=point,linestring -o f.geojsonseq --overwrite
+          rm -rf up && python3 scripts/build_underpass.py up < f.geojsonseq
+          rm -f f.pbf f.geojsonseq
+      - name: Save underpass data
+        if: steps.upb.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: up
+          key: underpass-${{ steps.d.outputs.day }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

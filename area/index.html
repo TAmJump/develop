@@ -206,7 +206,7 @@ html.np .mklock{display:flex}
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-lore" type="checkbox"><span class="sw" style="background:#6b21a8"></span>［公式］自然災害伝承碑（全国・国土地理院）</label><br>
 <label style="display:inline-flex;gap:6px;align-items:center;margin-right:18px"><input id="cb-road" type="checkbox"><span class="sw" style="background:#7a1f1f"></span>［公式外］アンダーパス・冠水しやすい道路（OpenStreetMap）<button class="ctrl" id="btn-road-reload" style="padding:2px 8px;font-size:11px;margin-left:4px" type="button">再取得</button><span class="mut" id="road-st" style="margin-left:6px"></span></label><br>
 <label style="display:inline-flex;gap:6px;align-items:center"><input id="cb-low" type="checkbox"><span class="sw" style="background:#1e5abe"></span>［弊社の見解］雨水が集まりやすい低地・窪地（標高から算出）<span class="mem">会員</span>　しきい値 <input id="low-th" max="5" min="0.5" step="0.5" style="width:130px;vertical-align:middle" type="range" value="2"> <b id="low-th-v">2m</b></label>
-<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。地図に表示している範囲を取得（市区町村の一部が見える程度まで拡大すると表示。地図を動かすとその範囲も追加で取得）。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
+<div class="mut" style="margin-top:6px">主な災害の被害エリア：2026年は令和8年熊本地震、岩手県沖の地震、令和8年8月千葉豪雨、8月下旬の北陸の大雨。過去は阪神・淡路大震災から令和6年能登半島地震・能登の大雨までの主な地震・津波・豪雨・土砂災害。報道・自治体・気象庁の公表をもとに、被害が大きかった市町村を代表点中心の円で示したもの（濃いほど被害が大きい）。実際の被害範囲ではなく、円の外が安全という意味でもない。円をクリックすると災害名・年が出る。<br>自然災害伝承碑：過去に洪水・土砂災害・津波・地震・高潮・火山災害が起きた場所に、先人が建てた石碑の位置。点をクリックすると災害名・年・碑文の要約が出る。碑のない場所で災害が起きなかったことを意味しない。<br>アンダーパス・冠水しやすい道路：OpenStreetMapのトンネル・掘割・洗い越し等。大雨時に冠水して通行止めになりやすく、救急搬送や職員参集の障害になる。全国分を毎日自動で更新して表示（縮小中は地域ごとの件数、拡大すると1か所ずつ）。さらに拡大すると、その範囲の最新の登録も確認して追加する。登録の抜けがあるため現地確認で補う。<br>低地・窪地：標高タイルから、周囲約0.5〜1kmの最低地点より指定した高さ以内にある土地を塗ったもの。短時間の強い雨で雨水が集まり、内水氾濫や道路冠水が起きやすい地形の目安。下水道の能力や河川の流れは考慮していない。ズーム9以上で表示（広域ほど目安が粗くなる）。</div></div>
 </div>
 <div class="callout warn">浸水想定区域の外でも、短時間の豪雨で道路冠水・床上浸水が起きる例が各地で報告されている。公式の想定区域に加えて、低地・窪地レイヤーと、市町村の内水（雨水出水）ハザードマップを合わせて確認する。</div>
 <p class="source">出典：国土地理院「重ねるハザードマップ」「地理院地図」「標高タイル」「地名検索API」「自然災害伝承碑」、OpenStreetMap。表示にはインターネット接続が必要。</p>
@@ -445,21 +445,42 @@ map.on('moveend',loreLoad);
 document.getElementById('cb-lore').onchange=function(){loreOn=this.checked;if(loreOn){map.addLayer(loreLayer);loreLoad();st('自然災害伝承碑（全国）を表示');}else map.removeLayer(loreLayer);};
 
 // アンダーパス・冠水しやすい道路（OpenStreetMap）
-var roadLayer=L.layerGroup(), roadDone=false, roadOn=false, roadSeen={}, roadKeys={}, roadTimer=null, roadN=0;
+var roadLayer=L.layerGroup(), gridLayer=L.layerGroup(), cv=L.canvas({padding:.3}), roadDone=false, roadOn=false, roadSeen={}, roadKeys={}, roadTimer=null, roadN=0, liveN=0, liveRun=false;
+var UP={meta:null,grid:null,tiles:{},ok:null};
+var KNAME=['トンネル・アンダーパス','掘割・地下区間','洗い越し（冠水路）','冠水しやすい道路'];
 function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;}
-function loadRoad(force){
+function rsum(){if(!roadOn)return;var z=map.getZoom();
+ var base=UP.ok?('全国 '+UP.meta.total.toLocaleString()+'件（'+UP.meta.updated.slice(0,10).replace(/-/g,'/')+' 時点）'):'';
+ rs(z<11?(base?base+'。縮小中は地域ごとの件数で表示':'地図を拡大すると表示'):(base+(liveN?'＋最新の追加 '+liveN+'件':'')+(liveRun?'（最新の情報を確認中…）':'')));}
+function upInit(cb){if(UP.ok!==null){cb();return;}
+ fetch('/up/meta.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(m){UP.meta=m;return fetch('/up/grid.json');}).then(function(r){return r.json();}).then(function(g){UP.grid=g;UP.ok=true;cb();}).catch(function(){UP.ok=false;cb();});}
+function drawGrid(){gridLayer.clearLayers();if(!UP.ok)return;
+ UP.grid.forEach(function(c){var r=Math.max(3,Math.min(16,Math.sqrt(c[2])*1.4));
+  L.circleMarker([c[0],c[1]],{renderer:cv,radius:r,color:'#7a1f1f',weight:1,fillColor:'#7a1f1f',fillOpacity:.45}).bindTooltip('この周辺 約'+c[2]+'件',{direction:'top'}).addTo(gridLayer);});}
+function addPts(arr){arr.forEach(function(q){if(roadSeen[q[4]])return;roadSeen[q[4]]=1;roadN++;
+  L.circleMarker([q[0],q[1]],{renderer:cv,radius:5.5,color:'#fff',weight:1.2,fillColor:'#7a1f1f',fillOpacity:.95}).bindTooltip(KNAME[q[2]],{direction:'top'})
+   .bindPopup('<b>'+(q[3]||'（名称なし）')+'</b><br>'+KNAME[q[2]]+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});}
+function loadTiles(){var b=map.getBounds(),ks=[];
+ for(var a=Math.floor(b.getSouth()*2);a<=Math.floor(b.getNorth()*2);a++)for(var o=Math.floor(b.getWest()*2);o<=Math.floor(b.getEast()*2);o++){var k=a+'_'+o;if(UP.meta.tiles.indexOf(k)>=0&&!UP.tiles[k])ks.push(k);}
+ ks.forEach(function(k){UP.tiles[k]=1;fetch('/up/t/'+k+'.json').then(function(r){return r.json();}).then(function(arr){addPts(arr);rsum();}).catch(function(){UP.tiles[k]=0;});});}
+function roadView(){if(!roadOn)return;var z=map.getZoom();
+ if(z<11){if(map.hasLayer(roadLayer))map.removeLayer(roadLayer);if(UP.ok){if(!gridLayer.getLayers().length)drawGrid();if(!map.hasLayer(gridLayer))map.addLayer(gridLayer);}}
+ else{if(map.hasLayer(gridLayer))map.removeLayer(gridLayer);if(!map.hasLayer(roadLayer))map.addLayer(roadLayer);if(UP.ok)loadTiles();}
+ if(UP.ok===false&&z<12){rs('地図を拡大すると表示（市区町村の一部が見える程度まで）');}
+ if(z>=(UP.ok?14:12))loadLive(false);rsum();}
+function loadLive(force){
  if(!roadOn)return;
- if(map.getZoom()<12){rs('地図を拡大すると表示（市区町村の一部が見える程度まで）'+(roadN?'。取得済み '+roadN+'件':''));return;}
+ if(map.getZoom()<14)return;
  var b=map.getBounds(),S=0.03,cells=[];
  for(var la=Math.floor(b.getSouth()/S)*S;la<b.getNorth();la+=S)for(var lo=Math.floor(b.getWest()/S)*S;lo<b.getEast();lo+=S){var k=la.toFixed(2)+','+lo.toFixed(2);if(force||!roadKeys[k])cells.push([la,lo,k]);}
- if(!cells.length){rs(roadN+'件を表示中');return;}
- if(cells.length>40){rs('範囲が広いため、もう少し拡大すると表示');return;}
+ if(!cells.length)return;
+ if(cells.length>12)return;
  var RD='["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|living_street)(_link)?$"]';
  var eps=['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
  var done=0,fail=0,total=cells.length,run=0,qi=0;
  function add(j){(j.elements||[]).forEach(function(e){var id=e.type+e.id;if(roadSeen[id])return;var t=e.tags||{},lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);if(!lat)return;roadSeen[id]=1;
     var kind=t.tunnel?'トンネル・アンダーパス':(t.layer&&t.layer.indexOf('-')===0)?'掘割・地下区間':t.ford?'洗い越し（冠水路）':'冠水しやすい道路';
-    roadN++;L.circleMarker([lat,lon],{radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
+    liveN++;roadN++;L.circleMarker([lat,lon],{renderer:cv,radius:6,color:'#fff',weight:1.5,fillColor:'#7a1f1f',fillOpacity:.95})
      .bindTooltip(kind,{direction:'top'})
      .bindPopup('<b>'+(t.name||t.ref||'（名称なし）')+'</b><br>'+kind+'<br>種別：'+(t.highway||'—')+'<br><span class="mut">大雨時に冠水・通行止めになりやすい地点。救急搬送・職員参集の迂回路を決めておく。出典：OpenStreetMap</span>').addTo(roadLayer);});}
  function one(c){var bb='('+c[0].toFixed(4)+','+c[1].toFixed(4)+','+(c[0]+S).toFixed(4)+','+(c[1]+S).toFixed(4)+')';
@@ -470,13 +491,13 @@ function loadRoad(force){
    var ac=('AbortController' in window)?new AbortController():null;var tm=setTimeout(function(){if(ac)ac.abort();},30000);
    fetch(ep,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'},signal:ac?ac.signal:undefined})
     .then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json();}).then(function(j){roadKeys[c[2]]=1;add(j);fin();}).catch(function(){clearTimeout(tm);go();});})();}
- function fin(){done++;run--;rs((done<total?'取得中 '+done+'/'+total+'区画　':'')+roadN+'件を表示中'+(fail?'（'+fail+'区画は取得できず。「再取得」で取り直し）':''));next();}
+ function fin(){done++;run--;if(done>=total)liveRun=false;rsum();next();}
  function next(){while(run<2&&qi<cells.length){run++;one(cells[qi++]);}}
- rs('取得中 0/'+total+'区画');next();}
-map.on('zoomend',function(){if(!roadOn)return;if(map.getZoom()<12){if(map.hasLayer(roadLayer))map.removeLayer(roadLayer);}else if(!map.hasLayer(roadLayer))map.addLayer(roadLayer);});
-map.on('moveend',function(){if(!roadOn)return;clearTimeout(roadTimer);roadTimer=setTimeout(function(){loadRoad(false);},600);});
-document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){if(map.getZoom()>=12)map.addLayer(roadLayer);loadRoad(false);}else{map.removeLayer(roadLayer);rs('');}};
-document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad(false);};
+ liveRun=true;next();}
+
+map.on('moveend',function(){if(!roadOn)return;clearTimeout(roadTimer);roadTimer=setTimeout(roadView,500);});
+document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){rs('読み込み中…');upInit(roadView);}else{map.removeLayer(roadLayer);map.removeLayer(gridLayer);rs('');}};
+document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked){loadLive(true);}};
 document.getElementById('cb-dis-now').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
 document.getElementById('cb-dis-past').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
 document.getElementById('cb-low').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}this.checked?map.addLayer(lowLayer):map.removeLayer(lowLayer);};
