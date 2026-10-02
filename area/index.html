@@ -93,6 +93,7 @@ details.orig img{width:100%;margin-top:10px;border:1px solid #d5c9b7}
 @media print{.nav{display:none}.panel{display:block!important;page-break-before:always}.panel:first-of-type{page-break-before:auto}.hero{padding:26px 0}.section{padding:24px 0}details.orig{display:none}.table{font-size:11px}}
 
 
+#hazmap,#areamap{position:relative;z-index:0;isolation:isolate}
 #hazmap{height:70vh;min-height:500px;border:1px solid #c9bda8;background:#eee5d6}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 8px;font-size:12.5px}
 .bar input[type=number]{border:1px solid #c9bda8;padding:5px 6px;width:86px;border-radius:6px}
@@ -122,12 +123,12 @@ details.orig img{width:100%;margin-top:10px;border:1px solid #d5c9b7}
 
 :root{--coral:#D2553F;--coral-d:#B8452F;--teal:#2E7D78}
 body{-webkit-user-select:none;user-select:none}input,textarea,select{user-select:text}
-.topnav{position:sticky;top:0;z-index:1000;background:#f4efe6;border-bottom:1px solid #c9bda8}
+.topnav{position:sticky;top:0;z-index:3000;background:#f4efe6;border-bottom:1px solid #c9bda8}
 .topnav .in{max-width:1180px;margin:auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:20px}
 .topnav .brand{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:18px;color:#1c2530;text-decoration:none;margin-right:auto}
 .topnav .brand small{display:block;font:9px monospace;letter-spacing:.22em;color:#9b6339}
 .topnav nav{display:flex;gap:18px;font-size:13px}.topnav nav a{color:#6e6354;text-decoration:none}.topnav nav a.cta{color:var(--coral)}
-.locbar{position:sticky;top:62px;z-index:999;background:#faf7f0;border-bottom:1px solid #c9bda8;padding:10px 0}
+.locbar{position:sticky;top:62px;z-index:2900;background:#faf7f0;border-bottom:1px solid #c9bda8;padding:10px 0}
 .locbar .wrap{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .locbar input[type=text]{border:1px solid #c9bda8;background:#fff;padding:8px 14px;border-radius:20px;font-size:14px;width:340px;max-width:100%}
 .locbar .ctrl{margin-left:0;font-size:13px;padding:7px 14px}.locbar .ctrl.p{background:var(--coral);border-color:var(--coral);color:#fff}
@@ -448,7 +449,7 @@ var roadLayer=L.layerGroup(), roadDone=false, roadOn=false, roadSeen={}, roadKey
 function rs(t){var e=document.getElementById('road-st');if(e)e.textContent=t;}
 function loadRoad(force){
  if(!roadOn)return;
- if(map.getZoom()<12){rs('地図を拡大すると表示（市区町村の一部が見える程度まで）');return;}
+ if(map.getZoom()<12){rs('地図を拡大すると表示（市区町村の一部が見える程度まで）'+(roadN?'。取得済み '+roadN+'件':''));return;}
  var b=map.getBounds(),S=0.03,cells=[];
  for(var la=Math.floor(b.getSouth()/S)*S;la<b.getNorth();la+=S)for(var lo=Math.floor(b.getWest()/S)*S;lo<b.getEast();lo+=S){var k=la.toFixed(2)+','+lo.toFixed(2);if(force||!roadKeys[k])cells.push([la,lo,k]);}
  if(!cells.length){rs(roadN+'件を表示中');return;}
@@ -472,8 +473,9 @@ function loadRoad(force){
  function fin(){done++;run--;rs((done<total?'取得中 '+done+'/'+total+'区画　':'')+roadN+'件を表示中'+(fail?'（'+fail+'区画は取得できず。「再取得」で取り直し）':''));next();}
  function next(){while(run<2&&qi<cells.length){run++;one(cells[qi++]);}}
  rs('取得中 0/'+total+'区画');next();}
+map.on('zoomend',function(){if(!roadOn)return;if(map.getZoom()<12){if(map.hasLayer(roadLayer))map.removeLayer(roadLayer);}else if(!map.hasLayer(roadLayer))map.addLayer(roadLayer);});
 map.on('moveend',function(){if(!roadOn)return;clearTimeout(roadTimer);roadTimer=setTimeout(function(){loadRoad(false);},600);});
-document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){map.addLayer(roadLayer);loadRoad(false);}else{map.removeLayer(roadLayer);rs('');}};
+document.getElementById('cb-road').onchange=function(){roadOn=this.checked;if(this.checked){if(map.getZoom()>=12)map.addLayer(roadLayer);loadRoad(false);}else{map.removeLayer(roadLayer);rs('');}};
 document.getElementById('btn-road-reload').onclick=function(){if(document.getElementById('cb-road').checked)loadRoad(false);};
 document.getElementById('cb-dis-now').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(true);map.addLayer(disNow);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disNow);};
 document.getElementById('cb-dis-past').onchange=function(){if(this.checked&&!AREA.member()){this.checked=false;AREA.gate();return;}if(this.checked){loadDis(false);map.addLayer(disPast);map.fitBounds([[24.0,123.0],[45.6,146.0]]);}else map.removeLayer(disPast);};
