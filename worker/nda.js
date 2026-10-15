@@ -38,7 +38,7 @@ async function contentKey(env, listing) {
   let bin = ""; for (const b of sig) bin += String.fromCharCode(b);
   return btoa(bin);
 }
-export const NDA_VERSION = "v1.3（2026-09-24）";
+export const NDA_VERSION = "v1.4（2026-10-15）";
 
 // 個別の秘密保持契約が必要な案件（売主の意向等）。ここに案件IDを入れると、包括NDAでは閲覧できなくなる
 export const INDIVIDUAL = new Set([]);
@@ -82,6 +82,17 @@ const TAMJ = {
   address: "東京都中央区東日本橋三丁目3番17号 Re-Know東日本橋4B",
   rep: "代表取締役 大下 甚",
 };
+// v1.4 以降の甲（2026-10-15〜）。v1.3 以前の締結分は上の TAMJ のまま再現する
+const GMS = {
+  company: "株式会社GMS",
+  address: "東京都練馬区豊玉中三丁目7番5号",
+  rep: "代表取締役 後藤 基温",
+};
+// 文面版から甲の会社名を返す（PDFのフッター・印影の判定用）
+export function ndaParty(v) {
+  v = String(v || "");
+  return (v.startsWith("v1.1") || v.startsWith("v1.2") || v.startsWith("v1.3")) ? TAMJ.company : GMS.company;
+}
 
 function ndaTextV11(p, ttlDays) {
   const listing = LISTINGS[p.listing] || p.listing || "〔対象案件〕";
@@ -233,6 +244,81 @@ ${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」�
 文面版：v1.3（2026-09-24）`;
 }
 
+function ndaTextV14(p, ttlDays) {
+  const listing = LISTINGS[p.listing] || p.listing || "〔対象案件〕";
+  const company = p.company || "〔相手方会社名〕";
+  return `秘密保持契約書
+
+${GMS.company}（以下「甲」という。）と${company}（以下「乙」という。）は、甲が紹介する案件の検討に関し、次のとおり秘密保持契約（以下「本契約」という。）を締結する。
+
+第1条（目的）
+本契約は、「${listing}」（以下「本件案件」という。）への参画、取得その他の取引の検討（以下「本目的」という。）のために、甲乙が相互に開示する情報の取扱いを定める。
+
+第2条（秘密情報）
+1. 秘密情報とは、本目的のために一方当事者（以下「開示者」という。）が相手方（以下「受領者」という。）に開示する一切の情報をいい、計画地の所在地・地番、土地所有者・開発事業者・施工会社・他の運営予定事業者・売主・対象会社の名称、図面、財務情報、収支計画、賃料・譲渡対価その他の条件、並びに本件案件の存在及び検討の事実を含む。開示の方法は、書面、電子メール、ウェブページの閲覧その他の電磁的方法を問わない。
+2. 次の各号の情報は秘密情報に含まない。
+(1) 開示時に既に公知であった情報
+(2) 開示後、受領者の責めによらず公知となった情報
+(3) 開示時に受領者が既に保有していた情報
+(4) 正当な権限を有する第三者から秘密保持義務を負わずに取得した情報
+(5) 秘密情報によらず独自に開発した情報
+
+第3条（秘密保持義務）
+1. 受領者は、開示者の事前の書面による承諾なく、秘密情報を第三者に開示し、又は漏えいしない。
+2. 前項にかかわらず、受領者は、本目的のために必要な範囲で、自己の役員・従業員、弁護士・税理士・公認会計士その他の専門家及び金融機関に開示することができる。この場合、受領者は、開示先に本契約と同等の義務を負わせ、その遵守について責任を負う。
+3. 法令、裁判所又は官公庁の命令により開示を求められた場合は、必要最小限の範囲で開示することができる。この場合、受領者は、可能な限り事前に開示者に通知する。
+
+第4条（目的外使用の禁止）
+受領者は、秘密情報を本目的以外に使用しない。
+
+第5条（複製の制限）
+受領者は、本目的に必要な範囲を超えて、秘密情報を複製、転載又は加工しない。
+
+第6条（インターネット上での取扱い）
+乙は、甲がウェブページ等の電磁的方法により開示する秘密情報について、次の各号を遵守する。
+(1) 閲覧用のパスワード及び解除キーを、本目的のために閲覧を認められた者以外に開示せず、電子メール、チャット、SNSその他の方法で転送しない。
+(2) 秘密情報を表示した画面の撮影、スクリーンショット、画面録画、印刷及び保存を行わない。ただし、甲が事前に承諾した場合を除く。
+(3) 秘密情報を、SNS、ブログ、掲示板、共有ストレージ、生成AIサービス、翻訳サービスその他第三者がアクセスし得る外部サービスに入力、投稿又は保存しない。
+(4) 公衆無線LAN等の安全性が確認できない通信環境、第三者と共用する端末及び第三者の目に触れる場所での閲覧を避ける。
+(5) 閲覧に用いる端末及びアカウントを適切に管理し、不正アクセス、紛失又は盗難を防止する。
+(6) 秘密情報の漏えい、又はそのおそれがあることを知った場合、直ちに甲に通知し、甲の指示に従って被害の拡大防止に必要な措置を講じる。
+
+第7条（解除キーの管理）
+1. 甲は、秘密情報の閲覧のため、乙に解除キーを発行する。解除キーは、乙が甲と締結する他の秘密保持契約の対象案件の閲覧にも共通して用いる。解除キーの有効期間は発行日から${ttlDays}日間とし、乙は、有効期間の満了後も閲覧を継続する場合、甲所定の手続により解除キーの更新を受ける。
+2. 甲は、解除キーによる閲覧の日時、接続元その他の記録を取得し、保存することができる。
+3. 甲は、乙による本契約の違反又はそのおそれがあると判断した場合、本目的の検討が終了した場合、その他甲が必要と判断した場合、事前の通知なく解除キーを失効させることができる。
+
+第8条（直接交渉の禁止）
+乙は、本契約締結日から2年間、甲の事前の書面による承諾なく、本件案件に関し、土地所有者・開発事業者・施工会社その他甲から開示を受けた関係者と、直接又は第三者を介して交渉し、又は契約を締結しない。乙がこれに違反した場合、甲が本件案件において受領すべきであった報酬相当額を甲に支払う。
+
+第9条（返還・破棄）
+受領者は、開示者から請求があった場合又は本目的の検討を終了した場合、秘密情報（複製物を含む。）を遅滞なく返還又は破棄し、開示者の求めに応じて破棄を証する書面を提出する。電磁的記録については、復元できない方法で消去する。
+
+第10条（損害賠償）
+受領者は、本契約に違反して開示者に損害を与えた場合、その損害（合理的な弁護士費用を含む。）を賠償する。
+
+第11条（有効期間）
+本契約の有効期間は締結日から2年間とする。ただし、第3条から第6条まで及び第8条から第10条までの規定は、本契約終了後3年間存続する。
+
+第12条（電子契約）
+本契約は、電磁的方法による署名及び同意により成立する。甲が発行する電子文書を原本とし、甲乙はその効力を争わない。
+
+第13条（準拠法・管轄）
+本契約は日本法に準拠し、本契約に関する紛争は東京地方裁判所を第一審の専属的合意管轄裁判所とする。
+
+第14条（協議）
+本契約に定めのない事項は、甲乙誠実に協議のうえ解決する。
+
+甲：${GMS.address}
+　　${GMS.company}　${GMS.rep}
+乙：${p.address || "〔所在地〕"}
+　　${company}　${p.rep_name || "〔代表者名〕"}
+　　署名：${p.signer || "〔署名〕"}
+締結日時：${p.signed_at_jst || "〔締結時に自動付与〕"}
+文書番号：${p.doc_no || "〔締結時に自動付与〕"}
+文面版：v1.4（2026-10-15）`;
+}
+
 function ndaTextV12(p, ttlDays) {
   const listing = LISTINGS[p.listing] || p.listing || "〔対象案件〕";
   const company = p.company || "〔相手方会社名〕";
@@ -307,7 +393,7 @@ ${TAMJ.company}（以下「甲」という。）と${company}（以下「乙」�
 　　署名：${p.signer || "〔署名〕"}
 締結日時：${p.signed_at_jst || "〔締結時に自動付与〕"}
 文書番号：${p.doc_no || "〔締結時に自動付与〕"}
-文面版：${NDA_VERSION}`;
+文面版：v1.3（2026-09-24）`;
 }
 
 // 締結済みの記録は、その時点の文面で再現する（PDF再生成・ハッシュ照合のため）
@@ -315,7 +401,8 @@ export function ndaText(p, ttlDays) {
   const v = String(p.text_ver || "");
   if (v.startsWith("v1.1")) return ndaTextV11(p, ttlDays);
   if (v.startsWith("v1.2")) return ndaTextV12(p, ttlDays);
-  return ndaTextV13(p, ttlDays);
+  if (v.startsWith("v1.3")) return ndaTextV13(p, ttlDays);
+  return ndaTextV14(p, ttlDays);
 }
 
 /* ---------- 共通 ---------- */
@@ -421,7 +508,7 @@ function mailWrap(title, body) {
 <div style="max-width:600px;margin:0 auto;padding:28px 16px"><div style="background:#faf7f0;border:1px solid #c9bda8">
 <div style="padding:22px 28px;border-bottom:1px solid #c9bda8;font-size:16px;font-weight:600">${title}</div>
 <div style="padding:24px 28px;font-size:14px;line-height:1.9">${body}</div>
-<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">タムジ株式会社 ／ develop.tamjump.com ／ info@tamjump.com</div>
+<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">株式会社GMS ／ develop.tamjump.com ／ animalb001@gmail.com（担当：大下 甚）</div>
 </div></div></body></html>`;
 }
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -431,7 +518,7 @@ const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</
 async function makePdf(env, nda) {
   const signed = new Date(nda.signed_at);
   const text = ndaText({ ...nda, signed_at_jst: jst(signed) }, ttlDays(env));
-  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company, signer: nda.signer, seal: nda.seal });
+  const bytes = await buildNdaPdf(env, { text, doc_no: nda.doc_no, signed_at_iso: nda.signed_at, doc_hash: nda.doc_hash, company: nda.company, signer: nda.signer, seal: nda.seal, party: ndaParty(nda.text_ver) });
   const d = await crypto.subtle.digest("SHA-256", bytes);
   const pdf_hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
   return { bytes, pdf_hash };
@@ -453,7 +540,7 @@ async function signNda(env, req, SITE, sendMail, nda, signer, seal) {
     // PDF（失敗しても締結自体は成立させ、メール本文の記録で代替）
     let att = [], pdf_hash = "";
     try {
-      const signedRow = { ...nda, signer, seal, signed_at: now.toISOString(), doc_no, doc_hash };
+      const signedRow = { ...nda, signer, seal, signed_at: now.toISOString(), doc_no, doc_hash, text_ver: NDA_VERSION };
       const pdf = await makePdf(env, signedRow);
       pdf_hash = pdf.pdf_hash;
       try { await env.DB.prepare("UPDATE nda SET pdf_hash=? WHERE id=?").bind(pdf_hash, id).run(); } catch (_) {}
@@ -464,8 +551,8 @@ async function signNda(env, req, SITE, sendMail, nda, signer, seal) {
     const keyHtml = k.key ? `解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）` : `解除キー：お手持ちの解除キー（末尾 <b>${esc(k.key_tail)}</b>）をそのままご利用ください。<br>有効期限：${jstDate(k.expires_at)}（日本時間）`;
     const mailBody = `${nda.company} ${nda.person || nda.rep_name} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n${keyTxt}\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
     await sendMail(env, {
-      to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "info@tamjump.com",
-      subject: `【タムジ株式会社】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
+      to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "animalb001@gmail.com",
+      subject: `【株式会社GMS】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
       html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person || nda.rep_name)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">${keyHtml}</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
     });
     const tamjTo = env.NDA_NOTIFY_TO || env.NOTIFY_TO;
@@ -505,7 +592,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     const t = await readToken(env, body.token), listing = clip(body.listing, 40), serial = clip(body.serial, 40);
     if (!t || !LISTINGS[listing] || !serial) return json({ error: "invalid" }, 400, req);
     let nda_id = "", doc_no = "", company = "", level = t.lv === "m" ? "master" : "nda";
-    if (t.lv === "m") company = "タムジ株式会社（管理者）";
+    if (t.lv === "m") company = "株式会社GMS（管理者）";
     else if (t.lv === "g") { const g = GUESTS[t.g]; if (!g || !g.listings.includes(listing)) return json({ error: "invalid" }, 400, req); company = g.name; level = "guest"; }
     else {
       const kr = await env.DB.prepare("SELECT * FROM nda_keys WHERE key_hash=?").bind(t.kh).first();
@@ -544,8 +631,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
       req.headers.get("cf-connecting-ip") || "", (req.headers.get("user-agent") || "").slice(0, 300)).run();
     const c = await newCode(env, id, "sign");
     const sent = await sendMail(env, {
-      to: r.email, subject: `【タムジ株式会社】秘密保持契約の確認コード ${c}`,
-      text: `${r.company} ${r.person || r.rep_name} 様\n\n秘密保持契約の締結手続きの確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[r.listing]}\nお心当たりのない場合は、このメールを破棄してください。\n\nタムジ株式会社`,
+      to: r.email, subject: `【株式会社GMS】秘密保持契約の確認コード ${c}`,
+      text: `${r.company} ${r.person || r.rep_name} 様\n\n秘密保持契約の締結手続きの確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[r.listing]}\nお心当たりのない場合は、このメールを破棄してください。\n\n株式会社GMS（担当：大下 甚）`,
       html: mailWrap("秘密保持契約の確認コード", `${esc(r.company)} ${esc(r.person || r.rep_name)} 様<br><br>締結手続きの確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[r.listing])}<br><br><span style="color:#8a7c68;font-size:12px">お心当たりのない場合は、このメールを破棄してください。</span>`),
     });
     if (!sent) return json({ error: "mail_failed" }, 502, req);
@@ -661,8 +748,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (nda) {
       const c = await newCode(env, nda.id, "renew");
       await sendMail(env, {
-        to: email, subject: `【タムジ株式会社】解除キー更新の確認コード ${c}`,
-        text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キー更新の確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[listing]}\n文書番号：${nda.doc_no}\n\nタムジ株式会社`,
+        to: email, subject: `【株式会社GMS】解除キー更新の確認コード ${c}`,
+        text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キー更新の確認コードです。\n\n確認コード：${c}\n（有効期限15分）\n\n対象案件：${LISTINGS[listing]}\n文書番号：${nda.doc_no}\n\n株式会社GMS（担当：大下 甚）`,
         html: mailWrap("解除キー更新の確認コード", `${esc(nda.company)} ${esc(nda.person || nda.rep_name)} 様<br><br>解除キー更新の確認コードです。<div style="font-size:26px;letter-spacing:.3em;font-weight:700;margin:14px 0;color:#9b6339">${c}</div>有効期限は15分です。<br>対象案件：${esc(LISTINGS[listing])}<br>文書番号：${esc(nda.doc_no)}`),
       });
     }
@@ -680,8 +767,8 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     if (r !== "ok") return json({ error: r }, 400, req);
     const k = await issueKey(env, nda);
     await sendMail(env, {
-      to: email, subject: `【タムジ株式会社】解除キーを更新しました（${nda.doc_no}）`,
-      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キーを更新しました。以前の解除キーは失効しています。\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${SITE}/listings/${listing}/\n\nタムジ株式会社`,
+      to: email, subject: `【株式会社GMS】解除キーを更新しました（${nda.doc_no}）`,
+      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n解除キーを更新しました。以前の解除キーは失効しています。\n\n解除キー：${k.key}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${SITE}/listings/${listing}/\n\n株式会社GMS（担当：大下 甚）`,
     });
     return json({ ok: true, key: k.key, expires_at: k.expires_at }, 200, req);
   }
@@ -700,7 +787,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     await grant(env, nda.id, listing, "申請");
     await log(env, req, "access", { key_tail: row.key_tail, nda_id: nda.id, listing, ok: true });
     await sendMail(env, {
-      to: env.NDA_NOTIFY_TO || "info@tamjump.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
+      to: env.NDA_NOTIFY_TO || "animalb001@gmail.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
       text: `締結済みの取引先から、別案件の閲覧申請がありました。\n\n会社：${nda.company}\n代表者：${nda.rep_name}\nメール：${nda.email}\n文書番号：${nda.doc_no}\n申請案件：${LISTINGS[listing]}\n\n承認・却下は管理画面から：https://develop-api.tamjump.com/admin/nda`,
     });
     return json({ ok: true, status: "requested" }, 200, req);
@@ -755,8 +842,8 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     if (nda.scope !== "all") await env.DB.prepare("UPDATE nda SET scope='all' WHERE id=?").bind(id).run();
     await grant(env, id, listing, act === "approve" ? "承認" : "却下");
     if (act === "approve" && b.notify !== false && nda.status === "締結") await sendMail(env, {
-      to: nda.email, subject: `【タムジ株式会社】閲覧を承認しました（${LISTINGS[listing]}）`,
-      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n次の案件の閲覧を承認しました。現在お持ちの解除キーでご覧いただけます。\n\n案件：${LISTINGS[listing]}\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n文書番号：${nda.doc_no}\n\n解除キーの有効期限が切れている場合は、資料ページの「解除キーを更新」から更新できます。\n\nタムジ株式会社`,
+      to: nda.email, subject: `【株式会社GMS】閲覧を承認しました（${LISTINGS[listing]}）`,
+      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n次の案件の閲覧を承認しました。現在お持ちの解除キーでご覧いただけます。\n\n案件：${LISTINGS[listing]}\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n文書番号：${nda.doc_no}\n\n解除キーの有効期限が切れている場合は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
     });
     return json({ ok: true }, 200, req);
   }
@@ -788,8 +875,8 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     await env.DB.prepare("UPDATE nda SET scope='listing' WHERE id=?").bind(id).run();
     const k = await keyFor(env, { id, listing, email });
     if (b.send) await sendMail(env, {
-      to: email, subject: `【タムジ株式会社】資料閲覧の解除キー（${LISTINGS[listing]}）`,
-      text: `${clip(b.company, 160)} ${clip(b.person, 80)} 様\n\n資料閲覧の解除キーをお送りします。\n\n${k.key ? "解除キー：" + k.key : "解除キー：お手持ちの解除キー（末尾 " + k.key_tail + "）をそのままご利用ください。"}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\nタムジ株式会社`,
+      to: email, subject: `【株式会社GMS】資料閲覧の解除キー（${LISTINGS[listing]}）`,
+      text: `${clip(b.company, 160)} ${clip(b.person, 80)} 様\n\n資料閲覧の解除キーをお送りします。\n\n${k.key ? "解除キー：" + k.key : "解除キー：お手持ちの解除キー（末尾 " + k.key_tail + "）をそのままご利用ください。"}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
     });
     return json({ ok: true, id, key: k.key, key_tail: k.key_tail, reused: !!k.reused, expires_at: k.expires_at }, 200, req);
   }

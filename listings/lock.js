@@ -62,7 +62,7 @@
 
   // 透かし・転用防止
   function wm() {
-    var d = document.createElement("div"); d.className = "nda-wm"; var t = "CONFIDENTIAL · 転載禁止 · TAmJ";
+    var d = document.createElement("div"); d.className = "nda-wm"; var t = "CONFIDENTIAL · 転載禁止 · GMS";
     for (var y = 0; y < 40; y++) for (var x = 0; x < 8; x++) { var s = document.createElement("span"); s.textContent = t; s.style.left = (x * 260 - 120) + "px"; s.style.top = (y * 180) + "px"; d.appendChild(s); }
     document.body.appendChild(d);
   }
@@ -97,7 +97,7 @@
   // 印刷：全ページの上下に会社名・文書番号・印刷日時・通し番号を印字し、印刷の記録をサーバーに送る
   function printMarks(st) {
     document.body.classList.add("nda-print-ok");
-    var who = st.level === "master" ? "タムジ株式会社（管理者）" : (st.company || "");
+    var who = st.level === "master" ? "株式会社GMS（管理者）" : (st.company || "");
     var t = document.createElement("div"); t.className = "nda-pm t";
     var b = document.createElement("div"); b.className = "nda-pm b";
     document.body.appendChild(t); document.body.appendChild(b);
@@ -108,7 +108,7 @@
       var when = d.getFullYear() + "/" + p2(d.getMonth() + 1) + "/" + p2(d.getDate()) + " " + p2(d.getHours()) + ":" + p2(d.getMinutes());
       var line = "秘密情報｜" + who + (st.doc_no ? "｜" + st.doc_no : "") + "｜印刷 " + when + "｜No. " + sn;
       t.textContent = line + "｜秘密保持契約に基づく開示資料";
-      b.textContent = line + "｜無断での複製・転載・第三者への提供を禁じます｜タムジ株式会社";
+      b.textContent = line + "｜無断での複製・転載・第三者への提供を禁じます｜株式会社GMS";
       wmText(sn);
       var tok = ls(T) || ls("tamj_nda_tok_master");
       var data = JSON.stringify({ token: tok, listing: L, serial: sn });

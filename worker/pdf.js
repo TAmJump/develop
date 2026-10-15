@@ -96,13 +96,15 @@ export async function buildNdaPdf(env, o) {
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
   const font = await pdf.embedFont(await loadFont(env), { subset: true });
-  const seal = await pdf.embedPng(await loadImg(env, "seal.png"));
+  const party = o.party || "タムジ株式会社";
+  const legacy = party === "タムジ株式会社";               // v1.3 以前の締結分は当時の体裁のまま再現
+  const seal = legacy ? await pdf.embedPng(await loadImg(env, "seal.png")) : null;
 
   const when = new Date(o.signed_at_iso);
   pdf.setTitle(`秘密保持契約書 ${o.doc_no}`);
-  pdf.setAuthor("タムジ株式会社");
+  pdf.setAuthor(party);
   pdf.setSubject(`${o.company} との秘密保持契約`);
-  pdf.setProducer("TAmJ NDA");
+  pdf.setProducer(legacy ? "TAmJ NDA" : "GMS NDA");
   pdf.setCreator("develop-api.tamjump.com");
   pdf.setCreationDate(when);
   pdf.setModificationDate(when);
@@ -159,8 +161,8 @@ export async function buildNdaPdf(env, o) {
   const nameY = y + l2 - s2;
   const sd = 15 * MM;
   const sealY = nameY + s2 / 2 - sd / 2 - 2.5 * MM;      // 住所行に掛からないよう少し下げる
-  page.drawImage(seal, { x: nameEnd - 1.5 * MM, y: sealY, width: sd, height: sd, opacity: 0.9 });
-  y = Math.min(y, sealY - 1 * MM) - 5 * MM;
+  if (seal) { page.drawImage(seal, { x: nameEnd - 1.5 * MM, y: sealY, width: sd, height: sd, opacity: 0.9 }); y = Math.min(y, sealY - 1 * MM) - 5 * MM; }
+  else y -= 5 * MM;
 
   // 乙
   let signLineEnd = 0, signLineY = 0;
@@ -177,7 +179,7 @@ export async function buildNdaPdf(env, o) {
   for (const ln of meta) { page.drawText(ln, { x: ML, y: y - s3, size: s3, font, color: INK }); y -= l3; }
   const hashLine = `本文ハッシュ（SHA-256）：${o.doc_hash}`;
   for (const ln of wrap(font, 8, hashLine, tw)) { page.drawText(ln, { x: ML, y: y - 8, size: 8, font, color: FAINT }); y -= 8 * 1.8; }
-  for (const ln of wrap(font, 8, "本書は電磁的方法により締結された契約書の原本であり、締結日時・本文ハッシュはタムジ株式会社のシステムに記録されている。", tw)) {
+  for (const ln of wrap(font, 8, "本書は電磁的方法により締結された契約書の原本であり、締結日時・本文ハッシュは" + party + "のシステムに記録されている。", tw)) {
     page.drawText(ln, { x: ML, y: y - 8, size: 8, font, color: FAINT }); y -= 8 * 1.8;
   }
 
@@ -187,7 +189,7 @@ export async function buildNdaPdf(env, o) {
     const f = `${o.doc_no}　${i + 1} / ${total}　SHA-256 ${o.doc_hash.slice(0, 16)}…`;
     p.drawLine({ start: { x: ML, y: MB - 6 }, end: { x: W - MR, y: MB - 6 }, thickness: 0.4, color: LINE });
     p.drawText(f, { x: ML, y: MB - 18, size: 7.5, font, color: FAINT });
-    const r = "タムジ株式会社";
+    const r = party;
     p.drawText(r, { x: W - MR - font.widthOfTextAtSize(r, 7.5), y: MB - 18, size: 7.5, font, color: FAINT });
   });
 

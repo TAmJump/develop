@@ -9,10 +9,10 @@ routes = [
 ]
 
 [vars]
-FROM_EMAIL = "TAmJ不動産開発 <noreply@tamjump.com>"
+FROM_EMAIL = "株式会社GMS 不動産開発 <noreply@tamjump.com>"
 SITE_URL = "https://develop.tamjump.com"
 KEY_TTL_DAYS = "7"   # 解除キーの有効日数
-NDA_NOTIFY_TO = "info@tamjump.com"   # NDA締結の通知・PDF控えの送付先（弊社側）
+NDA_NOTIFY_TO = "animalb001@gmail.com"   # NDA締結の通知・PDF控えの送付先（弊社側）
 
 # D1（必須）── JIN作業: `npx wrangler d1 create develop` で出た database_id を下に貼る
 [[d1_databases]]
