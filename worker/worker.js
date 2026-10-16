@@ -1,5 +1,5 @@
 /**
- * TAmJ 不動産開発 受付 + 管理 Worker
+ * 株式会社GMS 不動産開発 受付 + 管理 Worker
  * Custom Domain: develop-api.tamjump.com
  *
  * 公開:
@@ -195,7 +195,7 @@ async function handleInquiry(req,env){
     notified=await sendMail(env,{
       to:env.NOTIFY_TO,
       reply_to:email,
-      subject:`[TAmJ開発用地] 新規お問い合わせ ${row.id}（${kind}）`,
+      subject:`[GMS開発用地] 新規お問い合わせ ${row.id}（${kind}）`,
       html:notifyHtml(row),
       text:`新規お問い合わせ ${row.id}（${kind}）\nお名前：${name}\nメール：${email}\n電話：${row.phone||"-"}\n会社名：${row.company||"-"}\nエリア：${row.region||"-"}\n予算・規模：${row.budget||"-"}\n\n${message}\n\n管理画面：${SELF}/admin`,
     });
@@ -329,7 +329,7 @@ tbody tr{cursor:pointer}tbody tr:hover{background:#faf8f4}
 
 const ADMIN_HTML = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>不動産開発 お問い合わせ管理</title><style>${PAGE_CSS}</style></head><body>
 <div class="wrap">
-  <div class="top"><span class="brand">TAmJ<em>／</em>不動産開発 管理｜お問い合わせ</span>${ADMIN_NAV("inq")}<button id="logout" style="display:none"></button></div>
+  <div class="top"><span class="brand">GMS<em>／</em>不動産開発 管理｜お問い合わせ</span>${ADMIN_NAV("inq")}<button id="logout" style="display:none"></button></div>
 
   <div id="login" style="display:none">
     <div class="center">
