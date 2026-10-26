@@ -21,7 +21,7 @@ async function loadImg(env, name) {
 }
 async function loadFont(env) {
   if (FONT) return FONT;
-  const url = env.NDA_FONT_URL || (env.SITE_URL || "https://develop.tamjump.com") + "/assets/fonts/nda-mincho.ttf?v=2";
+  const url = env.NDA_FONT_URL || (env.SITE_URL || "https://develop.115en.com") + "/assets/fonts/nda-mincho.ttf?v=2";
   const cache = typeof caches !== "undefined" ? caches.default : null;
   let res = cache ? await cache.match(url) : null;
   if (!res) {
@@ -105,7 +105,7 @@ export async function buildNdaPdf(env, o) {
   pdf.setAuthor(party);
   pdf.setSubject(`${o.company} との秘密保持契約`);
   pdf.setProducer(legacy ? "TAmJ NDA" : "GMS NDA");
-  pdf.setCreator("develop-api.tamjump.com");
+  pdf.setCreator("develop-api.115en.com");
   pdf.setCreationDate(when);
   pdf.setModificationDate(when);
 

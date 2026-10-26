@@ -1,6 +1,6 @@
 /**
  * 株式会社GMS 不動産開発 受付 + 管理 Worker
- * Custom Domain: develop-api.tamjump.com
+ * Custom Domain: develop-api.115en.com
  *
  * 公開:
  *   GET  /health
@@ -25,8 +25,8 @@
 import { handleNda, handleNdaAdmin, NDA_ADMIN_HTML, masterToken } from "./nda.js";
 import { handleMembersAdmin, MEMBERS_HTML, ADMIN_NAV } from "./members.js";
 
-const SELF = "https://develop-api.tamjump.com";
-const SITE = "https://develop.tamjump.com";
+const SELF = "https://develop-api.115en.com";
+const SITE = "https://develop.115en.com";
 const STATUSES = ["新規","連絡済","対応中","完了","見送り"];
 const KINDS = ["用地を売りたい","用地を購入・開発したい","開発・事業性の相談","M&A・事業承継","その他"];
 
@@ -105,7 +105,7 @@ function autoReplyHtml(r){
 </div>
 <div style="padding:20px 30px;border-top:1px solid #E4DED3;font-size:12px;color:#938D82;line-height:1.9">
 土地の売却・取得から、開発費の概算、出口の設計まで。<br>
-株式会社GMS ／ 不動産開発　<a href="https://develop.tamjump.com" style="color:#6E6354;text-decoration:none">develop.tamjump.com</a> ／ animalb001@gmail.com（担当：大下 甚）
+株式会社GMS ／ 不動産開発　<a href="https://develop.115en.com" style="color:#6E6354;text-decoration:none">develop.115en.com</a> ／ animalb001@gmail.com（担当：大下 甚）
 </div>
 </div></div></body></html>`;
 }
@@ -217,7 +217,7 @@ async function handleInquiry(req,env){
 }
 
 /* ===================== 管理 ===================== */
-// サイト（develop.tamjump.com）のログイン画面から管理者としてログイン
+// サイト（develop.115en.com）のログイン画面から管理者としてログイン
 // 管理画面のCookie＋全案件の最高権限トークンを同時に発行
 async function siteAdminLogin(req,env,m){
   const o=req.headers.get("Origin")||"";
@@ -237,7 +237,7 @@ async function siteAdminLogin(req,env,m){
 async function adminLogin(req,env){
   // サイトの login.html からのフォーム送信（画面遷移）にも対応
   const isForm=(req.headers.get("Content-Type")||"").includes("application/x-www-form-urlencoded");
-  const site=env.SITE_URL||"https://develop.tamjump.com";
+  const site=env.SITE_URL||"https://develop.115en.com";
   let b;
   if(isForm){ const f=await req.formData(); b={user:String(f.get("user")||"").trim(),password:String(f.get("password")||"")}; }
   else { try{ b=await req.json(); }catch{ return json({error:"invalid_json"},400,req); } }
@@ -371,10 +371,10 @@ function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"
 function fmt(iso){try{return new Date(iso).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});}catch(e){return iso;}}
 async function me(){var r=await fetch("/admin/api/me");return (await r.json()).auth;}
 function show(v){el("login").style.display=v==="login"?"block":"none";el("app").style.display=v==="app"?"block":"none";el("logout").style.display=v==="app"?"inline-flex":"none";}
-async function boot(){ if(await me()){show("app");loadList();} else location.replace("https://develop.tamjump.com/login.html"); }
+async function boot(){ if(await me()){show("app");loadList();} else location.replace("https://develop.115en.com/login.html"); }
 el("loginForm").onsubmit=async function(e){e.preventDefault();el("loginErr").textContent="";var r=await fetch("/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user:el("uid").value,password:el("pw").value})});if(r.ok){show("app");loadList();}else{el("loginErr").textContent="IDまたはパスワードが違います。";}};
-el("logout").onclick=async function(){await fetch("/admin/logout",{method:"POST"});location.href="https://develop.tamjump.com/login.html?signout=1";};
-async function loadList(){var r=await fetch("/admin/api/list");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}var j=await r.json();var t=el("list");t.innerHTML="";(j.items||[]).forEach(function(a){var tr=document.createElement("tr");tr.innerHTML="<td>"+fmt(a.created_at)+"</td><td>"+esc(a.name)+"</td><td>"+esc(a.kind||"-")+"</td><td>"+esc(a.region||"-")+"</td><td><span class='badge'>"+esc(a.status)+"</span></td>";tr.onclick=function(){openItem(a.id);};t.appendChild(tr);});if(!(j.items||[]).length)t.innerHTML="<tr><td colspan='5' class='muted'>まだお問い合わせはありません。</td></tr>";}
+el("logout").onclick=async function(){await fetch("/admin/logout",{method:"POST"});location.href="https://develop.115en.com/login.html?signout=1";};
+async function loadList(){var r=await fetch("/admin/api/list");if(r.status===401){location.replace("https://develop.115en.com/login.html");return;}var j=await r.json();var t=el("list");t.innerHTML="";(j.items||[]).forEach(function(a){var tr=document.createElement("tr");tr.innerHTML="<td>"+fmt(a.created_at)+"</td><td>"+esc(a.name)+"</td><td>"+esc(a.kind||"-")+"</td><td>"+esc(a.region||"-")+"</td><td><span class='badge'>"+esc(a.status)+"</span></td>";tr.onclick=function(){openItem(a.id);};t.appendChild(tr);});if(!(j.items||[]).length)t.innerHTML="<tr><td colspan='5' class='muted'>まだお問い合わせはありません。</td></tr>";}
 function rowHtml(k,v){return "<div class='row'><span class='k'>"+k+"</span><span class='v'>"+v+"</span></div>";}
 async function openItem(id){var r=await fetch("/admin/api/item?id="+encodeURIComponent(id));if(!r.ok)return;var j=await r.json();var a=j.item;cur=id;el("empty").style.display="none";el("panel").style.display="block";
  var h="";

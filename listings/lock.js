@@ -12,7 +12,7 @@
  */
 (function () {
   "use strict";
-  var API = "https://develop-api.tamjump.com";
+  var API = "https://develop-api.115en.com";
   var me = document.currentScript;
   var L = (me && me.getAttribute("data-l")) || "";
   var FULL = !!window.__NDA_STATE;

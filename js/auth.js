@@ -41,16 +41,16 @@ let _currentUser = null;
 // ══════════════════════════════════════════════════════════
 
 // 認証状態を確認してコールバックを呼ぶ
-// 管理者（サイトのログイン画面で info@tamjump.com としてログイン）は会員登録なしで全ツールを利用できる
+// 管理者（サイトのログイン画面で info@115en.com としてログイン）は会員登録なしで全ツールを利用できる
 function _adminUser() {
     try {
         if (/[?&]signout=1/.test(location.search)) return null;
         if (localStorage.getItem('tamj_admin') !== '1' || !localStorage.getItem('tamj_nda_tok_master')) return null;
     } catch { return null; }
-    return { email: 'info@tamjump.com', displayName: '管理者', uid: 'admin', plan: 'free', admin: true };
+    return { email: 'info@115en.com', displayName: '管理者', uid: 'admin', plan: 'free', admin: true };
 }
 function _verifyAdmin() {
-    fetch('https://develop-api.tamjump.com/api/nda/check', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    fetch('https://develop-api.115en.com/api/nda/check', { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: localStorage.getItem('tamj_nda_tok_master'), listing: 'murakami' }) })
         .then(r => r.json()).then(j => {
             if (!j.ok || j.level !== 'master') {
@@ -156,7 +156,7 @@ async function loginUser(email, password) {
 
 // ログアウト
 async function logoutUser() {
-    if (_currentUser && _currentUser.admin) { if (window.tamjAdminSignout) window.tamjAdminSignout(); else location.href = 'https://develop-api.tamjump.com/admin/signout'; return; }
+    if (_currentUser && _currentUser.admin) { if (window.tamjAdminSignout) window.tamjAdminSignout(); else location.href = 'https://develop-api.115en.com/admin/signout'; return; }
     try {
         await _apiCall('/api/auth/logout', { method: 'POST' });
     } catch {}

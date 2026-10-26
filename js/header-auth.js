@@ -5,7 +5,7 @@
   if (!admin && !member && !guest) return;
   function out(e) {
     e.preventDefault();
-    if (admin) { if (window.tamjAdminSignout) window.tamjAdminSignout(); else location.href = "https://develop-api.tamjump.com/admin/signout"; return; }
+    if (admin) { if (window.tamjAdminSignout) window.tamjAdminSignout(); else location.href = "https://develop-api.115en.com/admin/signout"; return; }
     try {
       if (guest) {
         Object.keys(localStorage).forEach(function (k) { if (k.indexOf("tamj_nda_tok_") === 0) localStorage.removeItem(k); });

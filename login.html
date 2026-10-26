@@ -133,7 +133,7 @@
             if(email.indexOf('@')<0){
                 btn.disabled=true;btn.textContent='ログイン中…';
                 try{
-                    const r=await fetch('https://develop-api.tamjump.com/api/nda/guest-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:email,password:pw})});
+                    const r=await fetch('https://develop-api.115en.com/api/nda/guest-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:email,password:pw})});
                     const j=await r.json().catch(()=>({}));
                     if(r.ok&&j.ok){
                         Object.keys(j.tokens).forEach(function(l){localStorage.setItem('tamj_nda_tok_'+l,j.tokens[l]);});
@@ -147,11 +147,11 @@
                 return;
             }
 
-            // 管理者（info@tamjump.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
-            if(email.toLowerCase()==='info@tamjump.com'){
+            // 管理者（info@115en.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
+            if(email.toLowerCase()==='info@115en.com'){
                 btn.disabled=true;btn.textContent='ログイン中…';
                 try{
-                    const r=await fetch('https://develop-api.tamjump.com/api/admin/site-login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:email,password:pw})});
+                    const r=await fetch('https://develop-api.115en.com/api/admin/site-login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:email,password:pw})});
                     const j=await r.json().catch(()=>({}));
                     if(r.ok&&j.ok){
                         localStorage.setItem('tamj_admin','1');

@@ -1,7 +1,7 @@
 /* 掲載終了の案件を、案件一覧・トップのカードから外す（管理者には「掲載終了」の印を付けて表示） */
 (function () {
   var admin = false; try { admin = localStorage.getItem("tamj_admin") === "1"; } catch (_) {}
-  fetch("https://develop-api.tamjump.com/api/nda/listings").then(function (r) { return r.json(); }).then(function (j) {
+  fetch("https://develop-api.115en.com/api/nda/listings").then(function (r) { return r.json(); }).then(function (j) {
     (j.closed || []).forEach(function (id) {
       document.querySelectorAll('a[href$="' + id + '/"]').forEach(function (a) {
         if (!/listings\/[^/]+\/$|^[^/]+\/$/.test(a.getAttribute("href"))) return;

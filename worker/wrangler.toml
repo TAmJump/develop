@@ -3,14 +3,15 @@ main = "worker.js"
 
 compatibility_date = "2025-06-01"
 
-# deploy 時に develop-api.tamjump.com を自動作成（DNS手動設定 不要）
+# deploy 時に develop-api.115en.com を自動作成（DNS手動設定 不要）
 routes = [
+  { pattern = "develop-api.115en.com", custom_domain = true },
   { pattern = "develop-api.tamjump.com", custom_domain = true }
 ]
 
 [vars]
 FROM_EMAIL = "株式会社GMS 不動産開発 <noreply@tamjump.com>"
-SITE_URL = "https://develop.tamjump.com"
+SITE_URL = "https://develop.115en.com"
 KEY_TTL_DAYS = "7"   # 解除キーの有効日数
 NDA_NOTIFY_TO = "animalb001@gmail.com"   # NDA締結の通知・PDF控えの送付先（弊社側）
 

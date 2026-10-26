@@ -1,9 +1,9 @@
-/* 管理者（info@tamjump.com でログイン中）向けの共通処理
+/* 管理者（info@115en.com でログイン中）向けの共通処理
  * - サイトのどのページでも右下に「管理画面」「ログアウト」を表示
  * - ?signout=1 で管理者状態（全案件の閲覧権限を含む）を消す
  */
 (function () {
-  var API = "https://develop-api.tamjump.com";
+  var API = "https://develop-api.115en.com";
   function g(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
   function clear() {
     try {

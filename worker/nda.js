@@ -508,7 +508,7 @@ function mailWrap(title, body) {
 <div style="max-width:600px;margin:0 auto;padding:28px 16px"><div style="background:#faf7f0;border:1px solid #c9bda8">
 <div style="padding:22px 28px;border-bottom:1px solid #c9bda8;font-size:16px;font-weight:600">${title}</div>
 <div style="padding:24px 28px;font-size:14px;line-height:1.9">${body}</div>
-<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">株式会社GMS ／ develop.tamjump.com ／ animalb001@gmail.com（担当：大下 甚）</div>
+<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">株式会社GMS ／ develop.115en.com ／ animalb001@gmail.com（担当：大下 甚）</div>
 </div></div></body></html>`;
 }
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -558,7 +558,7 @@ async function signNda(env, req, SITE, sendMail, nda, signer, seal) {
     const tamjTo = env.NDA_NOTIFY_TO || env.NOTIFY_TO;
     if (tamjTo) await sendMail(env, {
       to: tamjTo, subject: `[NDA締結] ${doc_no} ${nda.company}（${LISTINGS[nda.listing]}）`, attachments: att,
-      text: `NDA締結\n文書番号：${doc_no}\n会社：${nda.company}\n代表者：${nda.rep_name}\n担当：${nda.person} ${nda.title || ""}\nメール：${nda.email}\n電話：${nda.phone || "-"}\n案件：${LISTINGS[nda.listing]}\n締結：${signed_at_jst}\n署名：${signer}\nハッシュ：${doc_hash}\nPDFハッシュ：${pdf_hash || "（PDF生成失敗・管理画面から再生成可）"}\nキー末尾：${k.key_tail}${k.reused ? "（既存キーを継続）" : ""}／期限 ${jstDate(k.expires_at)}\n\n管理画面：https://develop-api.tamjump.com/admin/nda\n\n${text}`,
+      text: `NDA締結\n文書番号：${doc_no}\n会社：${nda.company}\n代表者：${nda.rep_name}\n担当：${nda.person} ${nda.title || ""}\nメール：${nda.email}\n電話：${nda.phone || "-"}\n案件：${LISTINGS[nda.listing]}\n締結：${signed_at_jst}\n署名：${signer}\nハッシュ：${doc_hash}\nPDFハッシュ：${pdf_hash || "（PDF生成失敗・管理画面から再生成可）"}\nキー末尾：${k.key_tail}${k.reused ? "（既存キーを継続）" : ""}／期限 ${jstDate(k.expires_at)}\n\n管理画面：https://develop-api.115en.com/admin/nda\n\n${text}`,
     });
     return { ok: true, doc_no, signed_at: signed_at_jst, doc_hash, pdf_hash, key: k.key, key_tail: k.key_tail, reused: !!k.reused, expires_at: k.expires_at, listing: nda.listing };
 }
@@ -567,7 +567,7 @@ async function signNda(env, req, SITE, sendMail, nda, signer, seal) {
 export async function handleNda(req, env, path, m, json, sendMail) {
   if (!env.DB) return json({ error: "no_db" }, 500, req);
   const body = m === "POST" ? await req.json().catch(() => ({})) : {};
-  const SITE = env.SITE_URL || "https://develop.tamjump.com";
+  const SITE = env.SITE_URL || "https://develop.115en.com";
 
   if (m === "GET" && path === "/api/nda/text") {
     const l = new URL(req.url).searchParams.get("listing") || "";
@@ -788,7 +788,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     await log(env, req, "access", { key_tail: row.key_tail, nda_id: nda.id, listing, ok: true });
     await sendMail(env, {
       to: env.NDA_NOTIFY_TO || "animalb001@gmail.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
-      text: `締結済みの取引先から、別案件の閲覧申請がありました。\n\n会社：${nda.company}\n代表者：${nda.rep_name}\nメール：${nda.email}\n文書番号：${nda.doc_no}\n申請案件：${LISTINGS[listing]}\n\n承認・却下は管理画面から：https://develop-api.tamjump.com/admin/nda`,
+      text: `締結済みの取引先から、別案件の閲覧申請がありました。\n\n会社：${nda.company}\n代表者：${nda.rep_name}\nメール：${nda.email}\n文書番号：${nda.doc_no}\n申請案件：${LISTINGS[listing]}\n\n承認・却下は管理画面から：https://develop-api.115en.com/admin/nda`,
     });
     return json({ ok: true, status: "requested" }, 200, req);
   }
@@ -843,7 +843,7 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     await grant(env, id, listing, act === "approve" ? "承認" : "却下");
     if (act === "approve" && b.notify !== false && nda.status === "締結") await sendMail(env, {
       to: nda.email, subject: `【株式会社GMS】閲覧を承認しました（${LISTINGS[listing]}）`,
-      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n次の案件の閲覧を承認しました。現在お持ちの解除キーでご覧いただけます。\n\n案件：${LISTINGS[listing]}\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n文書番号：${nda.doc_no}\n\n解除キーの有効期限が切れている場合は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
+      text: `${nda.company} ${nda.person || nda.rep_name} 様\n\n次の案件の閲覧を承認しました。現在お持ちの解除キーでご覧いただけます。\n\n案件：${LISTINGS[listing]}\n資料：${env.SITE_URL || "https://develop.115en.com"}/listings/${listing}/\n文書番号：${nda.doc_no}\n\n解除キーの有効期限が切れている場合は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
     });
     return json({ ok: true }, 200, req);
   }
@@ -876,7 +876,7 @@ export async function handleNdaAdmin(req, env, path, m, json, sendMail) {
     const k = await keyFor(env, { id, listing, email });
     if (b.send) await sendMail(env, {
       to: email, subject: `【株式会社GMS】資料閲覧の解除キー（${LISTINGS[listing]}）`,
-      text: `${clip(b.company, 160)} ${clip(b.person, 80)} 様\n\n資料閲覧の解除キーをお送りします。\n\n${k.key ? "解除キー：" + k.key : "解除キー：お手持ちの解除キー（末尾 " + k.key_tail + "）をそのままご利用ください。"}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${env.SITE_URL || "https://develop.tamjump.com"}/listings/${listing}/\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
+      text: `${clip(b.company, 160)} ${clip(b.person, 80)} 様\n\n資料閲覧の解除キーをお送りします。\n\n${k.key ? "解除キー：" + k.key : "解除キー：お手持ちの解除キー（末尾 " + k.key_tail + "）をそのままご利用ください。"}\n有効期限：${jstDate(k.expires_at)}（日本時間）\n資料：${env.SITE_URL || "https://develop.115en.com"}/listings/${listing}/\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n株式会社GMS（担当：大下 甚）`,
     });
     return json({ ok: true, id, key: k.key, key_tail: k.key_tail, reused: !!k.reused, expires_at: k.expires_at }, 200, req);
   }
@@ -915,7 +915,7 @@ button.p{background:#9b6339;color:#fff}
 var L={};function e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function f(iso){if(!iso)return"-";var d=new Date(iso);return d.toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});}
 async function acc(id,l,a){if(a==="reject"&&!confirm("この案件の閲覧を却下（または取消）します。よろしいですか。"))return;var r=await fetch("/admin/api/nda/access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,listing:l,action:a})});if(!r.ok)alert("処理できませんでした");load();}
-async function load(){var r=await fetch("/admin/api/nda");if(r.status===401){location.replace("https://develop.tamjump.com/login.html");return;}
+async function load(){var r=await fetch("/admin/api/nda");if(r.status===401){location.replace("https://develop.115en.com/login.html");return;}
 var j=await r.json();L=j.listings||{};var s=document.getElementById("i_l");s.innerHTML="";for(var k in L){var o=document.createElement("option");o.value=k;o.textContent=L[k];s.appendChild(o);}
 var LS={};(j.listing_status||[]).forEach(function(x){LS[x.listing]=x.status;});var lb=document.getElementById("lst");lb.innerHTML="";
 for(var k2 in L){(function(k2){var cl=LS[k2]==="終了";var d=document.createElement("div");d.style.cssText="border:1px solid #e4ded3;background:#fff;border-radius:6px;padding:8px 10px;font-size:13px";
