@@ -1,0 +1,24 @@
+name: Deploy Worker (develop-api)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - '.github/workflows/deploy-worker.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+        working-directory: worker
+      - name: Deploy develop-api
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: b9de28abfd009bbf696ceec4da62c5b8
+          workingDirectory: worker
+          command: deploy --keep-vars
