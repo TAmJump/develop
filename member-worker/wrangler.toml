@@ -1,0 +1,11 @@
+# 会員機能（ログイン・有料プラン）の Worker。ソースは Cloudflare 上にあった版を取り込んだもの
+name = "tamjump-member-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+# 変数はここに書いたもの以外は Cloudflare 側の値を残す（deploy --keep-vars）
+[vars]
+BASE_URL = "https://develop.115en.com"
+[[d1_databases]]
+binding = "DB"
+database_name = "tamjump_member_db"
+database_id = "8c950709-4dbf-4591-84e8-d4d839f5dffb"
