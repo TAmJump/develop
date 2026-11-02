@@ -24,10 +24,7 @@ import { ADMIN_NAV } from "./members.js";
 
 export const LISTINGS = {
   murakami: "村上3街区 複合ヘルスケア開発",
-  kyoikudai: "あいの里教育大駅前 開発用地",
-  hachiken: "八軒6条東5丁目 開発用地",
   nursing2: "医療対応型有料老人ホーム 2棟",
-  kaede: "サービス付き高齢者向け住宅 38室",
 };
 
 /* 完全版（full.enc）の復号鍵：CONTENT_SECRET と案件IDから導出 */
