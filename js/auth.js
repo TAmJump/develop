@@ -41,13 +41,13 @@ let _currentUser = null;
 // ══════════════════════════════════════════════════════════
 
 // 認証状態を確認してコールバックを呼ぶ
-// 管理者（サイトのログイン画面で info@115en.com としてログイン）は会員登録なしで全ツールを利用できる
+// 管理者（サイトのログイン画面で tiger@115en.com としてログイン）は会員登録なしで全ツールを利用できる
 function _adminUser() {
     try {
         if (/[?&]signout=1/.test(location.search)) return null;
         if (localStorage.getItem('tamj_admin') !== '1' || !localStorage.getItem('tamj_nda_tok_master')) return null;
     } catch { return null; }
-    return { email: 'info@115en.com', displayName: '管理者', uid: 'admin', plan: 'free', admin: true };
+    return { email: 'tiger@115en.com', displayName: '管理者', uid: 'admin', plan: 'free', admin: true };
 }
 function _verifyAdmin() {
     fetch('https://develop-api.115en.com/api/nda/check', { method: 'POST', headers: { 'Content-Type': 'application/json' },

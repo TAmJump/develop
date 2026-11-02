@@ -147,8 +147,8 @@
                 return;
             }
 
-            // 管理者（info@115en.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
-            if(email.toLowerCase()==='info@115en.com'){
+            // 管理者（tiger@115en.com）：管理画面・全案件・全ツールに入れる状態にしてサイトへ戻る
+            if(email.toLowerCase()==='tiger@115en.com'){
                 btn.disabled=true;btn.textContent='ログイン中…';
                 try{
                     const r=await fetch('https://develop-api.115en.com/api/admin/site-login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:email,password:pw})});
