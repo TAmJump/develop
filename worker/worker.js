@@ -101,11 +101,11 @@ function autoReplyHtml(r){
 <table style="width:100%;border-collapse:collapse;margin:0 0 18px;border-top:1px solid #ECE7DD;border-bottom:1px solid #ECE7DD">${meta.map(x=>mRow(x[0],x[1])).join("")}</table>
 <div style="color:#8A7C68;font-size:13px;margin-bottom:7px">ご相談内容</div>
 <div style="white-space:pre-wrap;font-size:14px;color:#2B2823;background:#F5F2EC;border:1px solid #ECE7DD;padding:14px 16px">${escH(r.message)}</div>
-<p style="margin:22px 0 0;font-size:13px;color:#6E6354">※ ご返信は本メールにそのままご返信ください（animalb001@gmail.com 宛に届きます）。</p>
+<p style="margin:22px 0 0;font-size:13px;color:#6E6354">※ ご返信は本メールにそのままご返信ください（info@115en.com 宛に届きます）。</p>
 </div>
 <div style="padding:20px 30px;border-top:1px solid #E4DED3;font-size:12px;color:#938D82;line-height:1.9">
 土地の売却・取得から、開発費の概算、出口の設計まで。<br>
-株式会社GMS ／ 不動産開発　<a href="https://develop.115en.com" style="color:#6E6354;text-decoration:none">develop.115en.com</a> ／ animalb001@gmail.com（担当：大下 甚）
+株式会社GMS ／ 不動産開発　<a href="https://develop.115en.com" style="color:#6E6354;text-decoration:none">develop.115en.com</a> ／ info@115en.com（担当：大下 甚）
 </div>
 </div></div></body></html>`;
 }
@@ -205,10 +205,10 @@ async function handleInquiry(req,env){
   if(env.RESEND_API_KEY){
     await sendMail(env,{
       to:email,
-      reply_to: env.REPLY_TO || env.NOTIFY_TO || "animalb001@gmail.com",
+      reply_to: env.REPLY_TO || env.NOTIFY_TO || "info@115en.com",
       subject:"【株式会社GMS｜不動産開発】お問い合わせを受け付けました",
       html:autoReplyHtml(row),
-      text:`${name} 様\n\nこのたびはお問い合わせをいただき、誠にありがとうございます。\n下記の内容で確かに受け付けいたしました。内容を確認のうえ、担当より追ってご連絡いたします。\n\n受付番号：${row.id}\nご相談種別：${kind}\n${row.region?`エリア：${row.region}\n`:""}${row.budget?`予算・規模：${row.budget}\n`:""}\nご相談内容：\n${message}\n\n※ご返信は本メールにそのままご返信ください（animalb001@gmail.com 宛）。\n\n株式会社GMS ／ 不動産開発（担当：大下 甚）\n${SITE}`,
+      text:`${name} 様\n\nこのたびはお問い合わせをいただき、誠にありがとうございます。\n下記の内容で確かに受け付けいたしました。内容を確認のうえ、担当より追ってご連絡いたします。\n\n受付番号：${row.id}\nご相談種別：${kind}\n${row.region?`エリア：${row.region}\n`:""}${row.budget?`予算・規模：${row.budget}\n`:""}\nご相談内容：\n${message}\n\n※ご返信は本メールにそのままご返信ください（info@115en.com 宛）。\n\n株式会社GMS ／ 不動産開発（担当：大下 甚）\n${SITE}`,
     });
   }
 

@@ -505,7 +505,7 @@ function mailWrap(title, body) {
 <div style="max-width:600px;margin:0 auto;padding:28px 16px"><div style="background:#faf7f0;border:1px solid #c9bda8">
 <div style="padding:22px 28px;border-bottom:1px solid #c9bda8;font-size:16px;font-weight:600">${title}</div>
 <div style="padding:24px 28px;font-size:14px;line-height:1.9">${body}</div>
-<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">株式会社GMS ／ develop.115en.com ／ animalb001@gmail.com（担当：大下 甚）</div>
+<div style="padding:16px 28px;border-top:1px solid #c9bda8;font-size:12px;color:#8a7c68">株式会社GMS ／ develop.115en.com ／ info@115en.com（担当：大下 甚）</div>
 </div></div></body></html>`;
 }
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -548,7 +548,7 @@ async function signNda(env, req, SITE, sendMail, nda, signer, seal) {
     const keyHtml = k.key ? `解除キー：<b style="font-size:18px;letter-spacing:.06em">${k.key}</b><br>有効期限：${jstDate(k.expires_at)}（日本時間）` : `解除キー：お手持ちの解除キー（末尾 <b>${esc(k.key_tail)}</b>）をそのままご利用ください。<br>有効期限：${jstDate(k.expires_at)}（日本時間）`;
     const mailBody = `${nda.company} ${nda.person || nda.rep_name} 様\n\n秘密保持契約の締結が完了しました。\n\n文書番号：${doc_no}\n締結日時：${signed_at_jst}\n文書ハッシュ（SHA-256）：${doc_hash}\n\n${keyTxt}\n資料：${pageUrl}\n\n解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。\n\n―――― 締結した契約書 ――――\n${text}\n\n文書ハッシュ（SHA-256）：${doc_hash}`;
     await sendMail(env, {
-      to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "animalb001@gmail.com",
+      to: nda.email, reply_to: env.NDA_NOTIFY_TO || env.REPLY_TO || "info@115en.com",
       subject: `【株式会社GMS】秘密保持契約の締結完了（${doc_no}）`, text: mailBody + (pdf_hash ? `\nPDFハッシュ（SHA-256）：${pdf_hash}\n契約書PDFを添付しています。` : ""), attachments: att,
       html: mailWrap("秘密保持契約の締結完了", `${esc(nda.company)} ${esc(nda.person || nda.rep_name)} 様<br><br>秘密保持契約の締結が完了しました。<br><br>文書番号：${doc_no}<br>締結日時：${signed_at_jst}<br><span style="font-size:12px;word-break:break-all">文書ハッシュ（SHA-256）：${doc_hash}</span><div style="margin:18px 0;padding:14px 16px;border:1px solid #9b6339;background:#fff">${keyHtml}</div>資料：<a href="${pageUrl}">${pageUrl}</a><br><br>解除キーは第三者に転送しないでください。有効期限後は、資料ページの「解除キーを更新」から更新できます。<pre style="white-space:pre-wrap;font-size:12px;line-height:1.8;background:#fff;border:1px solid #e4ded3;padding:14px;margin-top:20px">${esc(text)}</pre>`),
     });
@@ -784,7 +784,7 @@ export async function handleNda(req, env, path, m, json, sendMail) {
     await grant(env, nda.id, listing, "申請");
     await log(env, req, "access", { key_tail: row.key_tail, nda_id: nda.id, listing, ok: true });
     await sendMail(env, {
-      to: env.NDA_NOTIFY_TO || "animalb001@gmail.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
+      to: env.NDA_NOTIFY_TO || "info@115en.com", subject: `【閲覧申請】${nda.company}／${LISTINGS[listing]}`,
       text: `締結済みの取引先から、別案件の閲覧申請がありました。\n\n会社：${nda.company}\n代表者：${nda.rep_name}\nメール：${nda.email}\n文書番号：${nda.doc_no}\n申請案件：${LISTINGS[listing]}\n\n承認・却下は管理画面から：https://develop-api.115en.com/admin/nda`,
     });
     return json({ ok: true, status: "requested" }, 200, req);
