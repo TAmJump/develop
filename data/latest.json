@@ -1,7 +1,7 @@
 {
   "baseDate": "2022-04-01",
-  "fetchDate": "2026-11-11",
-  "fetchTime": "2026-11-11T01:40:17.369Z",
+  "fetchDate": "2026-11-12",
+  "fetchTime": "2026-11-12T02:39:24.250Z",
   "baseValues": {
     "nikkei": 27500,
     "usdjpy": 131,
@@ -10,27 +10,16 @@
     "jgb10y": 0.2
   },
   "currentValues": {
-    "nikkei": 60957.56,
-    "usdjpy": 158.922,
-    "brent": 91.99,
-    "copper": 6.297,
-    "jgb10y": 4.983,
-    "cnyJpy": 23.775,
-    "steel": 256.47,
-    "lumber": 66.42
+    "nikkei": 61744.17,
+    "usdjpy": 159.748,
+    "brent": 92.16,
+    "copper": 6.266,
+    "jgb10y": 4.998,
+    "cnyJpy": 23.932,
+    "steel": 261.39,
+    "lumber": 65.952
   },
   "history30d": [
-    {
-      "date": "2026-10-05",
-      "nikkei": 69946.859,
-      "usdjpy": 157.963,
-      "brent": 100.32,
-      "copper": 6.585,
-      "jgb10y": 5.311,
-      "cnyJpy": 23.561,
-      "steel": 251.41,
-      "lumber": 66.21
-    },
     {
       "date": "2026-10-06",
       "nikkei": 70683.977,
@@ -67,28 +56,28 @@
     {
       "date": "2026-10-09",
       "nikkei": 69030.922,
-      "usdjpy": 158.922,
+      "usdjpy": 159.748,
       "brent": 104.72,
       "copper": 6.642,
       "jgb10y": 5.244,
-      "cnyJpy": 23.775,
+      "cnyJpy": 23.932,
       "steel": 250.33,
       "lumber": 66.69
     },
     {
       "date": "2026-10-11",
-      "nikkei": 60957.56,
+      "nikkei": 61744.17,
       "usdjpy": 158.203,
-      "brent": 91.99,
-      "copper": 6.297,
-      "jgb10y": 4.983,
+      "brent": 92.16,
+      "copper": 6.266,
+      "jgb10y": 4.998,
       "cnyJpy": 23.64,
-      "steel": 256.47,
-      "lumber": 66.42
+      "steel": 261.39,
+      "lumber": 65.952
     },
     {
       "date": "2026-10-12",
-      "nikkei": 60957.56,
+      "nikkei": 61744.17,
       "usdjpy": 158.52,
       "brent": 106.65,
       "copper": 6.699,
@@ -133,24 +122,24 @@
     {
       "date": "2026-10-16",
       "nikkei": 65324.289,
-      "usdjpy": 158.922,
+      "usdjpy": 159.748,
       "brent": 109.86,
       "copper": 6.531,
       "jgb10y": 5.098,
-      "cnyJpy": 23.775,
+      "cnyJpy": 23.932,
       "steel": 256.29,
       "lumber": 66.69
     },
     {
       "date": "2026-10-18",
-      "nikkei": 60957.56,
+      "nikkei": 61744.17,
       "usdjpy": 157.806,
-      "brent": 91.99,
-      "copper": 6.297,
-      "jgb10y": 4.983,
+      "brent": 92.16,
+      "copper": 6.266,
+      "jgb10y": 4.998,
       "cnyJpy": 23.584,
-      "steel": 256.47,
-      "lumber": 66.42
+      "steel": 261.39,
+      "lumber": 65.952
     },
     {
       "date": "2026-10-19",
@@ -199,11 +188,11 @@
     {
       "date": "2026-10-23",
       "nikkei": 62693.16,
-      "usdjpy": 158.922,
+      "usdjpy": 159.748,
       "brent": 116.72,
       "copper": 6.476,
       "jgb10y": 4.988,
-      "cnyJpy": 23.775,
+      "cnyJpy": 23.932,
       "steel": 258.11,
       "lumber": 66.29
     },
@@ -275,7 +264,7 @@
     },
     {
       "date": "2026-11-03",
-      "nikkei": 60957.56,
+      "nikkei": 61744.17,
       "usdjpy": 157.915,
       "brent": 103.6,
       "copper": 6.378,
@@ -332,8 +321,8 @@
       "date": "2026-11-10",
       "nikkei": 60459.578,
       "usdjpy": 157.983,
-      "brent": 91.99,
-      "copper": 6.297,
+      "brent": 91.49,
+      "copper": 6.22,
       "jgb10y": 4.983,
       "cnyJpy": 23.677,
       "steel": 256.47,
@@ -341,14 +330,25 @@
     },
     {
       "date": "2026-11-11",
-      "nikkei": 60957.559,
-      "usdjpy": 158.922,
-      "brent": 91.99,
-      "copper": 6.297,
-      "jgb10y": 4.983,
-      "cnyJpy": 23.775,
-      "steel": 256.47,
-      "lumber": 66.42
+      "nikkei": 61248.59,
+      "usdjpy": 158.705,
+      "brent": 92.16,
+      "copper": 6.266,
+      "jgb10y": 4.998,
+      "cnyJpy": 23.794,
+      "steel": 261.39,
+      "lumber": 65.95
+    },
+    {
+      "date": "2026-11-12",
+      "nikkei": 61744.172,
+      "usdjpy": 159.748,
+      "brent": 92.16,
+      "copper": 6.266,
+      "jgb10y": 4.998,
+      "cnyJpy": 23.932,
+      "steel": 261.39,
+      "lumber": 65.952
     }
   ],
   "mci": null,
